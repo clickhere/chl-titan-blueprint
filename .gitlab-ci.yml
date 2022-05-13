@@ -12,8 +12,8 @@ Deploy Main:
   stage: deploy_main
   script:
     - git remote add production $production_remote_url
-    - "git checkout -b tmp"
-    - "git push production tmp -f"
+    - "git checkout -b gh-main"
+    - "git push production gh-main -f"
   only:
     - main
 
@@ -21,8 +21,8 @@ Deploy Staging:
   stage: deploy_staging
   script:
     - git remote add stagingremote $staging_remote_url
-    - "git checkout -b tmp"
-    - "git push stagingremote tmp -f"
+    - "git checkout -b gh-staging"
+    - "git push stagingremote gh-staging -f"
   only:
     - staging
 
@@ -30,7 +30,7 @@ Deploy Dev:
   stage: deploy_dev
   script:
     - git remote add devremote $dev_remote_url
-    - "git checkout -b tmp"
-    - "git push devremote tmp -f"
+    - "git checkout -b gh-dev"
+    - "git push devremote gh-dev -f"
   only:
     - dev
