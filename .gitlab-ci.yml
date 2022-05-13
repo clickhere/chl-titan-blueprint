@@ -1,0 +1,36 @@
+before_script:
+  - mkdir -p ~/.ssh
+  - eval $(ssh-agent -s) 
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+stages:
+  - deploy_dev
+  - deploy_staging
+  - deploy_master
+
+Deploy Main:
+  stage: deploy_main
+  script:
+    - git remote add production $production_remote_url
+    - "git checkout -b tmp"
+    - "git push production tmp -f"
+  only:
+    - main
+
+Deploy Staging:
+  stage: deploy_staging
+  script:
+    - git remote add stagingremote $staging_remote_url
+    - "git checkout -b tmp"
+    - "git push stagingremote tmp -f"
+  only:
+    - staging
+
+Deploy Dev:
+  stage: deploy_dev
+  script:
+    - git remote add devremote $dev_remote_url
+    - "git checkout -b tmp"
+    - "git push devremote tmp -f"
+  only:
+    - dev
