@@ -18,7 +18,14 @@ const themes = {
   green: {
     '--color-black': '#000',
     '--color-primary': '#006600',
-    '--color-secondary': '#006827',
+    '--color-secondary': '#c6c6c6',
+    '--color-tertiary': '#CCCCCC',
+    '--color-white': '#FFFFFF',
+  },
+  ecom: {
+    '--color-black': '#000',
+    '--color-primary': '#2a3533',
+    '--color-secondary': '#c6c6c6',
     '--color-tertiary': '#CCCCCC',
     '--color-white': '#FFFFFF',
   },

@@ -7,7 +7,7 @@ const appConfig = {
    * Displays a default Featured Image when a Post does not have one
    */
   archiveDisplayFeaturedImage: true,
-  themeColor: 'green',
+  themeColor: 'ecom',
   /**
    * @type {[key: 'twitterUrl' | 'facebookUrl' | 'instagramUrl' | 'youtubeUrl' | 'githubUrl' | 'linkedinUrl']: string}
    */

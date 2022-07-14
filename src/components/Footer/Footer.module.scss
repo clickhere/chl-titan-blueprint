@@ -5,10 +5,10 @@
   background-color: var(--color-primary);
   padding: 3rem;
   margin-top: 4rem;
-  color: var(--color-white);
+  color: var(--color-secondary);
 
   a {
-    color: var(--color-white);
+    color: var(--color-secondary);
     text-decoration: underline;
 
     &:hover,
@@ -18,101 +18,18 @@
   }
 }
 
-.social-links {
+.bar {
   display: flex;
-  justify-content: center;
-  margin-bottom: 3rem;
-
-  ul {
-    display: inline-flex;
-    list-style: none;
-    margin-bottom: 0;
-  }
-
-  li {
-    margin: 0;
-    margin-right: 1.5rem;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-
-  .social-icon-link {
-    display: flex;
-    width: 4rem;
-    height: 4rem;
-    padding: 1rem;
-    border: 1px solid var(--color-white);
-    border-radius: 99rem;
-    vertical-align: middle;
-    font-size: 2rem;
-    justify-content: center;
-    align-items: center;
-    color: var(--color-white);
-    background-color: transparent;
-    transition: background-color 0.1s ease-in-out;
-
-    .social-icon {
-      color: var(--color-white);
-      vertical-align: middle;
-      transition: color 0.1s ease-in-out;
-    }
-
-    &:hover,
-    &:focus {
-      color: var(--color-primary);
-      background-color: var(--color-white);
-
-      .social-icon {
-        color: var(--color-primary);
-      }
-    }
-  }
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 2rem 0;
+  gap: 2rem;
 }
 
-.nav {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 3rem;
-  margin-right: auto;
-  font-size: 1.8rem;
-
-  ul {
-    display: inline-flex;
-    flex-direction: column;
-    text-align: center;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-
-    @media (min-width: $breakpoint-small) {
-      flex-direction: row;
-    }
-  }
-
-  li {
-    margin: 0;
-    margin-bottom: 1rem;
-
-    @media (min-width: $breakpoint-small) {
-      margin-right: 3rem;
-      margin-bottom: 0;
-    }
-
-    &:last-child {
-      margin-bottom: 0;
-      margin-right: 0;
-    }
-
-    a {
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
+.terms {
+  margin-top:auto;
+  margin-bottom:auto;
+  text-align:left;
 }
 
 .copyright {

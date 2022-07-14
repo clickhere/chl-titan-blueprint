@@ -9,13 +9,40 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 3rem 0;
+  padding: 2rem 0;
   gap: 2rem;
 }
 
 .logo {
   width: 200px;
   height: auto;
+  line-height: 0;
+  margin: 0 0.8rem;
+
+}
+
+.logo a {
+  color: var(--color-secondary);
+  text-decoration: none;
+}
+
+.search {
+  display: none;
+  width: 100%;
+
+  &.show {
+    display: block;
+  }
+
+  @media (min-width: $breakpoint-small) {
+    display: block;
+    width: auto;
+  }
+}
+
+.search a {
+  color: var(--color-secondary);
+  text-decoration: none;
 }
 
 .nav-toggle {
@@ -61,12 +88,13 @@
     font-size: 1.4rem;
     margin: 0;
 
+
     @media (min-width: $breakpoint-small) {
       flex-direction: row;
     }
 
     li {
-      margin: 0 0.5rem;
+      margin: 0;
     }
 
     a {
@@ -75,7 +103,7 @@
       height: 100%;
       padding: 1rem;
       font-weight: $font-weight-bold;
-      color: var(--color-white);
+      color: var(--color-secondary);
 
       &:hover,
       &:focus {
@@ -86,3 +114,4 @@
     }
   }
 }
+

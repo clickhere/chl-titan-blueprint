@@ -33,20 +33,23 @@ export default function Header({ className }) {
       <div className="container">
         <div className={styles['bar']}>
           <div className={styles['logo']}>
+            
             <Link href="/">
               <a title="Home">
-                {/*<Image
-                  src="/logo.png"
-                  width={400}
-                  height={80}
-                  alt="Blueprint media logo"
-                  layout="responsive"
-                />*/}
-                {generalSettings?.title}<br />
+                <h3>{generalSettings?.title}</h3>
                 {generalSettings?.description}
               </a>
             </Link>
           </div>
+
+          <div className={styles['search']}>
+            <Link href="/search">
+              <a>
+                <FaSearch title="Search" role="img" />
+              </a>
+            </Link>
+          </div>
+
           <button
             type="button"
             className={styles['nav-toggle']}
@@ -55,22 +58,23 @@ export default function Header({ className }) {
             aria-controls={styles['primary-navigation']}
             aria-expanded={isNavShown}
           >
-            <FaBars />
+           <FaBars />
           </button>
+
+        </div>
+
+        <div className={styles['bar']}>
           <NavigationMenu
             id={styles['primary-navigation']}
             className={navClasses}
             menuLocation={MENUS.PRIMARY_LOCATION}
           >
-            <li>
-              <Link href="/search">
-                <a>
-                  <FaSearch title="Search" role="img" />
-                </a>
-              </Link>
-            </li>
+
           </NavigationMenu>
         </div>
+
+
+
       </div>
     </header>
   );
