@@ -28,8 +28,8 @@ export function PageComponent({ page }) {
       <Header />
 
       <Main>
-        <EntryHeader title={page?.title()} image={page?.featuredImage?.node} />
-        <div className="container">
+        
+        <div className="_container">
           <ContentWrapper content={page?.content()} />
         </div>
       </Main>
