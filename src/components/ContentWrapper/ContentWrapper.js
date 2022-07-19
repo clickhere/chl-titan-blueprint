@@ -1,6 +1,6 @@
 import { classNames as cn } from 'utils';
 
-import styles from './ContentWrapper.module.scss';
+import styles from './ContentWrapper.new.module.scss';
 /**
  * A basic Container Wrapper component
  * @param {Props} props The props object.
