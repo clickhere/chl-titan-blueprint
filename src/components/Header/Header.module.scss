@@ -115,3 +115,13 @@
   }
 }
 
+.icon-cart {
+  align-self: center;
+  
+  svg {
+    display: block;
+    width: 25px;
+    height: 25px;
+    fill: var(--color-secondary);
+  }
+}
