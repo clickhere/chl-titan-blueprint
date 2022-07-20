@@ -1,4 +1,5 @@
 import React from "react";
+import styles from './LoginForm.module.scss';
 
 //export default LoginForm;
 export default function LoginForm({ isShowLogin, lastRedirect }) {
@@ -60,20 +61,28 @@ export default function LoginForm({ isShowLogin, lastRedirect }) {
   
   return (
   <div className={`${isShowLogin ? "active" : ""} show ${lastRedirect ? lastRedirect : "blank"}`}>
-    <div className="login-form">
-      <div className="form-box solid">
+    <div >
+      <div >
         <form id="login_form" onSubmit={onSubmit}>
-          <h1 className="login-text">Sign In</h1>
-          <label>Username</label>
+          <h1 className={styles['form-headline']}>My Account</h1>
+          <h2 className={styles['form-sybheadline']}>Login</h2>
+          <label>Username or email address*</label>
           <br></br>
-          <input id="username" type="text" name="username" className="login-box" />
+          <input id="username" type="text" name="username" className={styles['input-text']} />
           <br></br>
-          <label>Password</label>
+          <label>Password *</label>
           <br></br>
-          <input id="password" type="password" name="password" className="login-box" />
+          <input id="password" type="password" name="password" className={styles['input-text']} />
           <br></br>
-          <input type="submit" value="Login" className="login-btn" />
+          
+          <label>
+            <input type="checkbox" className={styles['input-checkbox']}></input>
+            <span>Remember me</span>
+          </label>
+          <br></br>
+          <input type="submit" value="Log in" className={styles['login-button']} />
         </form>
+        <a className={styles['forgot-password']} href="#">Lost your password?</a>
       </div>
     </div>
   </div>
