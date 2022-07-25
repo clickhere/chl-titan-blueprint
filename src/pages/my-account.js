@@ -22,9 +22,8 @@ export default function Page() {
       />
 
       <Header />
-
+      
       <Main>
-        
         <div className="container">
           <LoginForm />
         </div>

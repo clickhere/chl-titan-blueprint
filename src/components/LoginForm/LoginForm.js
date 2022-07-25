@@ -1,8 +1,8 @@
 import React from "react";
+import { FaCreativeCommonsPd } from "react-icons/fa";
 import styles from './LoginForm.module.scss';
 
-//export default LoginForm;
-export default function LoginForm({ isShowLogin, lastRedirect }) {
+export default function LoginForm() {
 
   // Returns Auth Token
   async function getRefreshToken(e) {
@@ -12,10 +12,11 @@ export default function LoginForm({ isShowLogin, lastRedirect }) {
             headers:{
                 'Content-Type': 'application/json'
             },
-            body:  JSON.stringify({username:document.getElementById('username').value,password:document.getElementById('password').value,redirect:lastRedirect}) //document.getElementById('login_form')
+            body:  JSON.stringify({username:document.getElementById('username').value,password:document.getElementById('password').value}) 
         })
 
         const data = await response.json();
+        console.log(data);
         return data.token;
 
     } catch (error) {
@@ -41,7 +42,15 @@ export default function LoginForm({ isShowLogin, lastRedirect }) {
       })
       
       const data = await response.json();
-      return data.redirect_to;
+      console.log(data);
+
+      if (data.status == 200){
+        return data.redirect_to;
+      } else {
+        console.log("Unauthorized");
+        // TODO: Ask about getting the bc-link endpoint to return this URL if the response != 200
+        return "https://click-here-test-store.mybigcommerce.com/login.php";
+      }
 
     } catch (error) {
         console.log(error);
@@ -50,7 +59,7 @@ export default function LoginForm({ isShowLogin, lastRedirect }) {
 
   // Submit Button Handler
   const onSubmit = async(e) => {
-    console.log('LoginForm lastRedirect='+lastRedirect);
+    
     e.preventDefault();
 
     const refreshToken = await getRefreshToken();
@@ -60,7 +69,7 @@ export default function LoginForm({ isShowLogin, lastRedirect }) {
   };
   
   return (
-  <div className={`${isShowLogin ? "active" : ""} show ${lastRedirect ? lastRedirect : "blank"}`}>
+  <div >
     <div >
       <div >
         <form id="login_form" onSubmit={onSubmit}>
@@ -82,7 +91,7 @@ export default function LoginForm({ isShowLogin, lastRedirect }) {
           <br></br>
           <input type="submit" value="Log in" className={styles['login-button']} />
         </form>
-        <a className={styles['forgot-password']} href="#">Lost your password?</a>
+        <a className={styles['forgot-password']} href="https://click-here-test-store.mybigcommerce.com/login.php?action=reset_password" target="_blank">Lost your password?</a>
       </div>
     </div>
   </div>
