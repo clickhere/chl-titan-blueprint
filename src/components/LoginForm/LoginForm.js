@@ -1,8 +1,18 @@
 import React from "react";
 import { FaCreativeCommonsPd } from "react-icons/fa";
 import styles from './LoginForm.module.scss';
+import { client } from 'client';
 
 export default function LoginForm() {
+
+  // Pull the storeDomain url from the StoreSettings ACM model
+  const { useQuery } = client;
+  const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
+  const bigCommerceURL = "https://" + storeSettings.storeDomain; 
+  //const bigCommerceLoginPage = bigCommerceURL + "/login.php";
+  const bigCommercePasswordResetPage = bigCommerceURL + "/login.php?action=reset_password";
+
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   // Returns Auth Token
   async function getRefreshToken(e) {
@@ -17,10 +27,18 @@ export default function LoginForm() {
 
         const data = await response.json();
         console.log(data);
-        return data.token;
+        
+        if (data.status == 200){
+          //console.log("Success: Requesting Redirect URL")
+          //getRedirectUrl(data.token + "12345");
+          getRedirectUrl(data.token);
+        } else {
+          console.log("Unauthorized");
+          setErrorMessage("Username or password is invalid. Please try again or reset your password at the link below.");
+        }
 
     } catch (error) {
-        console.log(error);
+      console.log(error);
     } 
   }
 
@@ -28,6 +46,7 @@ export default function LoginForm() {
   async function getRedirectUrl(token) {
 
     var bearerToken = "Bearer " + token;
+    //var bearerToken = "";
 
     try {
       const response = await fetch('https://titanbpdev.wpengine.com/wp-json/tecom/v1/bc-link', {
@@ -44,28 +63,45 @@ export default function LoginForm() {
       const data = await response.json();
       console.log(data);
 
-      if (data.status == 200){
-        return data.redirect_to;
+      // The token is good, redirect to BigCommerce 
+      if (data.status == 200) {
+        window.open(data.redirect_to, '_blank');
+      
+      // The token is bad
       } else {
-        console.log("Unauthorized");
-        // TODO: Ask about getting the bc-link endpoint to return this URL if the response != 200
-        return "https://click-here-test-store.mybigcommerce.com/login.php";
+
+        // Missing Token
+        if (data.message == "missing_token") {
+          setErrorMessage("Missing Token");
+        } 
+
+        // Expired Token
+        if (data.message == "invalid_token") {
+          setErrorMessage("Invalid Token");
+          // Clear old token, resubmit and store new one
+        } 
+
+        // Missing Redirect
+        if (data.message == "missing_req: redirect") {
+          setErrorMessage("Unable to login at this time.");
+          console.log("Missing Redirect")
+        } 
+
       }
 
     } catch (error) {
-        console.log(error);
+      console.log(error);
     } 
+
   }
 
   // Submit Button Handler
-  const onSubmit = async(e) => {
-    
+  const onSubmit = async(e) => {    
     e.preventDefault();
 
-    const refreshToken = await getRefreshToken();
-    const redirectUrl = await getRedirectUrl(refreshToken);
-
-    window.open(redirectUrl, '_blank');
+    getRefreshToken();
+    //const refreshToken = await getRefreshToken();
+    //const redirectUrl = await getRedirectUrl(refreshToken);
   };
   
   return (
@@ -82,6 +118,7 @@ export default function LoginForm() {
           <label>Password *</label>
           <br></br>
           <input id="password" type="password" name="password" className={styles['input-text']} />
+          {errorMessage && <div className={styles['error-message']}> {errorMessage} </div>}
           <br></br>
           
           <label>
@@ -91,7 +128,7 @@ export default function LoginForm() {
           <br></br>
           <input type="submit" value="Log in" className={styles['login-button']} />
         </form>
-        <a className={styles['forgot-password']} href="https://click-here-test-store.mybigcommerce.com/login.php?action=reset_password" target="_blank">Lost your password?</a>
+        <a className={styles['forgot-password']} href= {bigCommercePasswordResetPage} target="_blank">Lost your password?</a>
       </div>
     </div>
   </div>
