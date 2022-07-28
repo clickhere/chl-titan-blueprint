@@ -1,5 +1,5 @@
 import * as MENUS from 'constants/menus';
-
+import React, { useEffect } from 'react';
 import { classNames as cn } from 'utils';
 import { useState } from 'react';
 import { FaBars, FaSearch } from 'react-icons/fa';
@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { NavigationMenu, SkipNavigationLink } from 'components';
 import { client } from 'client';
+import cookieCutter from 'cookie-cutter';
 
 import styles from './Header.module.scss';
 /**
@@ -17,6 +18,7 @@ import styles from './Header.module.scss';
  */
 export default function Header({ className }) {
   const [isNavShown, setIsNavShown] = useState(false);
+  const [isSignOutShown, setIsSignOutShown] = useState(false);
 
   const headerClasses = cn([styles.header, className]);
   const navClasses = cn([
@@ -26,6 +28,26 @@ export default function Header({ className }) {
   
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
+
+  // If the auth token already exists, redirect to the BC Account page
+  useEffect(() => {
+    console.log("loaded");
+    // Get token
+    const authToken = cookieCutter.get('token');
+    console.log(authToken);
+
+    if (typeof authToken !== 'undefined') {
+      console.log("token exists");
+      setIsSignOutShown(true);
+    }
+
+  });
+
+  function clearCookie() {
+    console.log("clear");
+    cookieCutter.set('token', '', { expires: new Date(0) });
+    setIsSignOutShown(false);
+  }
 
   return (
     <header className={headerClasses}>
@@ -42,13 +64,22 @@ export default function Header({ className }) {
             </Link>
           </div>
 
-          <div className={styles['search']}>
-            <Link href="/search">
-              <a>
-                <FaSearch title="Search" role="img" />
-              </a>
-            </Link>
-          </div>
+          
+            {isSignOutShown &&
+              <div>
+                <a className={styles['sign-out']} href="/my-account" onClick={clearCookie}>
+                  Sign Out
+                </a>
+            </div>
+            }
+
+            <div className={styles['search']}>
+              <Link href="/search">
+                <a>
+                  <FaSearch title="Search" role="img" />
+                </a>
+              </Link>
+          </div>  
 
           <button
             type="button"

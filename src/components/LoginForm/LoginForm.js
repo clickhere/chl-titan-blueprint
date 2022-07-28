@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from 'react';
 import { FaCreativeCommonsPd } from "react-icons/fa";
 import styles from './LoginForm.module.scss';
 import { client } from 'client';
+import cookieCutter from 'cookie-cutter';
+import { useRouter } from 'next/router';
 
 export default function LoginForm() {
 
@@ -13,6 +15,21 @@ export default function LoginForm() {
   const bigCommercePasswordResetPage = bigCommerceURL + "/login.php?action=reset_password";
 
   const [errorMessage, setErrorMessage] = React.useState("");
+  const router = useRouter()
+  
+  // If the auth token already exists, redirect to the BC Account page
+  useEffect(() => {
+    console.log("loaded");
+    // Get token
+    const authToken = cookieCutter.get('token');
+    console.log(authToken);
+
+    if (typeof authToken !== 'undefined') {
+      console.log("token exists");
+      getRedirectUrl()
+    }
+
+  });
 
   // Returns Auth Token
   async function getRefreshToken(e) {
@@ -29,9 +46,10 @@ export default function LoginForm() {
         console.log(data);
         
         if (data.status == 200){
-          //console.log("Success: Requesting Redirect URL")
+          console.log("Success: Requesting Redirect URL")
           //getRedirectUrl(data.token + "12345");
-          getRedirectUrl(data.token);
+          cookieCutter.set('token', data.token);
+          getRedirectUrl();
         } else {
           console.log("Unauthorized");
           setErrorMessage("Username or password is invalid. Please try again or reset your password at the link below.");
@@ -43,9 +61,9 @@ export default function LoginForm() {
   }
 
   // Returns BigCommerce redirect URL
-  async function getRedirectUrl(token) {
+  async function getRedirectUrl() {
 
-    var bearerToken = "Bearer " + token;
+    var bearerToken = "Bearer " + cookieCutter.get('token');
     //var bearerToken = "";
 
     try {
@@ -66,6 +84,7 @@ export default function LoginForm() {
       // The token is good, redirect to BigCommerce 
       if (data.status == 200) {
         window.open(data.redirect_to, '_blank');
+        router.push('/test-page');
       
       // The token is bad
       } else {
@@ -75,10 +94,11 @@ export default function LoginForm() {
           setErrorMessage("Missing Token");
         } 
 
-        // Expired Token
+        // Expired Token: Clear old token, resubmit, and store the new one
         if (data.message == "invalid_token") {
-          setErrorMessage("Invalid Token");
-          // Clear old token, resubmit and store new one
+          console.log("expired token: resubmitting");
+          cookieCutter.set('token', '', { expires: new Date(0) });
+          getRefreshToken();
         } 
 
         // Missing Redirect
@@ -98,11 +118,25 @@ export default function LoginForm() {
   // Submit Button Handler
   const onSubmit = async(e) => {    
     e.preventDefault();
-
+    
+    console.log("no token");
     getRefreshToken();
-    //const refreshToken = await getRefreshToken();
-    //const redirectUrl = await getRedirectUrl(refreshToken);
+
+
+    // if (authToken != '') {
+    //   console.log("token exists");
+    //   getRedirectUrl()
+    // } else {
+    //   console.log("no token");
+    //   getRefreshToken();
+    // }
+
   };
+
+  function clearCookie() {
+    console.log("clear");
+    cookieCutter.set('token', '', { expires: new Date(0) });
+  }
   
   return (
   <div >
@@ -129,6 +163,7 @@ export default function LoginForm() {
           <input type="submit" value="Log in" className={styles['login-button']} />
         </form>
         <a className={styles['forgot-password']} href= {bigCommercePasswordResetPage} target="_blank">Lost your password?</a>
+
       </div>
     </div>
   </div>

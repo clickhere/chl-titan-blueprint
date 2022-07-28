@@ -115,6 +115,21 @@
   }
 }
 
+.sign-out {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  padding: 1rem;
+  font-weight: $font-weight-bold;
+  color: var(--color-secondary);
+
+  &:hover,
+  &:focus {
+    color: var(--color-white);
+    padding: 0.9rem;
+  }
+}
+
 .icon-cart {
   align-self: center;
   
