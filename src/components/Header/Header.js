@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { NavigationMenu, SkipNavigationLink } from 'components';
 import { client } from 'client';
 import cookieCutter from 'cookie-cutter';
+import { FaustProvider } from '@faustjs/next';
 
 import styles from './Header.module.scss';
 /**
@@ -66,7 +67,7 @@ export default function Header({ className }) {
 
           
             {isSignOutShown &&
-              <div>
+              <div style={{marginLeft: "auto"}}>
                 <a className={styles['sign-out']} href="/my-account" onClick={clearCookie}>
                   Sign Out
                 </a>

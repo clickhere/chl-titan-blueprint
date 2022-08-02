@@ -13,6 +13,10 @@ export default function LoginForm() {
   const bigCommerceURL = "https://" + storeSettings.storeDomain; 
   //const bigCommerceLoginPage = bigCommerceURL + "/login.php";
   const bigCommercePasswordResetPage = bigCommerceURL + "/login.php?action=reset_password";
+  const bigCommerceCreateAccountPage = bigCommerceURL + "/login.php?action=create_account";
+
+  
+
 
   const [errorMessage, setErrorMessage] = React.useState("");
   const router = useRouter()
@@ -47,8 +51,8 @@ export default function LoginForm() {
         
         if (data.status == 200){
           console.log("Success: Requesting Redirect URL")
-          //getRedirectUrl(data.token + "12345");
           cookieCutter.set('token', data.token);
+          const date = Date();
           getRedirectUrl();
         } else {
           console.log("Unauthorized");
@@ -64,7 +68,6 @@ export default function LoginForm() {
   async function getRedirectUrl() {
 
     var bearerToken = "Bearer " + cookieCutter.get('token');
-    //var bearerToken = "";
 
     try {
       const response = await fetch('https://titanbpdev.wpengine.com/wp-json/tecom/v1/bc-link', {
@@ -85,6 +88,7 @@ export default function LoginForm() {
       if (data.status == 200) {
         window.open(data.redirect_to, '_blank');
         router.push('/test-page');
+        cookieCutter.set('token', "qqqqqqqq");
       
       // The token is bad
       } else {
@@ -98,7 +102,8 @@ export default function LoginForm() {
         if (data.message == "invalid_token") {
           console.log("expired token: resubmitting");
           cookieCutter.set('token', '', { expires: new Date(0) });
-          getRefreshToken();
+          setErrorMessage("Session expired, please log in again.");
+          //getRefreshToken();
         } 
 
         // Missing Redirect
@@ -118,19 +123,7 @@ export default function LoginForm() {
   // Submit Button Handler
   const onSubmit = async(e) => {    
     e.preventDefault();
-    
-    console.log("no token");
     getRefreshToken();
-
-
-    // if (authToken != '') {
-    //   console.log("token exists");
-    //   getRedirectUrl()
-    // } else {
-    //   console.log("no token");
-    //   getRefreshToken();
-    // }
-
   };
 
   function clearCookie() {
@@ -163,6 +156,8 @@ export default function LoginForm() {
           <input type="submit" value="Log in" className={styles['login-button']} />
         </form>
         <a className={styles['forgot-password']} href= {bigCommercePasswordResetPage} target="_blank">Lost your password?</a>
+        <br></br>
+        <a className={styles['forgot-password']} href= {bigCommerceCreateAccountPage} target="_blank">Create Account</a>
 
       </div>
     </div>
