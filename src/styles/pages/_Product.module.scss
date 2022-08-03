@@ -3,7 +3,7 @@
 .product {
   margin-top: 1em;
   margin-bottom: 1em;
-  
+
   .productGallery {
     @media (min-width: $breakpoint-small) {
       margin-right: 2.5rem;
@@ -21,7 +21,7 @@
       cursor: pointer;
     }
   }
-  
+
   h1 {
     font-size: 4rem;
     line-height: 1.1;
@@ -39,5 +39,8 @@
     margin-bottom: 1em;
     border-radius: 3px;
     position: relative;
+  }
+  img {
+    max-width: initial;
   }
 }
