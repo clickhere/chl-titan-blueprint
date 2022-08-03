@@ -88,7 +88,7 @@ export default function LoginForm() {
       if (data.status == 200) {
         window.open(data.redirect_to, '_blank');
         router.push('/test-page');
-        cookieCutter.set('token', "qqqqqqqq");
+        //cookieCutter.set('token', "qqqqqqqq");
       
       // The token is bad
       } else {
