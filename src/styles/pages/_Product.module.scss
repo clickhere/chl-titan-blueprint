@@ -6,7 +6,19 @@
   
   .productGallery {
     @media (min-width: $breakpoint-small) {
-      margin-right: 2rem;
+      margin-right: 2.5rem;
+    }
+  
+    :global {
+      .slick-prev, .slick-next {
+        &, &:before {
+          color: #000;
+        }
+      }
+    }
+    
+    .productGalleryThumbnail {
+      cursor: pointer;
     }
   }
   

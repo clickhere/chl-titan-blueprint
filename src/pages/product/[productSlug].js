@@ -100,10 +100,10 @@ function ProductGallery({ images }) {
         dots={false}
         infinite={false}
         slidesToShow={4}
-        slidestoScroll={1}
+        slidesToScroll={4}
       >
         {images.map((image, index) => (
-          <img src={image.urlThumbnail} width="80" onClick={() => setProductIndex(index)} />
+          <img src={image.urlThumbnail} className={styles.productGalleryThumbnail} onClick={() => setProductIndex(index)} />
         ))}
       </Slider>
     </div>
