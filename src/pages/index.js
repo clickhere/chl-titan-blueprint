@@ -16,9 +16,18 @@ import {
 import styles from 'styles/pages/_Home.module.scss';
 import { pageTitle } from 'utils';
 
-const postsPerPage = 3;
+import { PageComponent } from './[...pageUri]';
 
 export default function Page() {
+  const { usePage } = client;
+  const page = usePage({ id: '/', idType: 'URI' });
+
+  return <PageComponent page={page} />;
+}
+
+const postsPerPage = 3;
+
+function PageOld() {
   const { useQuery, usePosts } = client;
   const generalSettings = useQuery().generalSettings;
   const posts = usePosts({
