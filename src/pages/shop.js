@@ -9,7 +9,9 @@ import {
   SEO,
   TaxonomyTerms,
 } from 'components';
+import styles from 'styles/pages/_Shop.module.scss';
 import { pageTitle } from 'utils';
+import { classNames } from 'utils';
 
 import Link from 'next/link';
 
@@ -32,21 +34,45 @@ export function ShopComponent({ products }) {
 
       <Main>
         <div className="container">
-          <div className="row row-wrap">
+          <div className={styles.shopTitle}>
+            <h1>Shop</h1>
+          </div>
+
+          <div className={classNames(['row', 'row-wrap', styles.shop])}>
             {products.map((product) => (
-              <div className="column column-33">
-                <Link href={`/product/${product.slug}`}>
-                  <a>
-                    {product.name}<br />
-                    {
-                      product.salePrice === 0
-                      ? '$' + product.price
-                      : <><del>${product.price}</del> ${product.salePrice}</>
-                    }
-                    <br />
-                    <img src={product.images({ first: 1}).nodes[0].urlStandard} />
-                  </a>
-                </Link>
+              <div className={classNames(['column', 'column-33', styles.productWrapper])}>
+                <div className={styles.productImageContainer}>
+                  <Link href={`/product/${product.slug}`}>
+                    <a>
+                      {
+                        product?.salePrice !== 0
+                        ? <span className={styles.onsale}>Sale!</span>
+                        : null
+                      }
+                      <img className={styles.productImage} src={product.images({ first: 1}).nodes[0].urlStandard} />
+                    </a>
+                  </Link>
+                </div>
+                <div className={styles.productInfoContainer}>
+                  <h6 className={styles.productTitle}>
+                    <Link href={`/product/${product.slug}`}>
+                      <a>
+                        {product.name}
+
+                      </a>
+                    </Link>
+                  </h6>
+                  <div className={styles.productPrice}>
+                    <span>
+                      {
+                        product.salePrice === 0
+                        ? '$' + product.price
+                        : <><del>${product.price}</del> ${product.salePrice}</>
+                      }
+                    </span>
+                  </div>
+                  <div className={styles.btnContainer}><a className={styles.btn} href="#">Add to cart</a></div>
+                </div>
               </div>
             ))}
           </div>
