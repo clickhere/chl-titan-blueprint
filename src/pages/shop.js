@@ -44,7 +44,7 @@ export function ShopComponent({ products }) {
                       : <><del>${product.price}</del> ${product.salePrice}</>
                     }
                     <br />
-                    <img src={product.images({ first: 1}).nodes[0].urlStandard} />
+                    <img src={product.images({ first: 1})?.nodes[0]?.urlStandard} />
                   </a>
                 </Link>
               </div>

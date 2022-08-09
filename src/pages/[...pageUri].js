@@ -13,6 +13,7 @@ import { pageTitle } from 'utils';
 export function PageComponent({ page }) {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
+  const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
 
   return (
     <>
@@ -24,8 +25,9 @@ export function PageComponent({ page }) {
         )}
         imageUrl={page?.featuredImage?.node?.sourceUrl?.()}
       />
-
-      <Header />
+      <Header
+        storeSettings={storeSettings}
+      />
 
       <Main>
         
@@ -34,7 +36,9 @@ export function PageComponent({ page }) {
         </div>
       </Main>
 
-      <Footer />
+      <Footer 
+        storeSettings={storeSettings}
+      />
     </>
   );
 }

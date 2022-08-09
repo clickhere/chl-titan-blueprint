@@ -79,7 +79,7 @@ export function ProductComponent({ product }) {
                 ))}
                 </p>
 
-                <p>Brand: {product.brand.node.name}</p>
+                <p>Brand: {product?.brand?.node?.name}</p>
               </div>
             </div>
           </div>
@@ -101,10 +101,10 @@ function ProductGallery({ images }) {
           smallImage: {
             alt: 'Wristwatch by Ted Baker London',
             isFluidWidth: true,
-            src: images[productIndex].urlStandard
+            src: images[productIndex]?.urlStandard
           },
           largeImage: {
-            src: images[productIndex].urlZoom,
+            src: images[productIndex]?.urlZoom,
             width: 960,
             height: 1080
           }

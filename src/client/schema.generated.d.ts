@@ -636,8 +636,6 @@ export interface CreatePageInput {
   content?: InputMaybe<Scalars["String"]>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars["String"]>;
-  /** The excerpt of the object */
-  excerpt?: InputMaybe<Scalars["String"]>;
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
   menuOrder?: InputMaybe<Scalars["Int"]>;
   /** The ID of the parent object */
@@ -799,6 +797,7 @@ export interface CreateStoreSettingInput {
   date?: InputMaybe<Scalars["String"]>;
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
   menuOrder?: InputMaybe<Scalars["Int"]>;
+  notificationBanner?: InputMaybe<Scalars["String"]>;
   /** The password used to protect the content of the object */
   password?: InputMaybe<Scalars["String"]>;
   /** The slug of the object */
@@ -811,6 +810,8 @@ export interface CreateStoreSettingInput {
   storeLogo?: InputMaybe<Scalars["String"]>;
   storeName?: InputMaybe<Scalars["String"]>;
   storePhone?: InputMaybe<Scalars["String"]>;
+  storePrimaryColor?: InputMaybe<Scalars["String"]>;
+  storeSecondaryColor?: InputMaybe<Scalars["String"]>;
   storeTimezone?: InputMaybe<Scalars["String"]>;
   /** The title of the object */
   title?: InputMaybe<Scalars["String"]>;
@@ -1201,16 +1202,6 @@ export type MediaItemIdType =
 
 /** The size of the media item object. */
 export type MediaItemSizeEnum =
-  /** MediaItem with the gb-block-post-grid-landscape size */
-  | "GB_BLOCK_POST_GRID_LANDSCAPE"
-  /** MediaItem with the gb-block-post-grid-square size */
-  | "GB_BLOCK_POST_GRID_SQUARE"
-  /** MediaItem with the genesis-block-theme-featured-image size */
-  | "GENESIS_BLOCK_THEME_FEATURED_IMAGE"
-  /** MediaItem with the genesis-block-theme-featured-image-wide size */
-  | "GENESIS_BLOCK_THEME_FEATURED_IMAGE_WIDE"
-  /** MediaItem with the genesis-block-theme-logo size */
-  | "GENESIS_BLOCK_THEME_LOGO"
   /** MediaItem with the large size */
   | "LARGE"
   /** MediaItem with the medium size */
@@ -3574,8 +3565,6 @@ export interface UpdatePageInput {
   content?: InputMaybe<Scalars["String"]>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars["String"]>;
-  /** The excerpt of the object */
-  excerpt?: InputMaybe<Scalars["String"]>;
   /** The ID of the page object */
   id: Scalars["ID"];
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
@@ -3739,6 +3728,7 @@ export interface UpdateProductInput {
 
 /** Input for the updateSettings mutation */
 export interface UpdateSettingsInput {
+  /** Opt into anonymous usage tracking to help us make Atlas Content Modeler better. */
   atlasContentModelerSettingsSettingsAtlasContentModelerUsageTracking?: InputMaybe<
     Scalars["String"]
   >;
@@ -3766,12 +3756,6 @@ export interface UpdateSettingsInput {
   generalSettingsTitle?: InputMaybe<Scalars["String"]>;
   /** Site URL. */
   generalSettingsUrl?: InputMaybe<Scalars["String"]>;
-  genesisBlocksGlobalSettingsSettingsGenesisBlocksMailchimpApiKey?: InputMaybe<
-    Scalars["String"]
-  >;
-  genesisBlocksGlobalSettingsSettingsGenesisProSubscriptionKey?: InputMaybe<
-    Scalars["String"]
-  >;
   /** Blog pages show at most. */
   readingSettingsPostsPerPage?: InputMaybe<Scalars["Int"]>;
   /** Default post category. */
@@ -3794,6 +3778,7 @@ export interface UpdateStoreSettingInput {
   id: Scalars["ID"];
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
   menuOrder?: InputMaybe<Scalars["Int"]>;
+  notificationBanner?: InputMaybe<Scalars["String"]>;
   /** The password used to protect the content of the object */
   password?: InputMaybe<Scalars["String"]>;
   /** The slug of the object */
@@ -3806,6 +3791,8 @@ export interface UpdateStoreSettingInput {
   storeLogo?: InputMaybe<Scalars["String"]>;
   storeName?: InputMaybe<Scalars["String"]>;
   storePhone?: InputMaybe<Scalars["String"]>;
+  storePrimaryColor?: InputMaybe<Scalars["String"]>;
+  storeSecondaryColor?: InputMaybe<Scalars["String"]>;
   storeTimezone?: InputMaybe<Scalars["String"]>;
   /** The title of the object */
   title?: InputMaybe<Scalars["String"]>;
@@ -5305,7 +5292,6 @@ export declare const generatedSchema: {
     commentStatus: { __type: "String" };
     content: { __type: "String" };
     date: { __type: "String" };
-    excerpt: { __type: "String" };
     menuOrder: { __type: "Int" };
     parentId: { __type: "ID" };
     password: { __type: "String" };
@@ -5431,6 +5417,7 @@ export declare const generatedSchema: {
     clientMutationId: { __type: "String" };
     date: { __type: "String" };
     menuOrder: { __type: "Int" };
+    notificationBanner: { __type: "String" };
     password: { __type: "String" };
     slug: { __type: "String" };
     status: { __type: "PostStatusEnum" };
@@ -5440,6 +5427,8 @@ export declare const generatedSchema: {
     storeLogo: { __type: "String" };
     storeName: { __type: "String" };
     storePhone: { __type: "String" };
+    storePrimaryColor: { __type: "String" };
+    storeSecondaryColor: { __type: "String" };
     storeTimezone: { __type: "String" };
     title: { __type: "String" };
   };
@@ -5759,11 +5748,6 @@ export declare const generatedSchema: {
     clientMutationId: { __type: "String" };
     code: { __type: "String" };
     error: { __type: "String" };
-  };
-  GenesisBlocksGlobalSettingsSettings: {
-    __typename: { __type: "String!" };
-    genesisBlocksMailchimpApiKey: { __type: "String" };
-    genesisProSubscriptionKey: { __type: "String" };
   };
   HierarchicalContentNode: {
     __typename: { __type: "String!" };
@@ -6441,10 +6425,6 @@ export declare const generatedSchema: {
     enqueuedStylesheets: {
       __type: "ContentNodeToEnqueuedStylesheetConnection";
       __args: { after: "String"; before: "String"; first: "Int"; last: "Int" };
-    };
-    excerpt: {
-      __type: "String";
-      __args: { format: "PostObjectFieldFormatEnum" };
     };
     featuredImage: { __type: "NodeWithFeaturedImageToMediaItemConnectionEdge" };
     featuredImageDatabaseId: { __type: "Int" };
@@ -8135,12 +8115,6 @@ export declare const generatedSchema: {
     generalSettingsTimezone: { __type: "String" };
     generalSettingsTitle: { __type: "String" };
     generalSettingsUrl: { __type: "String" };
-    genesisBlocksGlobalSettingsSettingsGenesisBlocksMailchimpApiKey: {
-      __type: "String";
-    };
-    genesisBlocksGlobalSettingsSettingsGenesisProSubscriptionKey: {
-      __type: "String";
-    };
     readingSettingsPostsPerPage: { __type: "Int" };
     writingSettingsDefaultCategory: { __type: "Int" };
     writingSettingsDefaultPostFormat: { __type: "String" };
@@ -8178,6 +8152,7 @@ export declare const generatedSchema: {
     link: { __type: "String" };
     modified: { __type: "String" };
     modifiedGmt: { __type: "String" };
+    notificationBanner: { __type: "String" };
     preview: { __type: "StoreSettingToPreviewConnectionEdge" };
     previewRevisionDatabaseId: { __type: "Int" };
     previewRevisionId: { __type: "ID" };
@@ -8189,6 +8164,8 @@ export declare const generatedSchema: {
     storeLogo: { __type: "String" };
     storeName: { __type: "String" };
     storePhone: { __type: "String" };
+    storePrimaryColor: { __type: "String" };
+    storeSecondaryColor: { __type: "String" };
     storeSettingId: { __type: "Int!" };
     storeTimezone: { __type: "String" };
     template: { __type: "ContentTemplate" };
@@ -8368,7 +8345,19 @@ export declare const generatedSchema: {
     cursor: { __type: "String" };
     node: { __type: "ContentType" };
   };
-  Template_FullWidth: {
+  Template_Blank: {
+    __typename: { __type: "String!" };
+    templateName: { __type: "String" };
+  };
+  Template_PageLargeHeader: {
+    __typename: { __type: "String!" };
+    templateName: { __type: "String" };
+  };
+  Template_PageNoSeparators: {
+    __typename: { __type: "String!" };
+    templateName: { __type: "String" };
+  };
+  Template_SinglePostNoSeparators: {
     __typename: { __type: "String!" };
     templateName: { __type: "String" };
   };
@@ -8581,7 +8570,6 @@ export declare const generatedSchema: {
     commentStatus: { __type: "String" };
     content: { __type: "String" };
     date: { __type: "String" };
-    excerpt: { __type: "String" };
     id: { __type: "ID!" };
     menuOrder: { __type: "Int" };
     parentId: { __type: "ID" };
@@ -8723,12 +8711,6 @@ export declare const generatedSchema: {
     generalSettingsTimezone: { __type: "String" };
     generalSettingsTitle: { __type: "String" };
     generalSettingsUrl: { __type: "String" };
-    genesisBlocksGlobalSettingsSettingsGenesisBlocksMailchimpApiKey: {
-      __type: "String";
-    };
-    genesisBlocksGlobalSettingsSettingsGenesisProSubscriptionKey: {
-      __type: "String";
-    };
     readingSettingsPostsPerPage: { __type: "Int" };
     writingSettingsDefaultCategory: { __type: "Int" };
     writingSettingsDefaultPostFormat: { __type: "String" };
@@ -8743,9 +8725,6 @@ export declare const generatedSchema: {
     clientMutationId: { __type: "String" };
     discussionSettings: { __type: "DiscussionSettings" };
     generalSettings: { __type: "GeneralSettings" };
-    genesisBlocksGlobalSettingsSettings: {
-      __type: "GenesisBlocksGlobalSettingsSettings";
-    };
     readingSettings: { __type: "ReadingSettings" };
     writingSettings: { __type: "WritingSettings" };
   };
@@ -8755,6 +8734,7 @@ export declare const generatedSchema: {
     date: { __type: "String" };
     id: { __type: "ID!" };
     menuOrder: { __type: "Int" };
+    notificationBanner: { __type: "String" };
     password: { __type: "String" };
     slug: { __type: "String" };
     status: { __type: "PostStatusEnum" };
@@ -8764,6 +8744,8 @@ export declare const generatedSchema: {
     storeLogo: { __type: "String" };
     storeName: { __type: "String" };
     storePhone: { __type: "String" };
+    storePrimaryColor: { __type: "String" };
+    storeSecondaryColor: { __type: "String" };
     storeTimezone: { __type: "String" };
     title: { __type: "String" };
   };
@@ -9827,9 +9809,6 @@ export declare const generatedSchema: {
     };
     discussionSettings: { __type: "DiscussionSettings" };
     generalSettings: { __type: "GeneralSettings" };
-    genesisBlocksGlobalSettingsSettings: {
-      __type: "GenesisBlocksGlobalSettingsSettings";
-    };
     image: {
       __type: "Image";
       __args: { asPreview: "Boolean"; id: "ID!"; idType: "ImageIdType" };
@@ -10265,16 +10244,22 @@ export declare const generatedSchema: {
     TermNode: ["Category", "PostFormat", "Tag"];
     Commenter: ["CommentAuthor", "User"];
     ContentRevisionUnion: ["Page", "Post"];
-    ContentTemplate: ["DefaultTemplate", "Template_FullWidth"];
+    ContentTemplate: [
+      "DefaultTemplate",
+      "Template_Blank",
+      "Template_PageLargeHeader",
+      "Template_PageNoSeparators",
+      "Template_SinglePostNoSeparators"
+    ];
     EnqueuedAsset: ["EnqueuedScript", "EnqueuedStylesheet"];
     HierarchicalContentNode: ["MediaItem", "Page"];
     NodeWithComments: ["MediaItem", "Page", "Post"];
     MenuItemObjectUnion: ["Category", "Page", "Post", "Tag"];
     NodeWithContentEditor: ["Page", "Post"];
-    NodeWithExcerpt: ["Page", "Post"];
     NodeWithFeaturedImage: ["Page", "Post"];
     NodeWithPageAttributes: ["Page"];
     NodeWithRevisions: ["Page", "Post"];
+    NodeWithExcerpt: ["Post"];
     NodeWithTrackbacks: ["Post"];
   };
 };
@@ -10285,7 +10270,7 @@ export declare const generatedSchema: {
 export interface AtlasContentModelerSettingsSettings {
   __typename?: "AtlasContentModelerSettingsSettings";
   /**
-   * The string Settings Group
+   * Opt into anonymous usage tracking to help us make Atlas Content Modeler better.
    */
   atlasContentModelerUsageTracking?: Maybe<ScalarsEnums["String"]>;
 }
@@ -11582,7 +11567,12 @@ export interface ContentRevisionUnion {
  * The template assigned to a node of content
  */
 export interface ContentTemplate {
-  __typename?: "DefaultTemplate" | "Template_FullWidth";
+  __typename?:
+    | "DefaultTemplate"
+    | "Template_Blank"
+    | "Template_PageLargeHeader"
+    | "Template_PageNoSeparators"
+    | "Template_SinglePostNoSeparators";
   /**
    * The name of the template
    */
@@ -12571,21 +12561,6 @@ export interface GenerateAuthorizationCodePayload {
    * Error encountered during user authentication, if any
    */
   error?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * The genesisBlocksGlobalSettings setting type
- */
-export interface GenesisBlocksGlobalSettingsSettings {
-  __typename?: "GenesisBlocksGlobalSettingsSettings";
-  /**
-   * The string Settings Group
-   */
-  genesisBlocksMailchimpApiKey?: Maybe<ScalarsEnums["String"]>;
-  /**
-   * The string Settings Group
-   */
-  genesisProSubscriptionKey?: Maybe<ScalarsEnums["String"]>;
 }
 
 /**
@@ -14071,7 +14046,7 @@ export interface NodeWithContentEditor {
  * A node that can have an excerpt
  */
 export interface NodeWithExcerpt {
-  __typename?: "Page" | "Post";
+  __typename?: "Post";
   /**
    * The excerpt of the post.
    */
@@ -14553,15 +14528,6 @@ export interface Page {
      */
     last?: Maybe<Scalars["Int"]>;
   }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
-  /**
-   * The excerpt of the post.
-   */
-  excerpt: (args?: {
-    /**
-     * Format of the field output
-     */
-    format?: Maybe<PostObjectFieldFormatEnum>;
-  }) => Maybe<ScalarsEnums["String"]>;
   /**
    * Connection between the NodeWithFeaturedImage type and the MediaItem type
    */
@@ -17521,18 +17487,6 @@ export interface Settings {
    */
   generalSettingsUrl?: Maybe<ScalarsEnums["String"]>;
   /**
-   * Settings of the the string Settings Group
-   */
-  genesisBlocksGlobalSettingsSettingsGenesisBlocksMailchimpApiKey?: Maybe<
-    ScalarsEnums["String"]
-  >;
-  /**
-   * Settings of the the string Settings Group
-   */
-  genesisBlocksGlobalSettingsSettingsGenesisProSubscriptionKey?: Maybe<
-    ScalarsEnums["String"]
-  >;
-  /**
    * Settings of the the integer Settings Group
    */
   readingSettingsPostsPerPage?: Maybe<ScalarsEnums["Int"]>;
@@ -17685,6 +17639,7 @@ export interface StoreSetting {
    * The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT.
    */
   modifiedGmt?: Maybe<ScalarsEnums["String"]>;
+  notificationBanner?: Maybe<ScalarsEnums["String"]>;
   /**
    * Connection between the storeSetting type and the storeSetting type
    */
@@ -17711,6 +17666,8 @@ export interface StoreSetting {
   storeLogo?: Maybe<ScalarsEnums["String"]>;
   storeName?: Maybe<ScalarsEnums["String"]>;
   storePhone?: Maybe<ScalarsEnums["String"]>;
+  storePrimaryColor?: Maybe<ScalarsEnums["String"]>;
+  storeSecondaryColor?: Maybe<ScalarsEnums["String"]>;
   /**
    * The id field matches the WP_Post-&gt;ID field.
    * @deprecated Deprecated in favor of the databaseId field
@@ -18137,8 +18094,41 @@ export interface TaxonomyToContentTypeConnectionEdge {
 /**
  * The template assigned to the node
  */
-export interface Template_FullWidth {
-  __typename?: "Template_FullWidth";
+export interface Template_Blank {
+  __typename?: "Template_Blank";
+  /**
+   * The name of the template
+   */
+  templateName?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * The template assigned to the node
+ */
+export interface Template_PageLargeHeader {
+  __typename?: "Template_PageLargeHeader";
+  /**
+   * The name of the template
+   */
+  templateName?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * The template assigned to the node
+ */
+export interface Template_PageNoSeparators {
+  __typename?: "Template_PageNoSeparators";
+  /**
+   * The name of the template
+   */
+  templateName?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * The template assigned to the node
+ */
+export interface Template_SinglePostNoSeparators {
+  __typename?: "Template_SinglePostNoSeparators";
   /**
    * The name of the template
    */
@@ -18613,10 +18603,6 @@ export interface UpdateSettingsPayload {
    * Update the GeneralSettings setting.
    */
   generalSettings?: Maybe<GeneralSettings>;
-  /**
-   * Update the GenesisBlocksGlobalSettingsSettings setting.
-   */
-  genesisBlocksGlobalSettingsSettings?: Maybe<GenesisBlocksGlobalSettingsSettings>;
   /**
    * Update the ReadingSettings setting.
    */
@@ -20137,7 +20123,6 @@ export interface Query {
   }) => Maybe<RootQueryToContentTypeConnection>;
   discussionSettings?: Maybe<DiscussionSettings>;
   generalSettings?: Maybe<GeneralSettings>;
-  genesisBlocksGlobalSettingsSettings?: Maybe<GenesisBlocksGlobalSettingsSettings>;
   image: (args: {
     asPreview?: Maybe<Scalars["Boolean"]>;
     id: Scalars["ID"];
@@ -20499,7 +20484,6 @@ export interface SchemaObjectTypes {
   EnqueuedStylesheet: EnqueuedStylesheet;
   GeneralSettings: GeneralSettings;
   GenerateAuthorizationCodePayload: GenerateAuthorizationCodePayload;
-  GenesisBlocksGlobalSettingsSettings: GenesisBlocksGlobalSettingsSettings;
   HierarchicalContentNodeToContentNodeAncestorsConnection: HierarchicalContentNodeToContentNodeAncestorsConnection;
   HierarchicalContentNodeToContentNodeAncestorsConnectionEdge: HierarchicalContentNodeToContentNodeAncestorsConnectionEdge;
   HierarchicalContentNodeToContentNodeChildrenConnection: HierarchicalContentNodeToContentNodeChildrenConnection;
@@ -20641,7 +20625,10 @@ export interface SchemaObjectTypes {
   Taxonomy: Taxonomy;
   TaxonomyToContentTypeConnection: TaxonomyToContentTypeConnection;
   TaxonomyToContentTypeConnectionEdge: TaxonomyToContentTypeConnectionEdge;
-  Template_FullWidth: Template_FullWidth;
+  Template_Blank: Template_Blank;
+  Template_PageLargeHeader: Template_PageLargeHeader;
+  Template_PageNoSeparators: Template_PageNoSeparators;
+  Template_SinglePostNoSeparators: Template_SinglePostNoSeparators;
   TermNodeToEnqueuedScriptConnection: TermNodeToEnqueuedScriptConnection;
   TermNodeToEnqueuedScriptConnectionEdge: TermNodeToEnqueuedScriptConnectionEdge;
   TermNodeToEnqueuedStylesheetConnection: TermNodeToEnqueuedStylesheetConnection;
@@ -20772,7 +20759,6 @@ export type SchemaObjectTypesNames =
   | "EnqueuedStylesheet"
   | "GeneralSettings"
   | "GenerateAuthorizationCodePayload"
-  | "GenesisBlocksGlobalSettingsSettings"
   | "HierarchicalContentNodeToContentNodeAncestorsConnection"
   | "HierarchicalContentNodeToContentNodeAncestorsConnectionEdge"
   | "HierarchicalContentNodeToContentNodeChildrenConnection"
@@ -20914,7 +20900,10 @@ export type SchemaObjectTypesNames =
   | "Taxonomy"
   | "TaxonomyToContentTypeConnection"
   | "TaxonomyToContentTypeConnectionEdge"
-  | "Template_FullWidth"
+  | "Template_Blank"
+  | "Template_PageLargeHeader"
+  | "Template_PageNoSeparators"
+  | "Template_SinglePostNoSeparators"
   | "TermNodeToEnqueuedScriptConnection"
   | "TermNodeToEnqueuedScriptConnectionEdge"
   | "TermNodeToEnqueuedStylesheetConnection"
@@ -20998,7 +20987,10 @@ export interface $ContentRevisionUnion {
 
 export interface $ContentTemplate {
   DefaultTemplate?: DefaultTemplate;
-  Template_FullWidth?: Template_FullWidth;
+  Template_Blank?: Template_Blank;
+  Template_PageLargeHeader?: Template_PageLargeHeader;
+  Template_PageNoSeparators?: Template_PageNoSeparators;
+  Template_SinglePostNoSeparators?: Template_SinglePostNoSeparators;
 }
 
 export interface $DatabaseIdentifier {
@@ -21102,7 +21094,6 @@ export interface $NodeWithContentEditor {
 }
 
 export interface $NodeWithExcerpt {
-  Page?: Page;
   Post?: Post;
 }
 
