@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { FormatDate, LoadingSearchResult } from 'components';
 import { FaSearch } from 'react-icons/fa';
 
@@ -34,21 +35,17 @@ export default function SearchResults({ searchResults, isLoading }) {
         <div key={node?.databaseId ?? ''} className={styles.result}>
           <Link href={node?.uri}>
             <a>
+              
+              
               <h2 className={styles.title}>
-                {node?.$on?.[node?.__typename].title?.()}
+                {node?.name}
               </h2>
+              <h3 className={styles.subtitle}>
+                ${node?.price}
+              </h3>
+              {node?.imageUrl !== "" ? <img src={node?.imageUrl} width="200" />  : <img src='/ProductDefault.gif' width="200" />}
             </a>
           </Link>
-          <div className={styles.meta}>
-            <time className={styles.date} dateTime={node?.date}>
-              <FormatDate date={node?.date} />
-            </time>
-          </div>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: node?.$on?.[node?.__typename]?.excerpt?.(),
-            }}
-          ></div>
         </div>
       ))}
 

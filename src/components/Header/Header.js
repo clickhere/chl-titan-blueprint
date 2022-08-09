@@ -32,10 +32,10 @@ export default function Header({ className }) {
 
   // If the auth token already exists, redirect to the BC Account page
   useEffect(() => {
-    console.log("loaded");
+    //console.log("loaded");
     // Get token
     const authToken = cookieCutter.get('token');
-    console.log(authToken);
+    //console.log(authToken);
 
     if (typeof authToken !== 'undefined') {
       console.log("token exists");

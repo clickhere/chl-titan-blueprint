@@ -12,14 +12,15 @@ const recommendedPostsLimit = 5;
  */
 export default function SearchRecommendations() {
   const { useQuery } = client;
-  const recentPostNodes = useQuery().posts({
-    first: recommendedPostsLimit,
-  })?.nodes;
-  const categoryNodes = useQuery()?.categories()?.nodes;
+  // const recentPostNodes = useQuery().posts({
+  //   first: recommendedPostsLimit,
+  // })?.nodes;
+  //const categoryNodes = useQuery()?.categories()?.nodes;
+  const categoryNodes = useQuery()?.productCategories()?.nodes;
 
   return (
     <div className={styles.recommendations}>
-      <h4>Recent Posts</h4>
+      {/* <h4>Recent Posts</h4>
       <ul>
         {recentPostNodes?.map((node) => (
           <li key={node?.databaseId ?? 0}>
@@ -28,7 +29,7 @@ export default function SearchRecommendations() {
             </Link>
           </li>
         ))}
-      </ul>
+      </ul> */}
 
       <h4>Browse by Category</h4>
       <ul>

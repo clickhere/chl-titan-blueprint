@@ -41,7 +41,7 @@ export default function Page() {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
   const { data, fetchMore, isLoading } = useNodePagination(
-    (query, queryArgs) => query.posts(queryArgs),
+    (query, queryArgs) => query.products(queryArgs),
     POST_NODES_PREPASS_FIELDS
   );
 
