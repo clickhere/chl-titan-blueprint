@@ -43,7 +43,7 @@ export default function SearchResults({ searchResults, isLoading }) {
               <h3 className={styles.subtitle}>
                 ${node?.price}
               </h3>
-              {node?.imageUrl !== "" ? <img src={node?.imageUrl} width="200" />  : <img src='/ProductDefault.gif' width="200" />}
+              {node?.imageUrl !== "" ? <img src={node?.imageUrl} width="250" />  : <img src='/ProductDefault.gif' width="250" />}
             </a>
           </Link>
         </div>
