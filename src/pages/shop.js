@@ -4,6 +4,7 @@ import {
   ContentWrapper,
   Footer,
   Header,
+  Notification,
   EntryHeader,
   Main,
   SEO,
@@ -16,6 +17,7 @@ import Link from 'next/link';
 export function ShopComponent({ products }) {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
+  const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
 
   return (
     <>
@@ -28,7 +30,12 @@ export function ShopComponent({ products }) {
         imageUrl={false/*product?.featuredImage?.node?.sourceUrl?.()*/}
       />
 
-      <Header />
+      <Header 
+      storeSettings={storeSettings}
+      />
+      <Notification
+        storeSettings={storeSettings}
+      />
 
       <Main>
         <div className="container">
@@ -44,7 +51,7 @@ export function ShopComponent({ products }) {
                       : <><del>${product.price}</del> ${product.salePrice}</>
                     }
                     <br />
-                    <img src={product.images({ first: 1})?.nodes[0]?.urlStandard} />
+                    <img src={product.images({ first: 1})?.nodes?.[0]?.urlStandard} />
                   </a>
                 </Link>
               </div>
@@ -53,7 +60,9 @@ export function ShopComponent({ products }) {
         </div>
       </Main>
 
-      <Footer />
+      <Footer 
+      storeSettings={storeSettings}
+      />
     </>
   );
 }

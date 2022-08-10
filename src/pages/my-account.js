@@ -3,6 +3,7 @@ import { client } from 'client';
 import LoginForm from 'components/LoginForm/LoginForm';
 import {
   Header,
+  Notification,
   EntryHeader,
   ContentWrapper,
   Footer,
@@ -14,6 +15,7 @@ import { pageTitle } from 'utils';
 export default function Page() {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
+  const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
 
   return (
     <>
@@ -21,7 +23,12 @@ export default function Page() {
         title={pageTitle(generalSettings)}
       />
 
-      <Header />
+      <Header 
+      storeSettings={storeSettings}
+      />
+      <Notification
+        storeSettings={storeSettings}
+      />
       
       <Main>
         <div className="container">
@@ -29,7 +36,9 @@ export default function Page() {
         </div>
       </Main>
 
-      <Footer />
+      <Footer 
+      storeSettings={storeSettings}
+      />
     </>
   );
 }

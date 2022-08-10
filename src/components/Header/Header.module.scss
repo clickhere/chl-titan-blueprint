@@ -9,18 +9,28 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 2rem 0;
+  padding: 2rem 0 0 0;
   gap: 2rem;
+}
+.bar:nth-child(2) {
+    margin-bottom: 10px;
 }
 
 .logo {
-  width: 300px;
+  width: 400px;
   height: auto;
   line-height: 0;
   margin: 0 0.8rem;
-
 }
-
+.logo img {
+    width: 100px;
+    height: auto;
+    float: left;
+    margin-right: 15px;
+}
+.logo h3 {
+    margin: 6px 10px
+}
 .logo a {
   color: var(--color-secondary);
   text-decoration: none;

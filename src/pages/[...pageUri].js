@@ -2,6 +2,7 @@ import { getNextStaticProps, is404 } from '@faustjs/next';
 import { client } from 'client';
 import {
   Header,
+  Notification,
   EntryHeader,
   ContentWrapper,
   Footer,
@@ -28,7 +29,9 @@ export function PageComponent({ page }) {
       <Header
         storeSettings={storeSettings}
       />
-
+      <Notification
+        storeSettings={storeSettings}
+      />
       <Main>
         
         <div className="_container">

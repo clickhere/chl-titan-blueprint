@@ -4,6 +4,7 @@ import {
   ContentWrapper,
   Footer,
   Header,
+  Notification,
   EntryHeader,
   Main,
   SEO,
@@ -27,6 +28,7 @@ import ReactImageMagnify from 'react-image-magnify';
 export function ProductComponent({ product }) {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
+  const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
 
   return (
     <>
@@ -39,7 +41,13 @@ export function ProductComponent({ product }) {
         imageUrl={product?.featuredImage?.node?.sourceUrl?.()}
       />
 
-      <Header />
+      <Header
+        storeSettings={storeSettings}
+      />
+      <Notification
+        storeSettings={storeSettings}
+      />
+
 
       <Main>
         <div className={classNames(['container', styles.product])}>
@@ -86,7 +94,9 @@ export function ProductComponent({ product }) {
         </div>
       </Main>
 
-      <Footer />
+      <Footer 
+        storeSettings={storeSettings}
+      />
     </>
   );
 }
