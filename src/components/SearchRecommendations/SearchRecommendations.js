@@ -35,7 +35,7 @@ export default function SearchRecommendations() {
       <ul>
         {categoryNodes?.map((node) => (
           <li key={node?.databaseId ?? 0}>
-            <Link href={node?.uri ?? '#'}>
+            <Link href={'/productcategory/' + node?.slug ?? '#'}>
               <a>{node.name}</a>
             </Link>
           </li>
