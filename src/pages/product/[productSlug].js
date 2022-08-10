@@ -8,7 +8,9 @@ import {
   Main,
   SEO,
   TaxonomyTerms,
+  Button,
 } from 'components';
+import ProductFormField from 'components/ProductFormField/ProductFormField';
 
 import styles from 'styles/pages/_Product.module.scss';
 import 'slick-carousel/slick/slick.css';
@@ -27,6 +29,15 @@ import ReactImageMagnify from 'react-image-magnify';
 export function ProductComponent({ product }) {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
+  
+  const productCategories = product.productCategories().nodes;
+  const productBrand = product.brand.node;
+  
+  const productFormFields = JSON.parse(product.productFormFieldsJson ?? '[]');
+  const variantLookup = JSON.parse(product.variantLookupJson ?? '{}');
+  const modifierLookup = JSON.parse(product.modifierLookupJson ?? '{}');
+  
+  console.log({ productFormFields, variantLookup, modifierLookup });
 
   return (
     <>
@@ -72,14 +83,41 @@ export function ProductComponent({ product }) {
 
               <div className="product_meta">
                 <p>SKU: {product?.sku}</p>
-
-                <p>Categories: {' '}
-                {product.productCategories().nodes.map((category, index) => (
-                  <>{index === 0 ? '' : ', '}<a href="#">{category.name}</a></>
+                
+                {
+                  productCategories?.length
+                  ? <p>
+                      Categories: {' '}
+                      {product.productCategories().nodes.map((category, index) => (
+                        <>{index === 0 ? '' : ', '}<a href="#">{category.name}</a></>
+                      ))}
+                    </p>
+                  : null
+                }
+                
+                {
+                  productBrand
+                  ? <p>Brand: {productBrand.name}</p>
+                  : null
+                }
+                
+                {productFormFields.map((field) => (
+                  <ProductFormField field={field} />
                 ))}
-                </p>
-
-                <p>Brand: {product.brand.node.name}</p>
+                
+                {/*<pre>{JSON.stringify(productFormFields, null, 2)}</pre>*/}
+                
+                <div>
+                  <label style={{ display: 'block' }}>Quantity:</label>
+                  <input type="number" min="1" step="1" defaultValue="1" style={{
+                    width: '5em',
+                    padding: '.25em',
+                    borderRadius: '4px',
+                    borderWidth: '1px',
+                  }} />
+                </div>
+                
+                <Button styleType="secondary">Add to cart</Button>
               </div>
             </div>
           </div>
