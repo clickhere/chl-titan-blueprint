@@ -91,6 +91,7 @@ export default function useSearch() {
               '__typename',
               'name',
               'description',
+              'slug',
               '$on'
             ),
             pageInfo: getFields(metadata?.pageInfo),

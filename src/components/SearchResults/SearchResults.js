@@ -33,7 +33,7 @@ export default function SearchResults({ searchResults, isLoading }) {
     <>
       {searchResults?.map((node) => (
         <div key={node?.databaseId ?? ''} className={styles.result}>
-          <Link href={node?.uri}>
+    <Link href={'/product/' + node?.slug}>
             <a>
               
               
