@@ -4,6 +4,7 @@ import {
   ContentWrapper,
   Footer,
   Header,
+  Notification,
   EntryHeader,
   Main,
   SEO,
@@ -29,9 +30,10 @@ import ReactImageMagnify from 'react-image-magnify';
 export function ProductComponent({ product }) {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
+  const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
   
   const productCategories = product.productCategories().nodes;
-  const productBrand = product.brand.node;
+  const productBrand = product.brand?.node;
   
   const productFormFields = JSON.parse(product.productFormFieldsJson ?? '[]');
   const variantLookup = JSON.parse(product.variantLookupJson ?? '{}');
@@ -50,7 +52,13 @@ export function ProductComponent({ product }) {
         imageUrl={product?.featuredImage?.node?.sourceUrl?.()}
       />
 
-      <Header />
+      <Header
+        storeSettings={storeSettings}
+      />
+      <Notification
+        storeSettings={storeSettings}
+      />
+
 
       <Main>
         <div className={classNames(['container', styles.product])}>
@@ -124,7 +132,9 @@ export function ProductComponent({ product }) {
         </div>
       </Main>
 
-      <Footer />
+      <Footer 
+        storeSettings={storeSettings}
+      />
     </>
   );
 }
@@ -139,10 +149,10 @@ function ProductGallery({ images }) {
           smallImage: {
             alt: 'Wristwatch by Ted Baker London',
             isFluidWidth: true,
-            src: images[productIndex].urlStandard
+            src: images[productIndex]?.urlStandard
           },
           largeImage: {
-            src: images[productIndex].urlZoom,
+            src: images[productIndex]?.urlZoom,
             width: 960,
             height: 1080
           }

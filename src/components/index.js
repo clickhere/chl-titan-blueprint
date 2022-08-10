@@ -11,6 +11,7 @@ import LoadingSearchResult from './LoadingSearchResult';
 import LoadMore from './LoadMore';
 import Main from './Main';
 import NavigationMenu from './NavigationMenu/NavigationMenu';
+import Notification from './Notification';
 import PostInfo from './PostInfo/PostInfo';
 import Posts from './Posts';
 import SearchInput from './SearchInput';
@@ -34,6 +35,7 @@ export {
   LoadMore,
   Main,
   NavigationMenu,
+  Notification,
   PostInfo,
   Posts,
   SearchInput,
