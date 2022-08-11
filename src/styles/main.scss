@@ -9,3 +9,10 @@
 @import 'Grid';
 @import 'Utility';
 @import 'Gutenberg';
+
+.notificationBanner a {
+    text-decoration: none;
+    border-bottom: 1px solid;
+    padding-bottom: 1px;
+    color: inherit;
+}

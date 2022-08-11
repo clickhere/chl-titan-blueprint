@@ -36,6 +36,17 @@ export type AvatarRatingEnum =
   | "X";
 
 /** The Type of Identifier used to fetch a single resource. Default is ID. */
+export type BannerIdType =
+  /** Identify a resource by the Database ID. */
+  | "DATABASE_ID"
+  /** Identify a resource by the (hashed) Global ID. */
+  | "ID"
+  /** Identify a resource by the slug. Available to non-hierarchcial Types where the slug is a unique identifier. */
+  | "SLUG"
+  /** Identify a resource by the URI. */
+  | "URI";
+
+/** The Type of Identifier used to fetch a single resource. Default is ID. */
 export type BrandIdType =
   /** Identify a resource by the Database ID. */
   | "DATABASE_ID"
@@ -382,6 +393,8 @@ export type ContentTypeEnum =
   /** The Type of Content object */
   | "ATTACHMENT"
   /** The Type of Content object */
+  | "BANNER"
+  /** The Type of Content object */
   | "BRAND"
   /** The Type of Content object */
   | "IMAGE"
@@ -461,6 +474,30 @@ export type ContentTypesOfPostFormatEnum =
 export type ContentTypesOfTagEnum =
   /** The Type of Content object */
   "POST";
+
+/** Input for the createBanner mutation */
+export interface CreateBannerInput {
+  /** The userId to assign as the author of the object */
+  authorId?: InputMaybe<Scalars["ID"]>;
+  backgroundColor?: InputMaybe<Scalars["String"]>;
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars["String"]>;
+  content?: InputMaybe<Scalars["String"]>;
+  /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
+  date?: InputMaybe<Scalars["String"]>;
+  fontColor?: InputMaybe<Scalars["String"]>;
+  /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
+  menuOrder?: InputMaybe<Scalars["Int"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  /** The password used to protect the content of the object */
+  password?: InputMaybe<Scalars["String"]>;
+  /** The slug of the object */
+  slug?: InputMaybe<Scalars["String"]>;
+  /** The status of the object */
+  status?: InputMaybe<PostStatusEnum>;
+  /** The title of the object */
+  title?: InputMaybe<Scalars["String"]>;
+}
 
 /** Input for the createBrand mutation */
 export interface CreateBrandInput {
@@ -938,6 +975,16 @@ export interface DateQueryInput {
   week?: InputMaybe<Scalars["Int"]>;
   /** 4 digit year (e.g. 2017) */
   year?: InputMaybe<Scalars["Int"]>;
+}
+
+/** Input for the deleteBanner mutation */
+export interface DeleteBannerInput {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars["String"]>;
+  /** Whether the object should be force deleted instead of being moved to the trash */
+  forceDelete?: InputMaybe<Scalars["Boolean"]>;
+  /** The ID of the banner to delete */
+  id: Scalars["ID"];
 }
 
 /** Input for the deleteBrand mutation */
@@ -2327,6 +2374,52 @@ export interface RestoreCommentInput {
   id: Scalars["ID"];
 }
 
+/** Arguments for filtering the RootQueryToBannerConnection connection */
+export interface RootQueryToBannerConnectionWhereArgs {
+  /** The user that's connected as the author of the object. Use the userId for the author object. */
+  author?: InputMaybe<Scalars["Int"]>;
+  /** Find objects connected to author(s) in the array of author's userIds */
+  authorIn?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Find objects connected to the author by the author's nicename */
+  authorName?: InputMaybe<Scalars["String"]>;
+  /** Find objects NOT connected to author(s) in the array of author's userIds */
+  authorNotIn?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars["Boolean"]>;
+  /** Specific ID of the object */
+  id?: InputMaybe<Scalars["Int"]>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars["String"]>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars["ID"]>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars["String"]>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars["String"]>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars["String"]>;
+}
+
 /** Arguments for filtering the RootQueryToBrandConnection connection */
 export interface RootQueryToBrandConnectionWhereArgs {
   /** The user that's connected as the author of the object. Use the userId for the author object. */
@@ -3379,6 +3472,32 @@ export type TermObjectsConnectionOrderbyEnum =
   /** Order the connection by term order. */
   | "TERM_ORDER";
 
+/** Input for the updateBanner mutation */
+export interface UpdateBannerInput {
+  /** The userId to assign as the author of the object */
+  authorId?: InputMaybe<Scalars["ID"]>;
+  backgroundColor?: InputMaybe<Scalars["String"]>;
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars["String"]>;
+  content?: InputMaybe<Scalars["String"]>;
+  /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
+  date?: InputMaybe<Scalars["String"]>;
+  fontColor?: InputMaybe<Scalars["String"]>;
+  /** The ID of the banner object */
+  id: Scalars["ID"];
+  /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
+  menuOrder?: InputMaybe<Scalars["Int"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  /** The password used to protect the content of the object */
+  password?: InputMaybe<Scalars["String"]>;
+  /** The slug of the object */
+  slug?: InputMaybe<Scalars["String"]>;
+  /** The status of the object */
+  status?: InputMaybe<PostStatusEnum>;
+  /** The title of the object */
+  title?: InputMaybe<Scalars["String"]>;
+}
+
 /** Input for the updateBrand mutation */
 export interface UpdateBrandInput {
   /** The userId to assign as the author of the object */
@@ -3912,6 +4031,52 @@ export type UserRoleEnum =
   | "EDITOR"
   /** User role with specific capabilities */
   | "SUBSCRIBER";
+
+/** Arguments for filtering the UserToBannerConnection connection */
+export interface UserToBannerConnectionWhereArgs {
+  /** The user that's connected as the author of the object. Use the userId for the author object. */
+  author?: InputMaybe<Scalars["Int"]>;
+  /** Find objects connected to author(s) in the array of author's userIds */
+  authorIn?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Find objects connected to the author by the author's nicename */
+  authorName?: InputMaybe<Scalars["String"]>;
+  /** Find objects NOT connected to author(s) in the array of author's userIds */
+  authorNotIn?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars["Boolean"]>;
+  /** Specific ID of the object */
+  id?: InputMaybe<Scalars["Int"]>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars["String"]>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars["ID"]>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars["String"]>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars["String"]>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars["String"]>;
+}
 
 /** Arguments for filtering the UserToBrandConnection connection */
 export interface UserToBrandConnectionWhereArgs {
@@ -4566,6 +4731,60 @@ export declare const generatedSchema: {
     url: { __type: "String" };
     width: { __type: "Int" };
   };
+  Banner: {
+    __typename: { __type: "String!" };
+    author: { __type: "NodeWithAuthorToUserConnectionEdge" };
+    authorDatabaseId: { __type: "Int" };
+    authorId: { __type: "ID" };
+    backgroundColor: { __type: "String" };
+    bannerId: { __type: "Int!" };
+    conditionalTags: { __type: "ConditionalTags" };
+    content: { __type: "String" };
+    contentType: { __type: "ContentNodeToContentTypeConnectionEdge" };
+    contentTypeName: { __type: "String!" };
+    databaseId: { __type: "Int!" };
+    date: { __type: "String" };
+    dateGmt: { __type: "String" };
+    desiredSlug: { __type: "String" };
+    editingLockedBy: { __type: "ContentNodeToEditLockConnectionEdge" };
+    enclosure: { __type: "String" };
+    enqueuedScripts: {
+      __type: "ContentNodeToEnqueuedScriptConnection";
+      __args: { after: "String"; before: "String"; first: "Int"; last: "Int" };
+    };
+    enqueuedStylesheets: {
+      __type: "ContentNodeToEnqueuedStylesheetConnection";
+      __args: { after: "String"; before: "String"; first: "Int"; last: "Int" };
+    };
+    fontColor: { __type: "String" };
+    guid: { __type: "String" };
+    id: { __type: "ID!" };
+    isContentNode: { __type: "Boolean!" };
+    isPreview: { __type: "Boolean" };
+    isRestricted: { __type: "Boolean" };
+    isTermNode: { __type: "Boolean!" };
+    lastEditedBy: { __type: "ContentNodeToEditLastConnectionEdge" };
+    link: { __type: "String" };
+    modified: { __type: "String" };
+    modifiedGmt: { __type: "String" };
+    name: { __type: "String" };
+    preview: { __type: "BannerToPreviewConnectionEdge" };
+    previewRevisionDatabaseId: { __type: "Int" };
+    previewRevisionId: { __type: "ID" };
+    slug: { __type: "String" };
+    status: { __type: "String" };
+    template: { __type: "ContentTemplate" };
+    templates: { __type: "[String]" };
+    title: {
+      __type: "String";
+      __args: { format: "PostObjectFieldFormatEnum" };
+    };
+    uri: { __type: "String" };
+  };
+  BannerToPreviewConnectionEdge: {
+    __typename: { __type: "String!" };
+    node: { __type: "Banner" };
+  };
   Brand: {
     __typename: { __type: "String!" };
     author: { __type: "NodeWithAuthorToUserConnectionEdge" };
@@ -5163,6 +5382,25 @@ export declare const generatedSchema: {
     cursor: { __type: "String" };
     node: { __type: "Taxonomy" };
   };
+  CreateBannerInput: {
+    authorId: { __type: "ID" };
+    backgroundColor: { __type: "String" };
+    clientMutationId: { __type: "String" };
+    content: { __type: "String" };
+    date: { __type: "String" };
+    fontColor: { __type: "String" };
+    menuOrder: { __type: "Int" };
+    name: { __type: "String" };
+    password: { __type: "String" };
+    slug: { __type: "String" };
+    status: { __type: "PostStatusEnum" };
+    title: { __type: "String" };
+  };
+  CreateBannerPayload: {
+    __typename: { __type: "String!" };
+    banner: { __type: "Banner" };
+    clientMutationId: { __type: "String" };
+  };
   CreateBrandInput: {
     authorId: { __type: "ID" };
     brandID: { __type: "Float!" };
@@ -5526,6 +5764,17 @@ export declare const generatedSchema: {
   DefaultTemplate: {
     __typename: { __type: "String!" };
     templateName: { __type: "String" };
+  };
+  DeleteBannerInput: {
+    clientMutationId: { __type: "String" };
+    forceDelete: { __type: "Boolean" };
+    id: { __type: "ID!" };
+  };
+  DeleteBannerPayload: {
+    __typename: { __type: "String!" };
+    banner: { __type: "Banner" };
+    clientMutationId: { __type: "String" };
+    deletedId: { __type: "ID" };
   };
   DeleteBrandInput: {
     clientMutationId: { __type: "String" };
@@ -7360,6 +7609,40 @@ export declare const generatedSchema: {
     comment: { __type: "Comment" };
     restoredId: { __type: "ID" };
   };
+  RootQueryToBannerConnection: {
+    __typename: { __type: "String!" };
+    edges: { __type: "[RootQueryToBannerConnectionEdge]" };
+    nodes: { __type: "[Banner]" };
+    pageInfo: { __type: "WPPageInfo" };
+  };
+  RootQueryToBannerConnectionEdge: {
+    __typename: { __type: "String!" };
+    cursor: { __type: "String" };
+    node: { __type: "Banner" };
+  };
+  RootQueryToBannerConnectionWhereArgs: {
+    author: { __type: "Int" };
+    authorIn: { __type: "[ID]" };
+    authorName: { __type: "String" };
+    authorNotIn: { __type: "[ID]" };
+    dateQuery: { __type: "DateQueryInput" };
+    hasPassword: { __type: "Boolean" };
+    id: { __type: "Int" };
+    in: { __type: "[ID]" };
+    mimeType: { __type: "MimeTypeEnum" };
+    name: { __type: "String" };
+    nameIn: { __type: "[String]" };
+    notIn: { __type: "[ID]" };
+    orderby: { __type: "[PostObjectsConnectionOrderbyInput]" };
+    parent: { __type: "ID" };
+    parentIn: { __type: "[ID]" };
+    parentNotIn: { __type: "[ID]" };
+    password: { __type: "String" };
+    search: { __type: "String" };
+    stati: { __type: "[PostStatusEnum]" };
+    status: { __type: "PostStatusEnum" };
+    title: { __type: "String" };
+  };
   RootQueryToBrandConnection: {
     __typename: { __type: "String!" };
     edges: { __type: "[RootQueryToBrandConnectionEdge]" };
@@ -8435,6 +8718,26 @@ export declare const generatedSchema: {
     uri: { __type: "String" };
     $on: { __type: "$UniformResourceIdentifiable!" };
   };
+  UpdateBannerInput: {
+    authorId: { __type: "ID" };
+    backgroundColor: { __type: "String" };
+    clientMutationId: { __type: "String" };
+    content: { __type: "String" };
+    date: { __type: "String" };
+    fontColor: { __type: "String" };
+    id: { __type: "ID!" };
+    menuOrder: { __type: "Int" };
+    name: { __type: "String" };
+    password: { __type: "String" };
+    slug: { __type: "String" };
+    status: { __type: "PostStatusEnum" };
+    title: { __type: "String" };
+  };
+  UpdateBannerPayload: {
+    __typename: { __type: "String!" };
+    banner: { __type: "Banner" };
+    clientMutationId: { __type: "String" };
+  };
   UpdateBrandInput: {
     authorId: { __type: "ID" };
     brandID: { __type: "Float" };
@@ -8827,6 +9130,16 @@ export declare const generatedSchema: {
         size: "Int";
       };
     };
+    banners: {
+      __type: "UserToBannerConnection";
+      __args: {
+        after: "String";
+        before: "String";
+        first: "Int";
+        last: "Int";
+        where: "UserToBannerConnectionWhereArgs";
+      };
+    };
     brands: {
       __type: "UserToBrandConnection";
       __args: {
@@ -8991,6 +9304,40 @@ export declare const generatedSchema: {
     id: { __type: "ID!" };
     isRestricted: { __type: "Boolean" };
     name: { __type: "String" };
+  };
+  UserToBannerConnection: {
+    __typename: { __type: "String!" };
+    edges: { __type: "[UserToBannerConnectionEdge]" };
+    nodes: { __type: "[Banner]" };
+    pageInfo: { __type: "WPPageInfo" };
+  };
+  UserToBannerConnectionEdge: {
+    __typename: { __type: "String!" };
+    cursor: { __type: "String" };
+    node: { __type: "Banner" };
+  };
+  UserToBannerConnectionWhereArgs: {
+    author: { __type: "Int" };
+    authorIn: { __type: "[ID]" };
+    authorName: { __type: "String" };
+    authorNotIn: { __type: "[ID]" };
+    dateQuery: { __type: "DateQueryInput" };
+    hasPassword: { __type: "Boolean" };
+    id: { __type: "Int" };
+    in: { __type: "[ID]" };
+    mimeType: { __type: "MimeTypeEnum" };
+    name: { __type: "String" };
+    nameIn: { __type: "[String]" };
+    notIn: { __type: "[ID]" };
+    orderby: { __type: "[PostObjectsConnectionOrderbyInput]" };
+    parent: { __type: "ID" };
+    parentIn: { __type: "[ID]" };
+    parentNotIn: { __type: "[ID]" };
+    password: { __type: "String" };
+    search: { __type: "String" };
+    stati: { __type: "[PostStatusEnum]" };
+    status: { __type: "PostStatusEnum" };
+    title: { __type: "String" };
   };
   UserToBrandConnection: {
     __typename: { __type: "String!" };
@@ -9525,6 +9872,10 @@ export declare const generatedSchema: {
   };
   mutation: {
     __typename: { __type: "String!" };
+    createBanner: {
+      __type: "CreateBannerPayload";
+      __args: { input: "CreateBannerInput!" };
+    };
     createBrand: {
       __type: "CreateBrandPayload";
       __args: { input: "CreateBrandInput!" };
@@ -9584,6 +9935,10 @@ export declare const generatedSchema: {
     createVariant: {
       __type: "CreateVariantPayload";
       __args: { input: "CreateVariantInput!" };
+    };
+    deleteBanner: {
+      __type: "DeleteBannerPayload";
+      __args: { input: "DeleteBannerInput!" };
     };
     deleteBrand: {
       __type: "DeleteBrandPayload";
@@ -9666,6 +10021,10 @@ export declare const generatedSchema: {
       __type: "SendPasswordResetEmailPayload";
       __args: { input: "SendPasswordResetEmailInput!" };
     };
+    updateBanner: {
+      __type: "UpdateBannerPayload";
+      __args: { input: "UpdateBannerInput!" };
+    };
     updateBrand: {
       __type: "UpdateBrandPayload";
       __args: { input: "UpdateBrandInput!" };
@@ -9736,6 +10095,24 @@ export declare const generatedSchema: {
     allSettings: { __type: "Settings" };
     atlasContentModelerSettingsSettings: {
       __type: "AtlasContentModelerSettingsSettings";
+    };
+    banner: {
+      __type: "Banner";
+      __args: { asPreview: "Boolean"; id: "ID!"; idType: "BannerIdType" };
+    };
+    bannerBy: {
+      __type: "Banner";
+      __args: { bannerId: "Int"; id: "ID"; slug: "String"; uri: "String" };
+    };
+    banners: {
+      __type: "RootQueryToBannerConnection";
+      __args: {
+        after: "String";
+        before: "String";
+        first: "Int";
+        last: "Int";
+        where: "RootQueryToBannerConnectionWhereArgs";
+      };
     };
     brand: {
       __type: "Brand";
@@ -10129,6 +10506,7 @@ export declare const generatedSchema: {
   subscription: {};
   [SchemaUnionsKey]: {
     ContentNode: [
+      "Banner",
       "Brand",
       "Image",
       "MediaItem",
@@ -10141,6 +10519,7 @@ export declare const generatedSchema: {
       "Variant"
     ];
     DatabaseIdentifier: [
+      "Banner",
       "Brand",
       "Category",
       "Comment",
@@ -10160,6 +10539,7 @@ export declare const generatedSchema: {
       "Variant"
     ];
     Node: [
+      "Banner",
       "Brand",
       "Category",
       "Comment",
@@ -10187,6 +10567,7 @@ export declare const generatedSchema: {
       "Variant"
     ];
     NodeWithAuthor: [
+      "Banner",
       "Brand",
       "Image",
       "MediaItem",
@@ -10199,6 +10580,7 @@ export declare const generatedSchema: {
       "Variant"
     ];
     NodeWithTemplate: [
+      "Banner",
       "Brand",
       "Image",
       "MediaItem",
@@ -10211,6 +10593,7 @@ export declare const generatedSchema: {
       "Variant"
     ];
     NodeWithTitle: [
+      "Banner",
       "Brand",
       "Image",
       "MediaItem",
@@ -10223,6 +10606,7 @@ export declare const generatedSchema: {
       "Variant"
     ];
     UniformResourceIdentifiable: [
+      "Banner",
       "Brand",
       "Category",
       "ContentType",
@@ -10324,6 +10708,201 @@ export interface Avatar {
    * Width of the avatar image.
    */
   width?: Maybe<ScalarsEnums["Int"]>;
+}
+
+/**
+ * The banner type
+ */
+export interface Banner {
+  __typename?: "Banner";
+  /**
+   * Connection between the NodeWithAuthor type and the User type
+   */
+  author?: Maybe<NodeWithAuthorToUserConnectionEdge>;
+  /**
+   * The database identifier of the author of the node
+   */
+  authorDatabaseId?: Maybe<ScalarsEnums["Int"]>;
+  /**
+   * The globally unique identifier of the author of the node
+   */
+  authorId?: Maybe<ScalarsEnums["ID"]>;
+  backgroundColor?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The id field matches the WP_Post-&gt;ID field.
+   * @deprecated Deprecated in favor of the databaseId field
+   */
+  bannerId: ScalarsEnums["Int"];
+  /**
+   * @deprecated Deprecated in favor of using Next.js pages
+   */
+  conditionalTags?: Maybe<ConditionalTags>;
+  content?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * Connection between the ContentNode type and the ContentType type
+   */
+  contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
+  /**
+   * The name of the Content Type the node belongs to
+   */
+  contentTypeName: ScalarsEnums["String"];
+  /**
+   * The unique identifier stored in the database
+   */
+  databaseId: ScalarsEnums["Int"];
+  /**
+   * Post publishing date.
+   */
+  date?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The publishing date set in GMT.
+   */
+  dateGmt?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The desired slug of the post
+   */
+  desiredSlug?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds
+   */
+  editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
+  /**
+   * The RSS enclosure for the object
+   */
+  enclosure?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * Connection between the ContentNode type and the EnqueuedScript type
+   */
+  enqueuedScripts: (args?: {
+    /**
+     * Cursor used along with the "first" argument to reference where in the dataset to get data
+     */
+    after?: Maybe<Scalars["String"]>;
+    /**
+     * Cursor used along with the "last" argument to reference where in the dataset to get data
+     */
+    before?: Maybe<Scalars["String"]>;
+    /**
+     * The number of items to return after the referenced "after" cursor
+     */
+    first?: Maybe<Scalars["Int"]>;
+    /**
+     * The number of items to return before the referenced "before" cursor
+     */
+    last?: Maybe<Scalars["Int"]>;
+  }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
+  /**
+   * Connection between the ContentNode type and the EnqueuedStylesheet type
+   */
+  enqueuedStylesheets: (args?: {
+    /**
+     * Cursor used along with the "first" argument to reference where in the dataset to get data
+     */
+    after?: Maybe<Scalars["String"]>;
+    /**
+     * Cursor used along with the "last" argument to reference where in the dataset to get data
+     */
+    before?: Maybe<Scalars["String"]>;
+    /**
+     * The number of items to return after the referenced "after" cursor
+     */
+    first?: Maybe<Scalars["Int"]>;
+    /**
+     * The number of items to return before the referenced "before" cursor
+     */
+    last?: Maybe<Scalars["Int"]>;
+  }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
+  fontColor?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table.
+   */
+  guid?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The globally unique identifier of the banner object.
+   */
+  id: ScalarsEnums["ID"];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums["Boolean"];
+  /**
+   * Whether the object is a node in the preview state
+   */
+  isPreview?: Maybe<ScalarsEnums["Boolean"]>;
+  /**
+   * Whether the object is restricted from the current viewer
+   */
+  isRestricted?: Maybe<ScalarsEnums["Boolean"]>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums["Boolean"];
+  /**
+   * The user that most recently edited the node
+   */
+  lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
+  /**
+   * The permalink of the post
+   */
+  link?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time.
+   */
+  modified?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT.
+   */
+  modifiedGmt?: Maybe<ScalarsEnums["String"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * Connection between the banner type and the banner type
+   */
+  preview?: Maybe<BannerToPreviewConnectionEdge>;
+  /**
+   * The database id of the preview node
+   */
+  previewRevisionDatabaseId?: Maybe<ScalarsEnums["Int"]>;
+  /**
+   * Whether the object is a node in the preview state
+   */
+  previewRevisionId?: Maybe<ScalarsEnums["ID"]>;
+  /**
+   * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
+   */
+  slug?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The current status of the object
+   */
+  status?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The template assigned to the node
+   */
+  template?: Maybe<ContentTemplate>;
+  templates?: Maybe<Array<Maybe<ScalarsEnums["String"]>>>;
+  /**
+   * The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made.
+   */
+  title: (args?: {
+    /**
+     * Format of the field output
+     */
+    format?: Maybe<PostObjectFieldFormatEnum>;
+  }) => Maybe<ScalarsEnums["String"]>;
+  /**
+   * The unique resource identifier path
+   */
+  uri?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * Connection between the banner type and the banner type
+ */
+export interface BannerToPreviewConnectionEdge {
+  __typename?: "BannerToPreviewConnectionEdge";
+  /**
+   * The node of the connection, without the edges
+   */
+  node?: Maybe<Banner>;
 }
 
 /**
@@ -11294,6 +11873,7 @@ export interface ConditionalTags {
  */
 export interface ContentNode {
   __typename?:
+    | "Banner"
     | "Brand"
     | "Image"
     | "MediaItem"
@@ -11827,6 +12407,21 @@ export interface ContentTypeToTaxonomyConnectionEdge {
 }
 
 /**
+ * The payload for the createBanner mutation
+ */
+export interface CreateBannerPayload {
+  __typename?: "CreateBannerPayload";
+  /**
+   * The Post object mutation type.
+   */
+  banner?: Maybe<Banner>;
+  /**
+   * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+   */
+  clientMutationId?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
  * The payload for the createBrand mutation
  */
 export interface CreateBrandPayload {
@@ -12060,6 +12655,7 @@ export interface CreateVariantPayload {
  */
 export interface DatabaseIdentifier {
   __typename?:
+    | "Banner"
     | "Brand"
     | "Category"
     | "Comment"
@@ -12093,6 +12689,25 @@ export interface DefaultTemplate {
    * The name of the template
    */
   templateName?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * The payload for the deleteBanner mutation
+ */
+export interface DeleteBannerPayload {
+  __typename?: "DeleteBannerPayload";
+  /**
+   * The object before it was deleted
+   */
+  banner?: Maybe<Banner>;
+  /**
+   * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+   */
+  clientMutationId?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The ID of the deleted object
+   */
+  deletedId?: Maybe<ScalarsEnums["ID"]>;
 }
 
 /**
@@ -13936,6 +14551,7 @@ export interface ModifierToPreviewConnectionEdge {
  */
 export interface Node {
   __typename?:
+    | "Banner"
     | "Brand"
     | "Category"
     | "Comment"
@@ -13973,6 +14589,7 @@ export interface Node {
  */
 export interface NodeWithAuthor {
   __typename?:
+    | "Banner"
     | "Brand"
     | "Image"
     | "MediaItem"
@@ -14277,6 +14894,7 @@ export interface NodeWithRevisionsToContentNodeConnectionEdge {
  */
 export interface NodeWithTemplate {
   __typename?:
+    | "Banner"
     | "Brand"
     | "Image"
     | "MediaItem"
@@ -14299,6 +14917,7 @@ export interface NodeWithTemplate {
  */
 export interface NodeWithTitle {
   __typename?:
+    | "Banner"
     | "Brand"
     | "Image"
     | "MediaItem"
@@ -16499,6 +17118,40 @@ export interface RestoreCommentPayload {
 }
 
 /**
+ * Connection between the RootQuery type and the banner type
+ */
+export interface RootQueryToBannerConnection {
+  __typename?: "RootQueryToBannerConnection";
+  /**
+   * Edges for the RootQueryToBannerConnection connection
+   */
+  edges?: Maybe<Array<Maybe<RootQueryToBannerConnectionEdge>>>;
+  /**
+   * The nodes of the connection, without the edges
+   */
+  nodes?: Maybe<Array<Maybe<Banner>>>;
+  /**
+   * Information about pagination in a connection.
+   */
+  pageInfo?: Maybe<WPPageInfo>;
+}
+
+/**
+ * An edge in a connection
+ */
+export interface RootQueryToBannerConnectionEdge {
+  __typename?: "RootQueryToBannerConnectionEdge";
+  /**
+   * A cursor for use in pagination
+   */
+  cursor?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The item at the end of the edge
+   */
+  node?: Maybe<Banner>;
+}
+
+/**
  * Connection between the RootQuery type and the brand type
  */
 export interface RootQueryToBrandConnection {
@@ -18370,6 +19023,7 @@ export interface Theme {
  */
 export interface UniformResourceIdentifiable {
   __typename?:
+    | "Banner"
     | "Brand"
     | "Category"
     | "ContentType"
@@ -18407,6 +19061,21 @@ export interface UniformResourceIdentifiable {
    */
   uri?: Maybe<ScalarsEnums["String"]>;
   $on: $UniformResourceIdentifiable;
+}
+
+/**
+ * The payload for the updateBanner mutation
+ */
+export interface UpdateBannerPayload {
+  __typename?: "UpdateBannerPayload";
+  /**
+   * The Post object mutation type.
+   */
+  banner?: Maybe<Banner>;
+  /**
+   * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
+   */
+  clientMutationId?: Maybe<ScalarsEnums["String"]>;
 }
 
 /**
@@ -18696,6 +19365,31 @@ export interface User {
      */
     size?: Maybe<Scalars["Int"]>;
   }) => Maybe<Avatar>;
+  /**
+   * Connection between the User type and the banner type
+   */
+  banners: (args?: {
+    /**
+     * Cursor used along with the "first" argument to reference where in the dataset to get data
+     */
+    after?: Maybe<Scalars["String"]>;
+    /**
+     * Cursor used along with the "last" argument to reference where in the dataset to get data
+     */
+    before?: Maybe<Scalars["String"]>;
+    /**
+     * The number of items to return after the referenced "after" cursor
+     */
+    first?: Maybe<Scalars["Int"]>;
+    /**
+     * The number of items to return before the referenced "before" cursor
+     */
+    last?: Maybe<Scalars["Int"]>;
+    /**
+     * Arguments for filtering the connection
+     */
+    where?: Maybe<UserToBannerConnectionWhereArgs>;
+  }) => Maybe<UserToBannerConnection>;
   /**
    * Connection between the User type and the brand type
    */
@@ -19180,6 +19874,40 @@ export interface UserRole {
    * The registered name of the role
    */
   name?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * Connection between the User type and the banner type
+ */
+export interface UserToBannerConnection {
+  __typename?: "UserToBannerConnection";
+  /**
+   * Edges for the UserToBannerConnection connection
+   */
+  edges?: Maybe<Array<Maybe<UserToBannerConnectionEdge>>>;
+  /**
+   * The nodes of the connection, without the edges
+   */
+  nodes?: Maybe<Array<Maybe<Banner>>>;
+  /**
+   * Information about pagination in a connection.
+   */
+  pageInfo?: Maybe<WPPageInfo>;
+}
+
+/**
+ * An edge in a connection
+ */
+export interface UserToBannerConnectionEdge {
+  __typename?: "UserToBannerConnectionEdge";
+  /**
+   * A cursor for use in pagination
+   */
+  cursor?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The item at the end of the edge
+   */
+  node?: Maybe<Banner>;
 }
 
 /**
@@ -19935,6 +20663,9 @@ export interface WritingSettings {
 
 export interface Mutation {
   __typename?: "Mutation";
+  createBanner: (args: {
+    input: CreateBannerInput;
+  }) => Maybe<CreateBannerPayload>;
   createBrand: (args: { input: CreateBrandInput }) => Maybe<CreateBrandPayload>;
   createCategory: (args: {
     input: CreateCategoryInput;
@@ -19968,6 +20699,9 @@ export interface Mutation {
   createVariant: (args: {
     input: CreateVariantInput;
   }) => Maybe<CreateVariantPayload>;
+  deleteBanner: (args: {
+    input: DeleteBannerInput;
+  }) => Maybe<DeleteBannerPayload>;
   deleteBrand: (args: { input: DeleteBrandInput }) => Maybe<DeleteBrandPayload>;
   deleteCategory: (args: {
     input: DeleteCategoryInput;
@@ -20019,6 +20753,9 @@ export interface Mutation {
   sendPasswordResetEmail: (args: {
     input: SendPasswordResetEmailInput;
   }) => Maybe<SendPasswordResetEmailPayload>;
+  updateBanner: (args: {
+    input: UpdateBannerInput;
+  }) => Maybe<UpdateBannerPayload>;
   updateBrand: (args: { input: UpdateBrandInput }) => Maybe<UpdateBrandPayload>;
   updateCategory: (args: {
     input: UpdateCategoryInput;
@@ -20061,6 +20798,24 @@ export interface Query {
   __typename?: "Query";
   allSettings?: Maybe<Settings>;
   atlasContentModelerSettingsSettings?: Maybe<AtlasContentModelerSettingsSettings>;
+  banner: (args: {
+    asPreview?: Maybe<Scalars["Boolean"]>;
+    id: Scalars["ID"];
+    idType?: Maybe<BannerIdType>;
+  }) => Maybe<Banner>;
+  bannerBy: (args?: {
+    bannerId?: Maybe<Scalars["Int"]>;
+    id?: Maybe<Scalars["ID"]>;
+    slug?: Maybe<Scalars["String"]>;
+    uri?: Maybe<Scalars["String"]>;
+  }) => Maybe<Banner>;
+  banners: (args?: {
+    after?: Maybe<Scalars["String"]>;
+    before?: Maybe<Scalars["String"]>;
+    first?: Maybe<Scalars["Int"]>;
+    last?: Maybe<Scalars["Int"]>;
+    where?: Maybe<RootQueryToBannerConnectionWhereArgs>;
+  }) => Maybe<RootQueryToBannerConnection>;
   brand: (args: {
     asPreview?: Maybe<Scalars["Boolean"]>;
     id: Scalars["ID"];
@@ -20415,6 +21170,8 @@ export interface Subscription {
 export interface SchemaObjectTypes {
   AtlasContentModelerSettingsSettings: AtlasContentModelerSettingsSettings;
   Avatar: Avatar;
+  Banner: Banner;
+  BannerToPreviewConnectionEdge: BannerToPreviewConnectionEdge;
   Brand: Brand;
   BrandToPreviewConnectionEdge: BrandToPreviewConnectionEdge;
   Category: Category;
@@ -20448,6 +21205,7 @@ export interface SchemaObjectTypes {
   ContentTypeToContentNodeConnectionEdge: ContentTypeToContentNodeConnectionEdge;
   ContentTypeToTaxonomyConnection: ContentTypeToTaxonomyConnection;
   ContentTypeToTaxonomyConnectionEdge: ContentTypeToTaxonomyConnectionEdge;
+  CreateBannerPayload: CreateBannerPayload;
   CreateBrandPayload: CreateBrandPayload;
   CreateCategoryPayload: CreateCategoryPayload;
   CreateCommentPayload: CreateCommentPayload;
@@ -20464,6 +21222,7 @@ export interface SchemaObjectTypes {
   CreateUserPayload: CreateUserPayload;
   CreateVariantPayload: CreateVariantPayload;
   DefaultTemplate: DefaultTemplate;
+  DeleteBannerPayload: DeleteBannerPayload;
   DeleteBrandPayload: DeleteBrandPayload;
   DeleteCategoryPayload: DeleteCategoryPayload;
   DeleteCommentPayload: DeleteCommentPayload;
@@ -20557,6 +21316,8 @@ export interface SchemaObjectTypes {
   RegisterUserPayload: RegisterUserPayload;
   ResetUserPasswordPayload: ResetUserPasswordPayload;
   RestoreCommentPayload: RestoreCommentPayload;
+  RootQueryToBannerConnection: RootQueryToBannerConnection;
+  RootQueryToBannerConnectionEdge: RootQueryToBannerConnectionEdge;
   RootQueryToBrandConnection: RootQueryToBrandConnection;
   RootQueryToBrandConnectionEdge: RootQueryToBrandConnectionEdge;
   RootQueryToCategoryConnection: RootQueryToCategoryConnection;
@@ -20634,6 +21395,7 @@ export interface SchemaObjectTypes {
   TermNodeToEnqueuedStylesheetConnection: TermNodeToEnqueuedStylesheetConnection;
   TermNodeToEnqueuedStylesheetConnectionEdge: TermNodeToEnqueuedStylesheetConnectionEdge;
   Theme: Theme;
+  UpdateBannerPayload: UpdateBannerPayload;
   UpdateBrandPayload: UpdateBrandPayload;
   UpdateCategoryPayload: UpdateCategoryPayload;
   UpdateCommentPayload: UpdateCommentPayload;
@@ -20652,6 +21414,8 @@ export interface SchemaObjectTypes {
   UpdateVariantPayload: UpdateVariantPayload;
   User: User;
   UserRole: UserRole;
+  UserToBannerConnection: UserToBannerConnection;
+  UserToBannerConnectionEdge: UserToBannerConnectionEdge;
   UserToBrandConnection: UserToBrandConnection;
   UserToBrandConnectionEdge: UserToBrandConnectionEdge;
   UserToCommentConnection: UserToCommentConnection;
@@ -20690,6 +21454,8 @@ export interface SchemaObjectTypes {
 export type SchemaObjectTypesNames =
   | "AtlasContentModelerSettingsSettings"
   | "Avatar"
+  | "Banner"
+  | "BannerToPreviewConnectionEdge"
   | "Brand"
   | "BrandToPreviewConnectionEdge"
   | "Category"
@@ -20723,6 +21489,7 @@ export type SchemaObjectTypesNames =
   | "ContentTypeToContentNodeConnectionEdge"
   | "ContentTypeToTaxonomyConnection"
   | "ContentTypeToTaxonomyConnectionEdge"
+  | "CreateBannerPayload"
   | "CreateBrandPayload"
   | "CreateCategoryPayload"
   | "CreateCommentPayload"
@@ -20739,6 +21506,7 @@ export type SchemaObjectTypesNames =
   | "CreateUserPayload"
   | "CreateVariantPayload"
   | "DefaultTemplate"
+  | "DeleteBannerPayload"
   | "DeleteBrandPayload"
   | "DeleteCategoryPayload"
   | "DeleteCommentPayload"
@@ -20832,6 +21600,8 @@ export type SchemaObjectTypesNames =
   | "RegisterUserPayload"
   | "ResetUserPasswordPayload"
   | "RestoreCommentPayload"
+  | "RootQueryToBannerConnection"
+  | "RootQueryToBannerConnectionEdge"
   | "RootQueryToBrandConnection"
   | "RootQueryToBrandConnectionEdge"
   | "RootQueryToCategoryConnection"
@@ -20909,6 +21679,7 @@ export type SchemaObjectTypesNames =
   | "TermNodeToEnqueuedStylesheetConnection"
   | "TermNodeToEnqueuedStylesheetConnectionEdge"
   | "Theme"
+  | "UpdateBannerPayload"
   | "UpdateBrandPayload"
   | "UpdateCategoryPayload"
   | "UpdateCommentPayload"
@@ -20927,6 +21698,8 @@ export type SchemaObjectTypesNames =
   | "UpdateVariantPayload"
   | "User"
   | "UserRole"
+  | "UserToBannerConnection"
+  | "UserToBannerConnectionEdge"
   | "UserToBrandConnection"
   | "UserToBrandConnectionEdge"
   | "UserToCommentConnection"
@@ -20968,6 +21741,7 @@ export interface $Commenter {
 }
 
 export interface $ContentNode {
+  Banner?: Banner;
   Brand?: Brand;
   Image?: Image;
   MediaItem?: MediaItem;
@@ -20994,6 +21768,7 @@ export interface $ContentTemplate {
 }
 
 export interface $DatabaseIdentifier {
+  Banner?: Banner;
   Brand?: Brand;
   Category?: Category;
   Comment?: Comment;
@@ -21042,6 +21817,7 @@ export interface $MenuItemObjectUnion {
 }
 
 export interface $Node {
+  Banner?: Banner;
   Brand?: Brand;
   Category?: Category;
   Comment?: Comment;
@@ -21070,6 +21846,7 @@ export interface $Node {
 }
 
 export interface $NodeWithAuthor {
+  Banner?: Banner;
   Brand?: Brand;
   Image?: Image;
   MediaItem?: MediaItem;
@@ -21112,6 +21889,7 @@ export interface $NodeWithRevisions {
 }
 
 export interface $NodeWithTemplate {
+  Banner?: Banner;
   Brand?: Brand;
   Image?: Image;
   MediaItem?: MediaItem;
@@ -21125,6 +21903,7 @@ export interface $NodeWithTemplate {
 }
 
 export interface $NodeWithTitle {
+  Banner?: Banner;
   Brand?: Brand;
   Image?: Image;
   MediaItem?: MediaItem;
@@ -21148,6 +21927,7 @@ export interface $TermNode {
 }
 
 export interface $UniformResourceIdentifiable {
+  Banner?: Banner;
   Brand?: Brand;
   Category?: Category;
   ContentType?: ContentType;
@@ -21177,6 +21957,7 @@ export type MakeNullable<T> = {
 
 export interface ScalarsEnums extends MakeNullable<Scalars> {
   AvatarRatingEnum: AvatarRatingEnum | undefined;
+  BannerIdType: BannerIdType | undefined;
   BrandIdType: BrandIdType | undefined;
   CategoryIdType: CategoryIdType | undefined;
   CommentsConnectionOrderbyEnum: CommentsConnectionOrderbyEnum | undefined;

@@ -8,6 +8,7 @@ import { SchemaUnionsKey } from "gqty";
  */
 export const scalarsEnumsHash = {
   AvatarRatingEnum: true,
+  BannerIdType: true,
   Boolean: true,
   BrandIdType: true,
   CategoryIdType: true,
@@ -74,6 +75,60 @@ export const generatedSchema = {
     size: { __type: "Int" },
     url: { __type: "String" },
     width: { __type: "Int" },
+  },
+  Banner: {
+    __typename: { __type: "String!" },
+    author: { __type: "NodeWithAuthorToUserConnectionEdge" },
+    authorDatabaseId: { __type: "Int" },
+    authorId: { __type: "ID" },
+    backgroundColor: { __type: "String" },
+    bannerId: { __type: "Int!" },
+    conditionalTags: { __type: "ConditionalTags" },
+    content: { __type: "String" },
+    contentType: { __type: "ContentNodeToContentTypeConnectionEdge" },
+    contentTypeName: { __type: "String!" },
+    databaseId: { __type: "Int!" },
+    date: { __type: "String" },
+    dateGmt: { __type: "String" },
+    desiredSlug: { __type: "String" },
+    editingLockedBy: { __type: "ContentNodeToEditLockConnectionEdge" },
+    enclosure: { __type: "String" },
+    enqueuedScripts: {
+      __type: "ContentNodeToEnqueuedScriptConnection",
+      __args: { after: "String", before: "String", first: "Int", last: "Int" },
+    },
+    enqueuedStylesheets: {
+      __type: "ContentNodeToEnqueuedStylesheetConnection",
+      __args: { after: "String", before: "String", first: "Int", last: "Int" },
+    },
+    fontColor: { __type: "String" },
+    guid: { __type: "String" },
+    id: { __type: "ID!" },
+    isContentNode: { __type: "Boolean!" },
+    isPreview: { __type: "Boolean" },
+    isRestricted: { __type: "Boolean" },
+    isTermNode: { __type: "Boolean!" },
+    lastEditedBy: { __type: "ContentNodeToEditLastConnectionEdge" },
+    link: { __type: "String" },
+    modified: { __type: "String" },
+    modifiedGmt: { __type: "String" },
+    name: { __type: "String" },
+    preview: { __type: "BannerToPreviewConnectionEdge" },
+    previewRevisionDatabaseId: { __type: "Int" },
+    previewRevisionId: { __type: "ID" },
+    slug: { __type: "String" },
+    status: { __type: "String" },
+    template: { __type: "ContentTemplate" },
+    templates: { __type: "[String]" },
+    title: {
+      __type: "String",
+      __args: { format: "PostObjectFieldFormatEnum" },
+    },
+    uri: { __type: "String" },
+  },
+  BannerToPreviewConnectionEdge: {
+    __typename: { __type: "String!" },
+    node: { __type: "Banner" },
   },
   Brand: {
     __typename: { __type: "String!" },
@@ -672,6 +727,25 @@ export const generatedSchema = {
     cursor: { __type: "String" },
     node: { __type: "Taxonomy" },
   },
+  CreateBannerInput: {
+    authorId: { __type: "ID" },
+    backgroundColor: { __type: "String" },
+    clientMutationId: { __type: "String" },
+    content: { __type: "String" },
+    date: { __type: "String" },
+    fontColor: { __type: "String" },
+    menuOrder: { __type: "Int" },
+    name: { __type: "String" },
+    password: { __type: "String" },
+    slug: { __type: "String" },
+    status: { __type: "PostStatusEnum" },
+    title: { __type: "String" },
+  },
+  CreateBannerPayload: {
+    __typename: { __type: "String!" },
+    banner: { __type: "Banner" },
+    clientMutationId: { __type: "String" },
+  },
   CreateBrandInput: {
     authorId: { __type: "ID" },
     brandID: { __type: "Float!" },
@@ -1035,6 +1109,17 @@ export const generatedSchema = {
   DefaultTemplate: {
     __typename: { __type: "String!" },
     templateName: { __type: "String" },
+  },
+  DeleteBannerInput: {
+    clientMutationId: { __type: "String" },
+    forceDelete: { __type: "Boolean" },
+    id: { __type: "ID!" },
+  },
+  DeleteBannerPayload: {
+    __typename: { __type: "String!" },
+    banner: { __type: "Banner" },
+    clientMutationId: { __type: "String" },
+    deletedId: { __type: "ID" },
   },
   DeleteBrandInput: {
     clientMutationId: { __type: "String" },
@@ -2875,6 +2960,40 @@ export const generatedSchema = {
     comment: { __type: "Comment" },
     restoredId: { __type: "ID" },
   },
+  RootQueryToBannerConnection: {
+    __typename: { __type: "String!" },
+    edges: { __type: "[RootQueryToBannerConnectionEdge]" },
+    nodes: { __type: "[Banner]" },
+    pageInfo: { __type: "WPPageInfo" },
+  },
+  RootQueryToBannerConnectionEdge: {
+    __typename: { __type: "String!" },
+    cursor: { __type: "String" },
+    node: { __type: "Banner" },
+  },
+  RootQueryToBannerConnectionWhereArgs: {
+    author: { __type: "Int" },
+    authorIn: { __type: "[ID]" },
+    authorName: { __type: "String" },
+    authorNotIn: { __type: "[ID]" },
+    dateQuery: { __type: "DateQueryInput" },
+    hasPassword: { __type: "Boolean" },
+    id: { __type: "Int" },
+    in: { __type: "[ID]" },
+    mimeType: { __type: "MimeTypeEnum" },
+    name: { __type: "String" },
+    nameIn: { __type: "[String]" },
+    notIn: { __type: "[ID]" },
+    orderby: { __type: "[PostObjectsConnectionOrderbyInput]" },
+    parent: { __type: "ID" },
+    parentIn: { __type: "[ID]" },
+    parentNotIn: { __type: "[ID]" },
+    password: { __type: "String" },
+    search: { __type: "String" },
+    stati: { __type: "[PostStatusEnum]" },
+    status: { __type: "PostStatusEnum" },
+    title: { __type: "String" },
+  },
   RootQueryToBrandConnection: {
     __typename: { __type: "String!" },
     edges: { __type: "[RootQueryToBrandConnectionEdge]" },
@@ -3950,6 +4069,26 @@ export const generatedSchema = {
     uri: { __type: "String" },
     $on: { __type: "$UniformResourceIdentifiable!" },
   },
+  UpdateBannerInput: {
+    authorId: { __type: "ID" },
+    backgroundColor: { __type: "String" },
+    clientMutationId: { __type: "String" },
+    content: { __type: "String" },
+    date: { __type: "String" },
+    fontColor: { __type: "String" },
+    id: { __type: "ID!" },
+    menuOrder: { __type: "Int" },
+    name: { __type: "String" },
+    password: { __type: "String" },
+    slug: { __type: "String" },
+    status: { __type: "PostStatusEnum" },
+    title: { __type: "String" },
+  },
+  UpdateBannerPayload: {
+    __typename: { __type: "String!" },
+    banner: { __type: "Banner" },
+    clientMutationId: { __type: "String" },
+  },
   UpdateBrandInput: {
     authorId: { __type: "ID" },
     brandID: { __type: "Float" },
@@ -4342,6 +4481,16 @@ export const generatedSchema = {
         size: "Int",
       },
     },
+    banners: {
+      __type: "UserToBannerConnection",
+      __args: {
+        after: "String",
+        before: "String",
+        first: "Int",
+        last: "Int",
+        where: "UserToBannerConnectionWhereArgs",
+      },
+    },
     brands: {
       __type: "UserToBrandConnection",
       __args: {
@@ -4506,6 +4655,40 @@ export const generatedSchema = {
     id: { __type: "ID!" },
     isRestricted: { __type: "Boolean" },
     name: { __type: "String" },
+  },
+  UserToBannerConnection: {
+    __typename: { __type: "String!" },
+    edges: { __type: "[UserToBannerConnectionEdge]" },
+    nodes: { __type: "[Banner]" },
+    pageInfo: { __type: "WPPageInfo" },
+  },
+  UserToBannerConnectionEdge: {
+    __typename: { __type: "String!" },
+    cursor: { __type: "String" },
+    node: { __type: "Banner" },
+  },
+  UserToBannerConnectionWhereArgs: {
+    author: { __type: "Int" },
+    authorIn: { __type: "[ID]" },
+    authorName: { __type: "String" },
+    authorNotIn: { __type: "[ID]" },
+    dateQuery: { __type: "DateQueryInput" },
+    hasPassword: { __type: "Boolean" },
+    id: { __type: "Int" },
+    in: { __type: "[ID]" },
+    mimeType: { __type: "MimeTypeEnum" },
+    name: { __type: "String" },
+    nameIn: { __type: "[String]" },
+    notIn: { __type: "[ID]" },
+    orderby: { __type: "[PostObjectsConnectionOrderbyInput]" },
+    parent: { __type: "ID" },
+    parentIn: { __type: "[ID]" },
+    parentNotIn: { __type: "[ID]" },
+    password: { __type: "String" },
+    search: { __type: "String" },
+    stati: { __type: "[PostStatusEnum]" },
+    status: { __type: "PostStatusEnum" },
+    title: { __type: "String" },
   },
   UserToBrandConnection: {
     __typename: { __type: "String!" },
@@ -5040,6 +5223,10 @@ export const generatedSchema = {
   },
   mutation: {
     __typename: { __type: "String!" },
+    createBanner: {
+      __type: "CreateBannerPayload",
+      __args: { input: "CreateBannerInput!" },
+    },
     createBrand: {
       __type: "CreateBrandPayload",
       __args: { input: "CreateBrandInput!" },
@@ -5099,6 +5286,10 @@ export const generatedSchema = {
     createVariant: {
       __type: "CreateVariantPayload",
       __args: { input: "CreateVariantInput!" },
+    },
+    deleteBanner: {
+      __type: "DeleteBannerPayload",
+      __args: { input: "DeleteBannerInput!" },
     },
     deleteBrand: {
       __type: "DeleteBrandPayload",
@@ -5181,6 +5372,10 @@ export const generatedSchema = {
       __type: "SendPasswordResetEmailPayload",
       __args: { input: "SendPasswordResetEmailInput!" },
     },
+    updateBanner: {
+      __type: "UpdateBannerPayload",
+      __args: { input: "UpdateBannerInput!" },
+    },
     updateBrand: {
       __type: "UpdateBrandPayload",
       __args: { input: "UpdateBrandInput!" },
@@ -5251,6 +5446,24 @@ export const generatedSchema = {
     allSettings: { __type: "Settings" },
     atlasContentModelerSettingsSettings: {
       __type: "AtlasContentModelerSettingsSettings",
+    },
+    banner: {
+      __type: "Banner",
+      __args: { asPreview: "Boolean", id: "ID!", idType: "BannerIdType" },
+    },
+    bannerBy: {
+      __type: "Banner",
+      __args: { bannerId: "Int", id: "ID", slug: "String", uri: "String" },
+    },
+    banners: {
+      __type: "RootQueryToBannerConnection",
+      __args: {
+        after: "String",
+        before: "String",
+        first: "Int",
+        last: "Int",
+        where: "RootQueryToBannerConnectionWhereArgs",
+      },
     },
     brand: {
       __type: "Brand",
@@ -5644,6 +5857,7 @@ export const generatedSchema = {
   subscription: {},
   [SchemaUnionsKey]: {
     ContentNode: [
+      "Banner",
       "Brand",
       "Image",
       "MediaItem",
@@ -5656,6 +5870,7 @@ export const generatedSchema = {
       "Variant",
     ],
     DatabaseIdentifier: [
+      "Banner",
       "Brand",
       "Category",
       "Comment",
@@ -5675,6 +5890,7 @@ export const generatedSchema = {
       "Variant",
     ],
     Node: [
+      "Banner",
       "Brand",
       "Category",
       "Comment",
@@ -5702,6 +5918,7 @@ export const generatedSchema = {
       "Variant",
     ],
     NodeWithAuthor: [
+      "Banner",
       "Brand",
       "Image",
       "MediaItem",
@@ -5714,6 +5931,7 @@ export const generatedSchema = {
       "Variant",
     ],
     NodeWithTemplate: [
+      "Banner",
       "Brand",
       "Image",
       "MediaItem",
@@ -5726,6 +5944,7 @@ export const generatedSchema = {
       "Variant",
     ],
     NodeWithTitle: [
+      "Banner",
       "Brand",
       "Image",
       "MediaItem",
@@ -5738,6 +5957,7 @@ export const generatedSchema = {
       "Variant",
     ],
     UniformResourceIdentifiable: [
+      "Banner",
       "Brand",
       "Category",
       "ContentType",
