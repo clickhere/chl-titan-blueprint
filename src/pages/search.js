@@ -5,6 +5,7 @@ import {
   Footer,
   Header,
   Main,
+  Notification,
   SearchInput,
   SearchRecommendations,
   SearchResults,
@@ -18,6 +19,7 @@ import { pageTitle } from 'utils';
 export default function Page() {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
+  const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
   const {
     searchQuery,
     setSearchQuery,
@@ -32,8 +34,12 @@ export default function Page() {
     <>
       <SEO title={pageTitle(generalSettings, 'Search')} />
 
-      <Header />
-
+      <Header 
+      storeSettings={storeSettings}
+      />
+      <Notification
+        storeSettings={storeSettings}
+      />
       <Main>
         <div className={styles['search-header-pane']}>
           <div className="container small">
@@ -67,7 +73,9 @@ export default function Page() {
         </div>
       </Main>
 
-      <Footer />
+      <Footer 
+      storeSettings={storeSettings}
+      />
     </>
   );
 }

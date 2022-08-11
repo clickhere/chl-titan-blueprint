@@ -23,7 +23,7 @@ export default function Page() {
 
   const { data, fetchMore, isLoading } = useNodePagination(
     (query, queryArgs) => {
-      return query.posts({
+      return query.products({
         ...queryArgs,
         where: { categoryName: categorySlug },
       });

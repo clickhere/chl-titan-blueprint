@@ -6,6 +6,8 @@
   padding: 50px 0px;
   .productWrapper {
     position: relative;
+    display: flex;
+    flex-wrap: wrap;
     a {
       position: relative;
     }
@@ -24,8 +26,6 @@
       position: absolute;
     }
     .productImage {
-      border-radius: 5px;
-      border: 1px solid #e8e8e8;
       width: 100%;
     }
     .productImageContainer {
@@ -35,6 +35,8 @@
     .productInfoContainer {
       padding: 2rem 0;
       text-align: center;
+      margin-top: auto;
+      width: 100%;
       .productTitle {
         width: auto;
         font-weight: 100;

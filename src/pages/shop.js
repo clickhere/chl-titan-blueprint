@@ -4,6 +4,7 @@ import {
   ContentWrapper,
   Footer,
   Header,
+  Notification,
   EntryHeader,
   Main,
   SEO,
@@ -18,6 +19,7 @@ import Link from 'next/link';
 export function ShopComponent({ products }) {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
+  const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
 
   return (
     <>
@@ -30,7 +32,12 @@ export function ShopComponent({ products }) {
         imageUrl={false/*product?.featuredImage?.node?.sourceUrl?.()*/}
       />
 
-      <Header />
+      <Header
+      storeSettings={storeSettings}
+      />
+      <Notification
+        storeSettings={storeSettings}
+      />
 
       <Main>
         <div className="container">
@@ -71,7 +78,7 @@ export function ShopComponent({ products }) {
                       }
                     </span>
                   </div>
-                  <div className={styles.btnContainer}><a className={styles.btn} href="#">Add to cart</a></div>
+                  <div className={styles.btnContainer}><a className={styles.btn} href="#">View product</a></div>
                 </div>
               </div>
             ))}
@@ -79,7 +86,9 @@ export function ShopComponent({ products }) {
         </div>
       </Main>
 
-      <Footer />
+      <Footer
+      storeSettings={storeSettings}
+      />
     </>
   );
 }
