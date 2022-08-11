@@ -15,7 +15,6 @@ import styles from 'styles/pages/_Shop.module.scss';
 import { pageTitle } from 'utils';
 import { classNames } from 'utils';
 
-
 import Link from 'next/link';
 
 export function ShopComponent({ products }) {
@@ -28,7 +27,7 @@ export function ShopComponent({ products }) {
       <SEO
         title={pageTitle(
           generalSettings,
-          'Shop',
+          'Product Category',
           generalSettings?.title
         )}
         imageUrl={false/*product?.featuredImage?.node?.sourceUrl?.()*/}
@@ -44,7 +43,7 @@ export function ShopComponent({ products }) {
       <Main>
         <div className="container">
           <div className={styles.shopTitle}>
-            <h1>Shop</h1>
+            <h1>Product Category</h1>
           </div>
 
           <div className={classNames(['row', 'row-wrap', styles.shop])}>
@@ -57,6 +56,7 @@ export function ShopComponent({ products }) {
                 productPrice={product.productPrice}
                 price={product.price}
               />
+
             ))}
           </div>
         </div>
@@ -83,4 +83,11 @@ export async function getStaticProps(context) {
     revalidate: 1,
     // notFound: await is404(context, { client }),
   });
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
 }
