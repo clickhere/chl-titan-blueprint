@@ -41,7 +41,7 @@ export default function Page() {
         storeSettings={storeSettings}
       />
       <Main>
-        <div className={styles['search-header-pane']}>
+        <div className={styles['search-header-pane']} style={{backgroundColor: storeSettings?.storePrimaryColor, color: storeSettings?.storeSecondaryColor}}>
           <div className="container small">
             <h2 className={styles['search-header-text']}>
               {searchQuery && !isLoading
