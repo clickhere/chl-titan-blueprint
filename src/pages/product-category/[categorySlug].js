@@ -9,11 +9,11 @@ import {
   Main,
   SEO,
   TaxonomyTerms,
+  Products,
 } from 'components';
 import styles from 'styles/pages/_Shop.module.scss';
 import { pageTitle } from 'utils';
 import { classNames } from 'utils';
-
 
 import Link from 'next/link';
 
@@ -27,7 +27,7 @@ export function ShopComponent({ products }) {
       <SEO
         title={pageTitle(
           generalSettings,
-          'Shop',
+          'Product Category',
           generalSettings?.title
         )}
         imageUrl={false/*product?.featuredImage?.node?.sourceUrl?.()*/}
@@ -42,46 +42,22 @@ export function ShopComponent({ products }) {
 
       <Main>
         <div className="container">
+
           <div className={styles.shopTitle}>
-            <h1>Shop</h1>
+            <h1>Product Category</h1>
           </div>
 
           <div className={classNames(['row', 'row-wrap', styles.shop])}>
             {products.map((product) => (
-              <div className={classNames(['column', 'column-33', styles.productWrapper])}>
-                <div className={styles.productImageContainer}>
-                  <Link href={`/product/${product.slug}`}>
-                    <a>
-                      {
-                        product?.salePrice !== 0
-                        ? <span className={styles.onsale}>Sale!</span>
-                        : null
-                      }
-                      <img className={styles.productImage} src={product.images({ first: 1})?.nodes?.[0]?.urlStandard} />
-                    </a>
-                  </Link>
-                </div>
-                <div className={styles.productInfoContainer}>
-                  <h6 className={styles.productTitle}>
-                    <Link href={`/product/${product.slug}`}>
-                      <a>
-                        {product.name}
+              <Products
+                slug={product.slug}
+                salePrice={product.salePrice}
+                image={product.images({ first: 1})?.nodes?.[0]?.urlStandard}
+                name={product.name}
+                productPrice={product.productPrice}
+                price={product.price}
+              />
 
-                      </a>
-                    </Link>
-                  </h6>
-                  <div className={styles.productPrice}>
-                    <span>
-                      {
-                        product.salePrice === 0
-                        ? '$' + product.price
-                        : <><del>${product.price}</del> ${product.salePrice}</>
-                      }
-                    </span>
-                  </div>
-                  <div className={styles.btnContainer}><a className={styles.btn} href="#">View product</a></div>
-                </div>
-              </div>
             ))}
           </div>
         </div>
@@ -108,4 +84,11 @@ export async function getStaticProps(context) {
     revalidate: 1,
     // notFound: await is404(context, { client }),
   });
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
 }

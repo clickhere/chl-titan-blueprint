@@ -20,6 +20,7 @@ import SearchResults from './SearchResults';
 import SEO from './SEO';
 import SkipNavigationLink from './SkipNavigationLink';
 import TaxonomyTerms from './TaxonomyTerms';
+import Products from './Products';
 
 export {
   Button,
@@ -44,4 +45,5 @@ export {
   SEO,
   SkipNavigationLink,
   TaxonomyTerms,
+  Products,
 };

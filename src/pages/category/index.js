@@ -26,10 +26,11 @@ export default function Page() {
       <Header />
 
       <Main>
-        <EntryHeader title="All Categories" />
+        {/* <EntryHeader title="All Categories" /> */}
         <div className="container">
           <div className="content">
             <h1>All Categories</h1>
+            {/*
             <ul>
               {categories?.nodes?.map(({ id, name, uri }) => {
                 return (
@@ -43,6 +44,7 @@ export default function Page() {
                 );
               })}
             </ul>
+            */}
           </div>
         </div>
       </Main>
