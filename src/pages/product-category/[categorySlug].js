@@ -9,7 +9,7 @@ import {
   Main,
   SEO,
   TaxonomyTerms,
-  Products,
+  ProductShortView,
 } from 'components';
 import styles from 'styles/pages/_Shop.module.scss';
 import { pageTitle } from 'utils';
@@ -42,14 +42,39 @@ export function ShopComponent({ products }) {
 
       <Main>
         <div className="container">
-
+          <section className={styles.bannerHero}>
+            <div className="hero-content-container row">
+              <div className={classNames(['column', styles.heroContent])}>
+                <nav className={styles.breadcrumbsContainer}>
+                  <ul className={styles.breadcrumbs}>
+                    <li className={styles.breadcrumb}>
+                      <a href="/"><span>Home</span></a>
+                    </li>
+                    <li className={styles.breadcrumb}>
+                      <a href="/product-category/"><span>Product Category</span></a>
+                    </li>
+                    <li className={classNames([styles.breadcrumb, styles.isActive])}>
+                      <span>Hoodies & Jackets</span>
+                    </li>
+                  </ul>
+                </nav>
+                <h1 className="section-header">Hoodies &amp; Jackets</h1>
+                <div className="category-description">
+                  <p><span>Stay warm during winter or weight cut with our MMA Hoodies. Or stay warm before your next match with our BJJ Hoodies and jackets. Rep your passion with our Hoodies and Jackets Selection.</span></p>
+                </div>
+              </div>
+              <div className={classNames(['column', styles.heroImage])}>
+                <img src="https://cdn11.bigcommerce.com/s-mobtsc45qz/images/stencil/1280x1280/f/hoodies-jackets-updated-image__2021_category.original.jpg" alt="Hoodies &amp; Jackets" title="Hoodies &amp; Jackets" />
+              </div>
+            </div>
+          </section>
           <div className={styles.shopTitle}>
             <h1>Product Category</h1>
           </div>
 
           <div className={classNames(['row', 'row-wrap', styles.shop])}>
             {products.map((product) => (
-              <Products
+              <ProductShortView
                 slug={product.slug}
                 salePrice={product.salePrice}
                 image={product.images({ first: 1})?.nodes?.[0]?.urlStandard}

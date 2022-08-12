@@ -11,18 +11,18 @@
  *
  * @returns {React.ReactElement} The Products component
  */
-import styles from './Products.module.scss';
+import styles from './ProductShortView.module.scss';
 import { classNames } from 'utils';
 
 import Link from 'next/link';
 
-export default function Products({ slug, salePrice, image, imageAltText, name, price }) {
+export default function ProductShortView({ slug, salePrice, image, imageAltText, name, price }) {
 
 
 
   return (
     <>
-      <div className={classNames(['column', 'column-33', styles.productWrapper])}>
+      <div className={classNames(['column', 'column-25', styles.productWrapper])}>
         <div className={styles.productImageContainer}>
           <Link href={`/product/${slug}`}>
             <a>
