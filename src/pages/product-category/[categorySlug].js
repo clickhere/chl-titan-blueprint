@@ -42,6 +42,7 @@ export function ShopComponent({ products }) {
 
       <Main>
         <div className="container">
+
           <div className={styles.shopTitle}>
             <h1>Product Category</h1>
           </div>

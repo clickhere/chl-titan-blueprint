@@ -5,6 +5,7 @@
  * @param {string} props.slug Used for the product slug.
  * @param {string} props.salePrice Used for the product sale price.
  * @param {string} props.image Used for the product Image array.
+ * @param {string} props.imageAltText Used for the product Image Alt tags array.
  * @param {string} props.name Used for the product name/title.
  * @param {string} props.price Used for the product price.
  *
@@ -15,7 +16,7 @@ import { classNames } from 'utils';
 
 import Link from 'next/link';
 
-export default function Products({ slug, salePrice, image, name, price }) {
+export default function Products({ slug, salePrice, image, imageAltText, name, price }) {
 
 
 
@@ -30,7 +31,8 @@ export default function Products({ slug, salePrice, image, name, price }) {
                 ? <span className={styles.onsale}>Sale!</span>
                 : null
               }
-              <img className={styles.productImage} src={image ?? '/ProductDefault.gif'} />
+              <img className={styles.productImage} src={image ?? '/ProductDefault.gif'} alt={imageAltText ?? 'product image'} />
+
             </a>
           </Link>
         </div>

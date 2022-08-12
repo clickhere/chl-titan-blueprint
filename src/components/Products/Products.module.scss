@@ -4,7 +4,7 @@
 }
 .productWrapper {
   position: relative;
-  display: flex;
+  display: flex !important;
   flex-wrap: wrap;
   a {
     position: relative;
