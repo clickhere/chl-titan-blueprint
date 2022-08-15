@@ -10,6 +10,7 @@ import {
   SEO,
   TaxonomyTerms,
   Button,
+  ProductShortView,
 } from 'components';
 import ProductFormField from 'components/ProductFormField/ProductFormField';
 
@@ -31,14 +32,14 @@ export function ProductComponent({ product }) {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
   const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
-  
+
   const productCategories = product.productCategories().nodes;
   const productBrand = product.brand?.node;
-  
+
   const productFormFields = JSON.parse(product.productFormFieldsJson ?? '[]');
   const variantLookup = JSON.parse(product.variantLookupJson ?? '{}');
   const modifierLookup = JSON.parse(product.modifierLookupJson ?? '{}');
-  
+
   console.log({ productFormFields, variantLookup, modifierLookup });
 
   return (
@@ -91,7 +92,7 @@ export function ProductComponent({ product }) {
 
               <div className="product_meta">
                 <p>SKU: {product?.sku}</p>
-                
+
                 {
                   productCategories?.length
                   ? <p>
@@ -102,19 +103,19 @@ export function ProductComponent({ product }) {
                     </p>
                   : null
                 }
-                
+
                 {
                   productBrand
                   ? <p>Brand: {productBrand.name}</p>
                   : null
                 }
-                
+
                 {productFormFields.map((field) => (
                   <ProductFormField field={field} />
                 ))}
-                
+
                 {/*<pre>{JSON.stringify(productFormFields, null, 2)}</pre>*/}
-                
+
                 <div>
                   <label style={{ display: 'block' }}>Quantity:</label>
                   <input type="number" min="1" step="1" defaultValue="1" style={{
@@ -124,15 +125,31 @@ export function ProductComponent({ product }) {
                     borderWidth: '1px',
                   }} />
                 </div>
-                
+
                 <Button styleType="secondary">Add to cart</Button>
               </div>
             </div>
           </div>
         </div>
+        <div className={classNames(['container', 'related-products'])}>
+          <div className="row">
+            <div className="column">
+              <h1>Related Products</h1>
+              <p>BigCommerce ID: {product?.bigCommerceID} | Related products: {product?.relatedProducts}</p>
+              <ProductShortView
+                slug={product.slug}
+                salePrice={product.salePrice}
+                image={product.images({ first: 1})?.nodes?.[0]?.urlStandard}
+                name={product.name}
+                productPrice={product.productPrice}
+                price={product.price}
+              />
+            </div>
+          </div>
+        </div>
       </Main>
 
-      <Footer 
+      <Footer
         storeSettings={storeSettings}
       />
     </>
