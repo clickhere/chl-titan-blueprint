@@ -15,7 +15,7 @@ export default function ProductFormField({ field }) {
   return (
     FieldType
     ? <FieldType field={field} id={id} name={name} required={required} />
-    : <div>[{field.type}]</div>
+    : null /*<div>[{field.type}]</div>*/
   );
 }
 
