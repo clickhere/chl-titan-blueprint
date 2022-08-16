@@ -3,27 +3,6 @@ import { classNames } from 'utils';
 
 import Link from 'next/link';
 
-import PrettyRating from "pretty-rating-react";
-import {
-  faStar,
-  faStarHalfAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  faStar as farStar,
-} from "@fortawesome/free-regular-svg-icons";
-
-const icons = {
-  star: {
-    complete: faStar,
-    half: faStarHalfAlt,
-    empty: farStar,
-  },
-};
-
-const colors = {
- star: ['#107f67', '#107f67', '#e8e8e8'],
-};
-
 export default function Review() {
   return (
     <>
@@ -33,7 +12,6 @@ export default function Review() {
             <img alt="" src="https://secure.gravatar.com/avatar/427dbff1e52ec95a065f5a6b34225c84?s=60&amp;d=mm&amp;r=g" srcset="https://secure.gravatar.com/avatar/427dbff1e52ec95a065f5a6b34225c84?s=120&amp;d=mm&amp;r=g 2x" className={styles.avatar} height="60" width="60" loading="lazy"/>
             <div className={styles.reviewText}>
               <div className="star-rating" role="img" aria-label="Rated 3 out of 5">
-                <PrettyRating value={3.8} icons={icons.star} colors={colors.star} />
               </div>
               <p className={styles.reviewNameDate}>
                 <strong className={styles.reviewAuthor}>Ben </strong>
@@ -50,7 +28,6 @@ export default function Review() {
             <img alt="" src="https://secure.gravatar.com/avatar/427dbff1e52ec95a065f5a6b34225c84?s=60&amp;d=mm&amp;r=g" srcset="https://secure.gravatar.com/avatar/427dbff1e52ec95a065f5a6b34225c84?s=120&amp;d=mm&amp;r=g 2x" className={styles.avatar} height="60" width="60" loading="lazy"/>
             <div className={styles.reviewText}>
               <div className="star-rating" role="img" aria-label="Rated 3 out of 5">
-                <PrettyRating value={4.5} icons={icons.star} colors={colors.star} />
               </div>
               <p className={styles.reviewNameDate}>
                 <strong className={styles.reviewAuthor}>Ben </strong>
