@@ -1,7 +1,7 @@
 import styles from './ProductFormField.module.scss';
 
 function camelize(text) {
-  return text.replace(/(?:^|_)([a-z])/g, ($0, $1) => $1.toUpperCase());
+  return text?.replace(/(?:^|_)([a-z])/g, ($0, $1) => $1.toUpperCase());
 }
 
 export default function ProductFormField({ field }) {
