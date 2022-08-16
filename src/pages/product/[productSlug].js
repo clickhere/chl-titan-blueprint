@@ -11,6 +11,7 @@ import {
   TaxonomyTerms,
   Button,
   ProductShortView,
+  Review
 } from 'components';
 import ProductFormField from 'components/ProductFormField/ProductFormField';
 
@@ -129,6 +130,17 @@ export function ProductComponent({ product }) {
                 <Button styleType="secondary">Add to cart</Button>
               </div>
             </div>
+          </div>
+        </div>
+        <div className={classNames(['container', 'related-products'])}>
+          <div className="row row-wrap">
+            <div className="column">
+              <h1>[count] reviews for {product?.name}</h1>
+              <Review
+
+              />
+            </div>
+
           </div>
         </div>
         <div className={classNames(['container', 'related-products'])}>

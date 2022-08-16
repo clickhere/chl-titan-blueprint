@@ -21,6 +21,7 @@ import SEO from './SEO';
 import SkipNavigationLink from './SkipNavigationLink';
 import TaxonomyTerms from './TaxonomyTerms';
 import ProductShortView from './ProductShortView';
+import Review from './Review';
 
 export {
   Button,
@@ -46,4 +47,5 @@ export {
   SkipNavigationLink,
   TaxonomyTerms,
   ProductShortView,
+  Review,
 };
