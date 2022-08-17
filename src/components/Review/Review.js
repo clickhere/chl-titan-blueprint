@@ -32,15 +32,15 @@ export default function Review() {
             <div className={styles.reviewText}>
               <div className="star-rating" role="img" aria-label="Rated 3 out of 5">
                 <div className={styles.starRating} role="img" aria-label="Rated 4.75 out of 5">
-                  <span style={{ width: '95%' }} >Rated <strong className="rating">4.33</strong> out of 5 based on <span className="rating">3</span> customer ratings</span>
+                  <span style={{ width: '95%' }} >Rated <strong className="rating">4.75</strong> out of 5 based on <span className="rating">3</span> customer ratings</span>
                 </div>
               </div>
               <p className={styles.reviewNameDate}>
-                <strong className={styles.reviewAuthor}>Ben </strong>
-                <time className={styles.publishedDate} datetime="2021-02-08T21:31:31+00:00">May 1, 2022</time>
+                <strong className={styles.reviewAuthor}>John </strong>
+                <time className={styles.publishedDate} datetime="2021-02-08T21:31:31+00:00">June 1, 2022</time>
               </p>
               <div className="description">
-                <p>The hoodie itself felt great and likely would last a really long time; but the sizing was a bit off.</p>
+                <p>The fit is great, zipper is high quality, and fabric is exactly as soft as I’d hoped! Will be buying again, probably another color!</p>
               </div>
             </div>
           </div>
