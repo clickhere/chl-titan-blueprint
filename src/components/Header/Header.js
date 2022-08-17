@@ -29,7 +29,12 @@ export default function Header({ className, storeSettings }) {
 
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
-  const storeLogo = storeSettings?.storeLogo != undefined ? JSON.parse(storeSettings?.storeLogo) : '';
+  var storeLogo = null;
+  try {
+    storeLogo = storeSettings?.storeLogo != undefined ? JSON.parse(storeSettings?.storeLogo) : '';
+  } catch (err) {
+      console.log('error', err);
+  }
 
   // If the auth token already exists, redirect to the BC Account page
   useEffect(() => {

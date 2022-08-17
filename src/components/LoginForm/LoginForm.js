@@ -38,7 +38,7 @@ export default function LoginForm() {
   // Returns Auth Token
   async function getRefreshToken(e) {
     try {
-        const response = await fetch('https://titanbpdev.wpengine.com/wp-json/tecom/v1/login', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/tecom/v1/login`, {
             method: 'POST',
             headers:{
                 'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ export default function LoginForm() {
     var bearerToken = "Bearer " + cookieCutter.get('token');
 
     try {
-      const response = await fetch('https://titanbpdev.wpengine.com/wp-json/tecom/v1/bc-link', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/tecom/v1/bc-link`, {
           method: 'POST',
           headers:{
             'Accept' : 'application/json', 
