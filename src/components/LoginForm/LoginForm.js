@@ -10,7 +10,7 @@ export default function LoginForm() {
   // Pull the storeDomain url from the StoreSettings ACM model
   const { useQuery } = client;
   const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
-  const bigCommerceURL = "https://" + storeSettings.storeDomain; 
+  const bigCommerceURL = "https://" + storeSettings?.storeDomain; 
   //const bigCommerceLoginPage = bigCommerceURL + "/login.php";
   const bigCommercePasswordResetPage = bigCommerceURL + "/login.php?action=reset_password";
   const bigCommerceCreateAccountPage = bigCommerceURL + "/login.php?action=create_account";
