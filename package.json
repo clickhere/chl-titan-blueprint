@@ -24,13 +24,13 @@
     "react-dom": "17.0.2",
     "react-icons": "^4.3.1",
     "react-image-magnify": "^2.7.4",
-    "react-rating-stars-component": "^2.2.0",
     "react-slick": "^0.29.0",
     "sharp": "^0.30.5",
     "slick-carousel": "^1.8.1",
     "use-debounce": "^7.0.1"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^6.1.2",
     "@gqty/cli": "^3.1.0",
     "@wordpress/base-styles": "^4.1.1",
     "@wordpress/block-library": "^7.0.0",
