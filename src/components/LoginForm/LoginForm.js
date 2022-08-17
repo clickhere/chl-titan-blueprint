@@ -8,16 +8,13 @@ import { useRouter } from 'next/router';
 export default function LoginForm() {
 
   // Pull the storeDomain url from the StoreSettings ACM model
+
   const { useQuery } = client;
   const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
-  const bigCommerceURL = "https://" + storeSettings.storeDomain; 
-  //const bigCommerceLoginPage = bigCommerceURL + "/login.php";
+  const bigCommerceURL = "https://" + storeSettings?.storeDomain; 
   const bigCommercePasswordResetPage = bigCommerceURL + "/login.php?action=reset_password";
   const bigCommerceCreateAccountPage = bigCommerceURL + "/login.php?action=create_account";
-
   
-
-
   const [errorMessage, setErrorMessage] = React.useState("");
   const router = useRouter()
   
@@ -38,7 +35,7 @@ export default function LoginForm() {
   // Returns Auth Token
   async function getRefreshToken(e) {
     try {
-        const response = await fetch('https://titanbpdev.wpengine.com/wp-json/tecom/v1/login', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/tecom/v1/login`, {
             method: 'POST',
             headers:{
                 'Content-Type': 'application/json'
@@ -70,7 +67,7 @@ export default function LoginForm() {
     var bearerToken = "Bearer " + cookieCutter.get('token');
 
     try {
-      const response = await fetch('https://titanbpdev.wpengine.com/wp-json/tecom/v1/bc-link', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/tecom/v1/bc-link`, {
           method: 'POST',
           headers:{
             'Accept' : 'application/json', 

@@ -93,6 +93,7 @@ export default function useSearch() {
               'description',
               'slug',
               '$on'
+
             ),
             pageInfo: getFields(metadata?.pageInfo),
           };

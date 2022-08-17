@@ -2,8 +2,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FormatDate, LoadingSearchResult } from 'components';
 import { FaSearch } from 'react-icons/fa';
-
+import { ProductShortView } from 'components';
 import styles from './SearchResults.module.scss';
+import { classNames } from 'utils';
+
 
 /**
  * Renders the search results list.
@@ -31,23 +33,22 @@ export default function SearchResults({ searchResults, isLoading }) {
 
   return (
     <>
-      {searchResults?.map((node) => (
-        <div key={node?.databaseId ?? ''} className={styles.result}>
-    <Link href={'/product/' + node?.slug}>
-            <a>
-              
-              
-              <h2 className={styles.title}>
-                {node?.name}
-              </h2>
-              <h3 className={styles.subtitle}>
-                ${node?.price}
-              </h3>
-              {node?.imageUrl !== "" ? <img src={node?.imageUrl} width="250" />  : <img src='/ProductDefault.gif' width="250" />}
-            </a>
-          </Link>
-        </div>
+      <div className={styles.shopTitle}>
+        <h1>Results</h1>
+      </div>
+
+      <div className={classNames(['row', 'row-wrap', styles.shop])}>
+      { searchResults?.map((node) => (
+        <ProductShortView
+          slug={node.slug}
+          salePrice={node.salePrice}
+          image={node.images({ first: 1})?.nodes?.[0]?.urlStandard}
+          name={node.name}
+          productPrice={node.productPrice}
+          price={node.price}
+        />
       ))}
+      </div>
 
       {isLoading === true && (
         <>
@@ -56,6 +57,7 @@ export default function SearchResults({ searchResults, isLoading }) {
           <LoadingSearchResult />
         </>
       )}
+
     </>
   );
 }
