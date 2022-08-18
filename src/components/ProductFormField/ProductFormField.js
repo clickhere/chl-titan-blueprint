@@ -54,13 +54,14 @@ const fieldTypes = {
           const id = `attribute_swatch_${field.id}_${value.id}`;
           
           return (
-            <div className={styles.formOptionWrapper}>
+            <div className={styles.formOptionWrapper} key={value.id}>
               <input
                 type="radio"
                 name={name}
                 value={value.id}
                 id={id}
                 aria-label={value.label}
+                defaultChecked={value.is_default}
               />
               <label htmlFor={id} className={styles.formOption}>
                 {value.value_data?.colors?.map((color, index) => (
@@ -82,8 +83,14 @@ const fieldTypes = {
     return (
       <Field field={field} id={id} required={required} grouped>
         {field.option_values.map((value, index) => (
-          <label for={`attribute_radio_${field.id}_${value.id}`} className={styles.radioLabel} key={index}>
-            <input type="radio" name={name} id={`attribute_radio_${field.id}_${value.id}`} value={value.id} />
+          <label htmlFor={`attribute_radio_${field.id}_${value.id}`} className={styles.radioLabel} key={index}>
+            <input
+              type="radio"
+              name={name}
+              id={`attribute_radio_${field.id}_${value.id}`}
+              value={value.id}
+              defaultChecked={value.is_default}
+            />
             {value.label}
           </label>
         ))}
@@ -97,13 +104,14 @@ const fieldTypes = {
           const id = `attribute_rectangle_${field.id}_${value.id}`;
         
           return (
-            <div className={styles.formOptionWrapper}>
+            <div className={styles.formOptionWrapper} key={value.id}>
               <input
                 type="radio"
                 name={name}
                 value={value.id}
                 id={id}
                 aria-label={value.label}
+                defaultChecked={value.is_default}
               />
               <label htmlFor={id} className={styles.formOption + ' ' + styles.formOptionRectangle}>
                 <span title={value.label} className={styles.formOptionVariant}>{value.label}</span>
@@ -122,19 +130,17 @@ const fieldTypes = {
           name={`attributes[${field.id}]`}
           id={id}
           required={required}
-          minlength={field.config?.text_min_length}
-          maxlength={field.config?.text_max_length}
+          minLength={field.config?.text_min_length}
+          maxLength={field.config?.text_max_length}
           defaultValue={field.config?.default_value}
         />
       </Field>
     );
   },
-  Dropdown({ field, id, required }) {
-    const defaultValue = field.option_values.filter((value) => value.is_default )?.[0]?.id;
-    
+  Dropdown({ field, id, name, required }) {
     return (
       <Field field={field} id={id} required={required}>
-        <select name={`attributes[${field.id}]`} id={id} required={required} defaultValue={defaultValue}>
+        <select name={name} id={id} required={required} defaultValue={defaultValue(field)}>
           <option value="">Choose Options</option>
           {field.option_values.map((value, index) => (
             <option value={value.id} key={index}>{value.label}</option>
@@ -151,8 +157,8 @@ const fieldTypes = {
           name={`attributes[${field.id}]`}
           id={id}
           required={required}
-          minlength={field.config?.text_min_length}
-          maxlength={field.config?.text_max_length}
+          minLength={field.config?.text_min_length}
+          maxLength={field.config?.text_max_length}
           defaultValue={field.config?.default_value}
         />
       </Field>
@@ -161,7 +167,8 @@ const fieldTypes = {
   Checkbox({ field, id, name, required }) {
     return (
       <Field field={field} required={required}>
-        <label for={`attribute_check_${field.id}`} className={styles.radioLabel}>
+        <input type="hidden" name={name} value={field.option_values[1].id} />
+        <label htmlFor={`attribute_check_${field.id}`} className={styles.radioLabel}>
           <input
             type="checkbox"
             name={name}
@@ -190,25 +197,44 @@ const fieldTypes = {
     );
   },
   Date({ field, id, name, required }) {
+    const currentYear = new Date().getFullYear();
     const latestDate = field.config?.date_latest_value;
+    const latestYear = (
+      latestDate
+      ? new Date(latestDate).getFullYear()
+      : currentYear + 20
+    );
+    const yearOptions = [];
+    for (var i = currentYear; i <= currentYear; i += 1) {
+      yearOptions.push(i);
+    }
+    
+    const defaultValue = field.config?.default_value;
+    const defaultDate = (
+      defaultValue
+      ? new Date(defaultValue)
+      : null
+    );
     
     return (
       <Field field={field} id={id} required={required}>
-        <select name={`${name}[month]`}>
+        <select name={`${name}[month]`} defaultValue={defaultDate?.getMonth() + 1}>
           <option value="">Month</option>
           {months.map((option, index) => (
-            <option value={option.value}>{option.label}</option>
+            <option value={option.value} key={option.value}>{option.label}</option>
           ))}
         </select>
-        <select name={`${name}[day]`}>
+        <select name={`${name}[day]`} defaultValue={defaultDate?.getDate()}>
           <option value="">Day</option>
           {Array.apply(null, Array(31)).map((_, index) => index + 1).map((day, index) => (
-            <option value={day}>{day}</option>
+            <option value={day} key={day}>{day}</option>
           ))}
         </select>
-        <select name={`${name}[year]`}>
+        <select name={`${name}[year]`} defaultValue={defaultDate?.getFullYear()}>
           <option value="">Year</option>
-          <option value="2022">2022</option>
+          {yearOptions.map((year) => (
+            <option value={year} key={year}>{year}</option>
+          ))}
         </select>
       </Field>
     );
@@ -221,6 +247,10 @@ const fieldTypes = {
     );
   },
 };
+
+function defaultValue(field) {
+  return field.option_values.filter((value) => value.is_default )?.[0]?.id;
+}
 
 const months = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ').map((month, index) => ({
   value: index + 1,
