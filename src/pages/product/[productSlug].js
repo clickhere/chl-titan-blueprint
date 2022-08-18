@@ -10,7 +10,7 @@ import {
   SEO,
   TaxonomyTerms,
   Button,
-  ProductShortView,
+  ProductSummary,
   Review,
   ReviewForm,
 } from 'components';
@@ -165,15 +165,7 @@ export function ProductComponent({ product, relatedProducts }) {
               <h1>Related Products</h1>
               <div className="row row-wrap">
                 {relatedProducts.map((product) => (
-                  <ProductShortView
-                    slug={product.slug}
-                    salePrice={product.salePrice}
-                    image={product.images({ first: 1})?.nodes?.[0]?.urlStandard}
-                    name={product.name}
-                    productPrice={product.productPrice}
-                    price={product.price}
-                    key={product.slug}
-                  />
+                  <ProductSummary product={product} key={product.slug} />
                 ))}
               </div>
             </div>

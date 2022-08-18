@@ -20,7 +20,7 @@ import SearchResults from './SearchResults';
 import SEO from './SEO';
 import SkipNavigationLink from './SkipNavigationLink';
 import TaxonomyTerms from './TaxonomyTerms';
-import ProductShortView from './ProductShortView';
+import ProductSummary from './ProductSummary';
 import Review from './Review';
 import ReviewForm from './ReviewForm';
 
@@ -47,7 +47,7 @@ export {
   SEO,
   SkipNavigationLink,
   TaxonomyTerms,
-  ProductShortView,
+  ProductSummary,
   Review,
   ReviewForm,
 };

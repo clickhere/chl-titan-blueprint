@@ -2,59 +2,54 @@
  * Provide Product items to a page.
  *
  * @param {Props} props The props object.
- * @param {string} props.slug Used for the product slug.
- * @param {string} props.salePrice Used for the product sale price.
- * @param {string} props.image Used for the product Image array.
+ * @param {string} props.product The product object.
  * @param {string} props.imageAltText Used for the product Image Alt tags array.
- * @param {string} props.name Used for the product name/title.
- * @param {string} props.price Used for the product price.
  *
  * @returns {React.ReactElement} The Products component
  */
-import styles from './ProductShortView.module.scss';
+import styles from './ProductSummary.module.scss';
 import { classNames } from 'utils';
 
 import Link from 'next/link';
 
-export default function ProductShortView({ slug, salePrice, image, imageAltText, name, price }) {
-
-
-
+export default function ProductSummary({ product, imageAltText }) {
+  const productHref = `/product/${product?.slug}`;
+  const image = product.images({ first: 1 })?.nodes?.[0]?.urlStandard;
+  
   return (
     <>
       <div className={classNames(['column', 'column-25', styles.productWrapper])}>
         <div className={styles.productImageContainer}>
-          <Link href={`/product/${slug}`}>
+          <Link href={productHref}>
             <a>
               {
-                salePrice !== 0
+                product?.salePrice !== 0
                 ? <span className={styles.onsale}>Sale!</span>
                 : null
               }
-              <img className={styles.productImage} src={image ?? '/ProductDefault.gif'} alt={imageAltText ?? 'product image'} />
+              <img className={styles.productImage} src={image ?? '/ProductDefault.gif'} alt={product?.imageAltText ?? product?.name} />
 
             </a>
           </Link>
         </div>
         <div className={styles.productInfoContainer}>
           <h6 className={styles.productTitle}>
-            <Link href={`/product/${slug}`}>
+            <Link href={productHref}>
               <a>
-                {name}
-
+                {product?.name}
               </a>
             </Link>
           </h6>
           <div className={styles.productPrice}>
             <span>
               {
-                salePrice === 0
-                ? '$' + price
-                : <><del>${price}</del> ${salePrice}</>
+                product?.salePrice === 0
+                ? '$' + product?.price
+                : <><del>${product?.price}</del> ${product?.salePrice}</>
               }
             </span>
           </div>
-          <div className={styles.btnContainer}><a className={styles.btn} href="#">View product</a></div>
+          <div className={styles.btnContainer}><Link href={productHref}><a className={styles.btn}>View product</a></Link></div>
         </div>
       </div>
     </>

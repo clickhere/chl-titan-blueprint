@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FormatDate, LoadingSearchResult } from 'components';
 import { FaSearch } from 'react-icons/fa';
-import { ProductShortView } from 'components';
+import { ProductSummary } from 'components';
 import styles from './SearchResults.module.scss';
 import { classNames } from 'utils';
 
@@ -39,7 +39,7 @@ export default function SearchResults({ searchResults, isLoading }) {
 
       <div className={classNames(['row', 'row-wrap', styles.shop])}>
       { searchResults?.map((node) => (
-        <ProductShortView
+        <ProductSummary
           slug={node.slug}
           salePrice={node.salePrice}
           image={node.images({ first: 1})?.nodes?.[0]?.urlStandard}

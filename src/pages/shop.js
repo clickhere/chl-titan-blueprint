@@ -9,7 +9,7 @@ import {
   Main,
   SEO,
   TaxonomyTerms,
-  ProductShortView,
+  ProductSummary,
 } from 'components';
 import styles from 'styles/pages/_Shop.module.scss';
 import { pageTitle } from 'utils';
@@ -49,14 +49,7 @@ export function ShopComponent({ products }) {
 
           <div className={classNames(['row', 'row-wrap', styles.shop])}>
             {products.map((product) => (
-              <ProductShortView
-                slug={product.slug}
-                salePrice={product.salePrice}
-                image={product.images({ first: 1})?.nodes?.[0]?.urlStandard}
-                name={product.name}
-                productPrice={product.productPrice}
-                price={product.price}
-              />
+              <ProductSummary product={product} key={product.slug} />
             ))}
           </div>
         </div>
