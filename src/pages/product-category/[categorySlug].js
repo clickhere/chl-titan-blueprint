@@ -15,9 +15,10 @@ import styles from 'styles/pages/_Shop.module.scss';
 import { pageTitle } from 'utils';
 import { classNames } from 'utils';
 
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-export function ShopComponent({ products }) {
+export function ShopComponent({ productCategory }) {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
   const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
@@ -54,18 +55,25 @@ export function ShopComponent({ products }) {
                       <a href="/product-category/"><span>Product Category</span></a>
                     </li>
                     <li className={classNames([styles.breadcrumb, styles.isActive])}>
-                      <span>Hoodies & Jackets</span>
+                      <span>{productCategory?.name}</span>
                     </li>
                   </ul>
                 </nav>
-                <h1 className="section-header">Hoodies &amp; Jackets</h1>
-                <div className="category-description">
-                  <p><span>Stay warm during winter or weight cut with our MMA Hoodies. Or stay warm before your next match with our BJJ Hoodies and jackets. Rep your passion with our Hoodies and Jackets Selection.</span></p>
-                </div>
+                <h1 className="section-header">{productCategory?.name}</h1>
+                <div
+                  className="category-description"
+                  dangerouslySetInnerHTML={{ __html: productCategory?.description }}
+                />
               </div>
-              <div className={classNames(['column', styles.heroImage])}>
-                <img src="https://cdn11.bigcommerce.com/s-mobtsc45qz/images/stencil/1280x1280/f/hoodies-jackets-updated-image__2021_category.original.jpg" alt="Hoodies &amp; Jackets" title="Hoodies &amp; Jackets" />
-              </div>
+              {
+                productCategory?.imageUrl
+                ? (
+                  <div className={classNames(['column', styles.heroImage])}>
+                    <img src={productCategory?.imageUrl} alt={productCategory?.name} />
+                  </div>
+                )
+                : null
+              }
             </div>
           </section>
           <div className={styles.shopTitle}>
@@ -73,7 +81,7 @@ export function ShopComponent({ products }) {
           </div>
 
           <div className={classNames(['row', 'row-wrap', styles.shop])}>
-            {products.map((product) => (
+            {productCategory?.products({ first: 1000 })?.nodes?.map((product) => (
               <ProductShortView
                 slug={product.slug}
                 salePrice={product.salePrice}
@@ -96,10 +104,13 @@ export function ShopComponent({ products }) {
 }
 
 export default function Page() {
+  const router = useRouter();
+  const { query } = router;
   const { useQuery } = client;
   const products = useQuery().products({ first: 100 });
+  const productCategory = useQuery().productCategory({ id: query.categorySlug, idType: 'SLUG' });
 
-  return <ShopComponent products={products?.nodes} />;
+  return <ShopComponent productCategory={productCategory} />;
 }
 
 export async function getStaticProps(context) {

@@ -23,6 +23,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { pageTitle } from 'utils';
 
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 import { useState } from 'react';
 import Slider from 'react-slick';
@@ -100,7 +101,10 @@ export function ProductComponent({ product, relatedProducts }) {
                   ? <p>
                       Categories: {' '}
                       {product.productCategories().nodes.map((category, index) => (
-                        <>{index === 0 ? '' : ', '}<a href="#">{category.name}</a></>
+                        <>
+                          {index === 0 ? '' : ', '}
+                          <Link href={`/product-category/${category.slug}`}><a>{category.name}</a></Link>
+                        </>
                       ))}
                     </p>
                   : null
