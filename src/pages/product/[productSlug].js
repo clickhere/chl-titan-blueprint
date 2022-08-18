@@ -30,7 +30,7 @@ import { classNames } from 'utils';
 
 import ReactImageMagnify from 'react-image-magnify';
 
-export function ProductComponent({ product }) {
+export function ProductComponent({ product, relatedProducts }) {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
   const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
@@ -43,7 +43,7 @@ export function ProductComponent({ product }) {
   const modifierLookup = JSON.parse(product.modifierLookupJson ?? '{}');
 
   console.log({ productFormFields, variantLookup, modifierLookup });
-
+  
   return (
     <>
       <SEO
@@ -111,24 +111,26 @@ export function ProductComponent({ product }) {
                   ? <p>Brand: {productBrand.name}</p>
                   : null
                 }
-
-                {productFormFields.map((field) => (
-                  <ProductFormField field={field} />
-                ))}
-
-                {/*<pre>{JSON.stringify(productFormFields, null, 2)}</pre>*/}
-
-                <div>
-                  <label style={{ display: 'block' }}>Quantity:</label>
-                  <input type="number" min="1" step="1" defaultValue="1" style={{
-                    width: '5em',
-                    padding: '.25em',
-                    borderRadius: '4px',
-                    borderWidth: '1px',
-                  }} />
-                </div>
-
-                <Button styleType="secondary">Add to cart</Button>
+                
+                <form>
+                  {productFormFields.sort((a, b) => a.sort_order - b.sort_order).map((field) => (
+                    <ProductFormField field={field} key={field.id} />
+                  ))}
+                
+                  {/*<pre>{JSON.stringify(productFormFields, null, 2)}</pre>*/}
+                
+                  <div>
+                    <label style={{ display: 'block' }}>Quantity:</label>
+                    <input type="number" min="1" step="1" defaultValue="1" style={{
+                      width: '5em',
+                      padding: '.25em',
+                      borderRadius: '4px',
+                      borderWidth: '1px',
+                    }} />
+                  </div>
+                
+                  <Button styleType="secondary">Add to cart</Button>
+                </form>
               </div>
             </div>
           </div>
@@ -151,22 +153,29 @@ export function ProductComponent({ product }) {
             </div>
           </div>
         </div>
-        <div className={classNames(['container', 'related-products'])}>
-          <div className="row">
-            <div className="column">
+        
+        {
+          relatedProducts?.length > 0
+          ? (
+            <div className={classNames(['container', 'related-products'])}>
               <h1>Related Products</h1>
-              <p>BigCommerce ID: {product?.bigCommerceID} | Related products: {product?.relatedProducts}</p>
-              <ProductShortView
-                slug={product.slug}
-                salePrice={product.salePrice}
-                image={product.images({ first: 1})?.nodes?.[0]?.urlStandard}
-                name={product.name}
-                productPrice={product.productPrice}
-                price={product.price}
-              />
+              <div className="row row-wrap">
+                {relatedProducts.map((product) => (
+                  <ProductShortView
+                    slug={product.slug}
+                    salePrice={product.salePrice}
+                    image={product.images({ first: 1})?.nodes?.[0]?.urlStandard}
+                    name={product.name}
+                    productPrice={product.productPrice}
+                    price={product.price}
+                    key={product.slug}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        </div>
+          )
+          : null
+        }
       </Main>
 
       <Footer
@@ -203,7 +212,12 @@ function ProductGallery({ images }) {
         slidesToScroll={4}
       >
         {images.map((image, index) => (
-          <img src={image.urlThumbnail} className={styles.productGalleryThumbnail} onClick={() => setProductIndex(index)} />
+          <img
+            src={image.urlThumbnail}
+            className={styles.productGalleryThumbnail}
+            onClick={() => setProductIndex(index)}
+            key={index}
+          />
         ))}
       </Slider>
     </div>
@@ -215,8 +229,11 @@ export default function Page() {
   const { query } = router;
   const { useQuery } = client;
   const product = useQuery().product({ id: query.productSlug, idType: 'SLUG' });
+  
+  const relatedProductIds = JSON.parse(product.relatedProducts ?? '[]');
+  const relatedProducts = useQuery().products({ where: { bigCommerceIDIn: relatedProductIds }})?.nodes;
 
-  return <ProductComponent product={product} />;
+  return <ProductComponent product={product} relatedProducts={relatedProducts} />;
 }
 
 export async function getStaticProps(context) {

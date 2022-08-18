@@ -673,6 +673,8 @@ export interface CreatePageInput {
   content?: InputMaybe<Scalars["String"]>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars["String"]>;
+  /** The excerpt of the object */
+  excerpt?: InputMaybe<Scalars["String"]>;
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
   menuOrder?: InputMaybe<Scalars["Int"]>;
   /** The ID of the parent object */
@@ -746,10 +748,12 @@ export interface CreateProductCategoryInput {
   categoryID: Scalars["Float"];
   categoryPageTitle?: InputMaybe<Scalars["String"]>;
   categoryParentID?: InputMaybe<Scalars["Float"]>;
+  categorySlug?: InputMaybe<Scalars["String"]>;
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: InputMaybe<Scalars["String"]>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars["String"]>;
+  description?: InputMaybe<Scalars["String"]>;
   imageUrl?: InputMaybe<Scalars["String"]>;
   json?: InputMaybe<Scalars["String"]>;
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
@@ -807,6 +811,8 @@ export interface CreateProductInput {
   productType: Scalars["String"];
   relatedProducts?: InputMaybe<Scalars["String"]>;
   retailPrice?: InputMaybe<Scalars["Float"]>;
+  reviewsCount?: InputMaybe<Scalars["Float"]>;
+  reviewsRating?: InputMaybe<Scalars["Float"]>;
   salePrice?: InputMaybe<Scalars["Float"]>;
   searchKeywords?: InputMaybe<Scalars["String"]>;
   sku?: InputMaybe<Scalars["String"]>;
@@ -1249,6 +1255,16 @@ export type MediaItemIdType =
 
 /** The size of the media item object. */
 export type MediaItemSizeEnum =
+  /** MediaItem with the gb-block-post-grid-landscape size */
+  | "GB_BLOCK_POST_GRID_LANDSCAPE"
+  /** MediaItem with the gb-block-post-grid-square size */
+  | "GB_BLOCK_POST_GRID_SQUARE"
+  /** MediaItem with the genesis-block-theme-featured-image size */
+  | "GENESIS_BLOCK_THEME_FEATURED_IMAGE"
+  /** MediaItem with the genesis-block-theme-featured-image-wide size */
+  | "GENESIS_BLOCK_THEME_FEATURED_IMAGE_WIDE"
+  /** MediaItem with the genesis-block-theme-logo size */
+  | "GENESIS_BLOCK_THEME_LOGO"
   /** MediaItem with the large size */
   | "LARGE"
   /** MediaItem with the medium size */
@@ -3034,6 +3050,10 @@ export interface RootQueryToProductConnectionWhereArgs {
   authorName?: InputMaybe<Scalars["String"]>;
   /** Find objects NOT connected to author(s) in the array of author's userIds */
   authorNotIn?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** The Big Commerce ID of the product object */
+  bigCommerceID?: InputMaybe<Scalars["ID"]>;
+  /** Array of Big Commerce IDs for the objects to retrieve */
+  bigCommerceIDIn?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Filter the connection based on dates */
   dateQuery?: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
@@ -3684,6 +3704,8 @@ export interface UpdatePageInput {
   content?: InputMaybe<Scalars["String"]>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars["String"]>;
+  /** The excerpt of the object */
+  excerpt?: InputMaybe<Scalars["String"]>;
   /** The ID of the page object */
   id: Scalars["ID"];
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
@@ -3763,10 +3785,12 @@ export interface UpdateProductCategoryInput {
   categoryID?: InputMaybe<Scalars["Float"]>;
   categoryPageTitle?: InputMaybe<Scalars["String"]>;
   categoryParentID?: InputMaybe<Scalars["Float"]>;
+  categorySlug?: InputMaybe<Scalars["String"]>;
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: InputMaybe<Scalars["String"]>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars["String"]>;
+  description?: InputMaybe<Scalars["String"]>;
   /** The ID of the productCategory object */
   id: Scalars["ID"];
   imageUrl?: InputMaybe<Scalars["String"]>;
@@ -3828,6 +3852,8 @@ export interface UpdateProductInput {
   productType?: InputMaybe<Scalars["String"]>;
   relatedProducts?: InputMaybe<Scalars["String"]>;
   retailPrice?: InputMaybe<Scalars["Float"]>;
+  reviewsCount?: InputMaybe<Scalars["Float"]>;
+  reviewsRating?: InputMaybe<Scalars["Float"]>;
   salePrice?: InputMaybe<Scalars["Float"]>;
   searchKeywords?: InputMaybe<Scalars["String"]>;
   sku?: InputMaybe<Scalars["String"]>;
@@ -3875,6 +3901,12 @@ export interface UpdateSettingsInput {
   generalSettingsTitle?: InputMaybe<Scalars["String"]>;
   /** Site URL. */
   generalSettingsUrl?: InputMaybe<Scalars["String"]>;
+  genesisBlocksGlobalSettingsSettingsGenesisBlocksMailchimpApiKey?: InputMaybe<
+    Scalars["String"]
+  >;
+  genesisBlocksGlobalSettingsSettingsGenesisProSubscriptionKey?: InputMaybe<
+    Scalars["String"]
+  >;
   /** Blog pages show at most. */
   readingSettingsPostsPerPage?: InputMaybe<Scalars["Int"]>;
   /** Default post category. */
@@ -4827,6 +4859,10 @@ export declare const generatedSchema: {
     preview: { __type: "BrandToPreviewConnectionEdge" };
     previewRevisionDatabaseId: { __type: "Int" };
     previewRevisionId: { __type: "ID" };
+    products: {
+      __type: "BrandToProductConnection";
+      __args: { after: "String"; before: "String"; first: "Int"; last: "Int" };
+    };
     searchKeywords: { __type: "String" };
     slug: { __type: "String" };
     status: { __type: "String" };
@@ -4841,6 +4877,17 @@ export declare const generatedSchema: {
   BrandToPreviewConnectionEdge: {
     __typename: { __type: "String!" };
     node: { __type: "Brand" };
+  };
+  BrandToProductConnection: {
+    __typename: { __type: "String!" };
+    edges: { __type: "[BrandToProductConnectionEdge]" };
+    nodes: { __type: "[Product]" };
+    pageInfo: { __type: "WPPageInfo" };
+  };
+  BrandToProductConnectionEdge: {
+    __typename: { __type: "String!" };
+    cursor: { __type: "String" };
+    node: { __type: "Product" };
   };
   Category: {
     __typename: { __type: "String!" };
@@ -5530,6 +5577,7 @@ export declare const generatedSchema: {
     commentStatus: { __type: "String" };
     content: { __type: "String" };
     date: { __type: "String" };
+    excerpt: { __type: "String" };
     menuOrder: { __type: "Int" };
     parentId: { __type: "ID" };
     password: { __type: "String" };
@@ -5583,8 +5631,10 @@ export declare const generatedSchema: {
     categoryID: { __type: "Float!" };
     categoryPageTitle: { __type: "String" };
     categoryParentID: { __type: "Float" };
+    categorySlug: { __type: "String" };
     clientMutationId: { __type: "String" };
     date: { __type: "String" };
+    description: { __type: "String" };
     imageUrl: { __type: "String" };
     json: { __type: "String" };
     menuOrder: { __type: "Int" };
@@ -5633,6 +5683,8 @@ export declare const generatedSchema: {
     productType: { __type: "String!" };
     relatedProducts: { __type: "String" };
     retailPrice: { __type: "Float" };
+    reviewsCount: { __type: "Float" };
+    reviewsRating: { __type: "Float" };
     salePrice: { __type: "Float" };
     searchKeywords: { __type: "String" };
     sku: { __type: "String" };
@@ -5997,6 +6049,11 @@ export declare const generatedSchema: {
     clientMutationId: { __type: "String" };
     code: { __type: "String" };
     error: { __type: "String" };
+  };
+  GenesisBlocksGlobalSettingsSettings: {
+    __typename: { __type: "String!" };
+    genesisBlocksMailchimpApiKey: { __type: "String" };
+    genesisProSubscriptionKey: { __type: "String" };
   };
   HierarchicalContentNode: {
     __typename: { __type: "String!" };
@@ -6674,6 +6731,10 @@ export declare const generatedSchema: {
     enqueuedStylesheets: {
       __type: "ContentNodeToEnqueuedStylesheetConnection";
       __args: { after: "String"; before: "String"; first: "Int"; last: "Int" };
+    };
+    excerpt: {
+      __type: "String";
+      __args: { format: "PostObjectFieldFormatEnum" };
     };
     featuredImage: { __type: "NodeWithFeaturedImageToMediaItemConnectionEdge" };
     featuredImageDatabaseId: { __type: "Int" };
@@ -7424,6 +7485,8 @@ export declare const generatedSchema: {
     productType: { __type: "String" };
     relatedProducts: { __type: "String" };
     retailPrice: { __type: "Float" };
+    reviewsCount: { __type: "Float" };
+    reviewsRating: { __type: "Float" };
     salePrice: { __type: "Float" };
     searchKeywords: { __type: "String" };
     sku: { __type: "String" };
@@ -7454,12 +7517,14 @@ export declare const generatedSchema: {
     categoryID: { __type: "Float" };
     categoryPageTitle: { __type: "String" };
     categoryParentID: { __type: "Float" };
+    categorySlug: { __type: "String" };
     conditionalTags: { __type: "ConditionalTags" };
     contentType: { __type: "ContentNodeToContentTypeConnectionEdge" };
     contentTypeName: { __type: "String!" };
     databaseId: { __type: "Int!" };
     date: { __type: "String" };
     dateGmt: { __type: "String" };
+    description: { __type: "String" };
     desiredSlug: { __type: "String" };
     editingLockedBy: { __type: "ContentNodeToEditLockConnectionEdge" };
     enclosure: { __type: "String" };
@@ -7491,6 +7556,10 @@ export declare const generatedSchema: {
     previewRevisionId: { __type: "ID" };
     productCategoryId: { __type: "Int!" };
     productSort: { __type: "String" };
+    products: {
+      __type: "ProductCategoryToProductConnection";
+      __args: { after: "String"; before: "String"; first: "Int"; last: "Int" };
+    };
     searchKeywords: { __type: "String" };
     slug: { __type: "String" };
     sortOrder: { __type: "Float" };
@@ -7507,6 +7576,17 @@ export declare const generatedSchema: {
   ProductCategoryToPreviewConnectionEdge: {
     __typename: { __type: "String!" };
     node: { __type: "ProductCategory" };
+  };
+  ProductCategoryToProductConnection: {
+    __typename: { __type: "String!" };
+    edges: { __type: "[ProductCategoryToProductConnectionEdge]" };
+    nodes: { __type: "[Product]" };
+    pageInfo: { __type: "WPPageInfo" };
+  };
+  ProductCategoryToProductConnectionEdge: {
+    __typename: { __type: "String!" };
+    cursor: { __type: "String" };
+    node: { __type: "Product" };
   };
   ProductToBrandConnectionEdge: {
     __typename: { __type: "String!" };
@@ -8159,6 +8239,8 @@ export declare const generatedSchema: {
     authorIn: { __type: "[ID]" };
     authorName: { __type: "String" };
     authorNotIn: { __type: "[ID]" };
+    bigCommerceID: { __type: "ID" };
+    bigCommerceIDIn: { __type: "[ID]" };
     dateQuery: { __type: "DateQueryInput" };
     hasPassword: { __type: "Boolean" };
     id: { __type: "Int" };
@@ -8398,6 +8480,12 @@ export declare const generatedSchema: {
     generalSettingsTimezone: { __type: "String" };
     generalSettingsTitle: { __type: "String" };
     generalSettingsUrl: { __type: "String" };
+    genesisBlocksGlobalSettingsSettingsGenesisBlocksMailchimpApiKey: {
+      __type: "String";
+    };
+    genesisBlocksGlobalSettingsSettingsGenesisProSubscriptionKey: {
+      __type: "String";
+    };
     readingSettingsPostsPerPage: { __type: "Int" };
     writingSettingsDefaultCategory: { __type: "Int" };
     writingSettingsDefaultPostFormat: { __type: "String" };
@@ -8628,19 +8716,7 @@ export declare const generatedSchema: {
     cursor: { __type: "String" };
     node: { __type: "ContentType" };
   };
-  Template_Blank: {
-    __typename: { __type: "String!" };
-    templateName: { __type: "String" };
-  };
-  Template_PageLargeHeader: {
-    __typename: { __type: "String!" };
-    templateName: { __type: "String" };
-  };
-  Template_PageNoSeparators: {
-    __typename: { __type: "String!" };
-    templateName: { __type: "String" };
-  };
-  Template_SinglePostNoSeparators: {
+  Template_FullWidth: {
     __typename: { __type: "String!" };
     templateName: { __type: "String" };
   };
@@ -8873,6 +8949,7 @@ export declare const generatedSchema: {
     commentStatus: { __type: "String" };
     content: { __type: "String" };
     date: { __type: "String" };
+    excerpt: { __type: "String" };
     id: { __type: "ID!" };
     menuOrder: { __type: "Int" };
     parentId: { __type: "ID" };
@@ -8929,8 +9006,10 @@ export declare const generatedSchema: {
     categoryID: { __type: "Float" };
     categoryPageTitle: { __type: "String" };
     categoryParentID: { __type: "Float" };
+    categorySlug: { __type: "String" };
     clientMutationId: { __type: "String" };
     date: { __type: "String" };
+    description: { __type: "String" };
     id: { __type: "ID!" };
     imageUrl: { __type: "String" };
     json: { __type: "String" };
@@ -8981,6 +9060,8 @@ export declare const generatedSchema: {
     productType: { __type: "String" };
     relatedProducts: { __type: "String" };
     retailPrice: { __type: "Float" };
+    reviewsCount: { __type: "Float" };
+    reviewsRating: { __type: "Float" };
     salePrice: { __type: "Float" };
     searchKeywords: { __type: "String" };
     sku: { __type: "String" };
@@ -9014,6 +9095,12 @@ export declare const generatedSchema: {
     generalSettingsTimezone: { __type: "String" };
     generalSettingsTitle: { __type: "String" };
     generalSettingsUrl: { __type: "String" };
+    genesisBlocksGlobalSettingsSettingsGenesisBlocksMailchimpApiKey: {
+      __type: "String";
+    };
+    genesisBlocksGlobalSettingsSettingsGenesisProSubscriptionKey: {
+      __type: "String";
+    };
     readingSettingsPostsPerPage: { __type: "Int" };
     writingSettingsDefaultCategory: { __type: "Int" };
     writingSettingsDefaultPostFormat: { __type: "String" };
@@ -9028,6 +9115,9 @@ export declare const generatedSchema: {
     clientMutationId: { __type: "String" };
     discussionSettings: { __type: "DiscussionSettings" };
     generalSettings: { __type: "GeneralSettings" };
+    genesisBlocksGlobalSettingsSettings: {
+      __type: "GenesisBlocksGlobalSettingsSettings";
+    };
     readingSettings: { __type: "ReadingSettings" };
     writingSettings: { __type: "WritingSettings" };
   };
@@ -10186,6 +10276,9 @@ export declare const generatedSchema: {
     };
     discussionSettings: { __type: "DiscussionSettings" };
     generalSettings: { __type: "GeneralSettings" };
+    genesisBlocksGlobalSettingsSettings: {
+      __type: "GenesisBlocksGlobalSettingsSettings";
+    };
     image: {
       __type: "Image";
       __args: { asPreview: "Boolean"; id: "ID!"; idType: "ImageIdType" };
@@ -10628,22 +10721,16 @@ export declare const generatedSchema: {
     TermNode: ["Category", "PostFormat", "Tag"];
     Commenter: ["CommentAuthor", "User"];
     ContentRevisionUnion: ["Page", "Post"];
-    ContentTemplate: [
-      "DefaultTemplate",
-      "Template_Blank",
-      "Template_PageLargeHeader",
-      "Template_PageNoSeparators",
-      "Template_SinglePostNoSeparators"
-    ];
+    ContentTemplate: ["DefaultTemplate", "Template_FullWidth"];
     EnqueuedAsset: ["EnqueuedScript", "EnqueuedStylesheet"];
     HierarchicalContentNode: ["MediaItem", "Page"];
     NodeWithComments: ["MediaItem", "Page", "Post"];
     MenuItemObjectUnion: ["Category", "Page", "Post", "Tag"];
     NodeWithContentEditor: ["Page", "Post"];
+    NodeWithExcerpt: ["Page", "Post"];
     NodeWithFeaturedImage: ["Page", "Post"];
     NodeWithPageAttributes: ["Page"];
     NodeWithRevisions: ["Page", "Post"];
-    NodeWithExcerpt: ["Post"];
     NodeWithTrackbacks: ["Post"];
   };
 };
@@ -11063,6 +11150,27 @@ export interface Brand {
    * Whether the object is a node in the preview state
    */
   previewRevisionId?: Maybe<ScalarsEnums["ID"]>;
+  /**
+   * Connection between the brand type and the product type
+   */
+  products: (args?: {
+    /**
+     * Cursor used along with the "first" argument to reference where in the dataset to get data
+     */
+    after?: Maybe<Scalars["String"]>;
+    /**
+     * Cursor used along with the "last" argument to reference where in the dataset to get data
+     */
+    before?: Maybe<Scalars["String"]>;
+    /**
+     * The number of items to return after the referenced "after" cursor
+     */
+    first?: Maybe<Scalars["Int"]>;
+    /**
+     * The number of items to return before the referenced "before" cursor
+     */
+    last?: Maybe<Scalars["Int"]>;
+  }) => Maybe<BrandToProductConnection>;
   searchKeywords?: Maybe<ScalarsEnums["String"]>;
   /**
    * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
@@ -11101,6 +11209,40 @@ export interface BrandToPreviewConnectionEdge {
    * The node of the connection, without the edges
    */
   node?: Maybe<Brand>;
+}
+
+/**
+ * Connection between the brand type and the product type
+ */
+export interface BrandToProductConnection {
+  __typename?: "BrandToProductConnection";
+  /**
+   * Edges for the BrandToProductConnection connection
+   */
+  edges?: Maybe<Array<Maybe<BrandToProductConnectionEdge>>>;
+  /**
+   * The nodes of the connection, without the edges
+   */
+  nodes?: Maybe<Array<Maybe<Product>>>;
+  /**
+   * Information about pagination in a connection.
+   */
+  pageInfo?: Maybe<WPPageInfo>;
+}
+
+/**
+ * An edge in a connection
+ */
+export interface BrandToProductConnectionEdge {
+  __typename?: "BrandToProductConnectionEdge";
+  /**
+   * A cursor for use in pagination
+   */
+  cursor?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The item at the end of the edge
+   */
+  node?: Maybe<Product>;
 }
 
 /**
@@ -12147,12 +12289,7 @@ export interface ContentRevisionUnion {
  * The template assigned to a node of content
  */
 export interface ContentTemplate {
-  __typename?:
-    | "DefaultTemplate"
-    | "Template_Blank"
-    | "Template_PageLargeHeader"
-    | "Template_PageNoSeparators"
-    | "Template_SinglePostNoSeparators";
+  __typename?: "DefaultTemplate" | "Template_FullWidth";
   /**
    * The name of the template
    */
@@ -13176,6 +13313,21 @@ export interface GenerateAuthorizationCodePayload {
    * Error encountered during user authentication, if any
    */
   error?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * The genesisBlocksGlobalSettings setting type
+ */
+export interface GenesisBlocksGlobalSettingsSettings {
+  __typename?: "GenesisBlocksGlobalSettingsSettings";
+  /**
+   * The string Settings Group
+   */
+  genesisBlocksMailchimpApiKey?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The string Settings Group
+   */
+  genesisProSubscriptionKey?: Maybe<ScalarsEnums["String"]>;
 }
 
 /**
@@ -14663,7 +14815,7 @@ export interface NodeWithContentEditor {
  * A node that can have an excerpt
  */
 export interface NodeWithExcerpt {
-  __typename?: "Post";
+  __typename?: "Page" | "Post";
   /**
    * The excerpt of the post.
    */
@@ -15147,6 +15299,15 @@ export interface Page {
      */
     last?: Maybe<Scalars["Int"]>;
   }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
+  /**
+   * The excerpt of the post.
+   */
+  excerpt: (args?: {
+    /**
+     * Format of the field output
+     */
+    format?: Maybe<PostObjectFieldFormatEnum>;
+  }) => Maybe<ScalarsEnums["String"]>;
   /**
    * Connection between the NodeWithFeaturedImage type and the MediaItem type
    */
@@ -16636,6 +16797,8 @@ export interface Product {
   productType?: Maybe<ScalarsEnums["String"]>;
   relatedProducts?: Maybe<ScalarsEnums["String"]>;
   retailPrice?: Maybe<ScalarsEnums["Float"]>;
+  reviewsCount?: Maybe<ScalarsEnums["Float"]>;
+  reviewsRating?: Maybe<ScalarsEnums["Float"]>;
   salePrice?: Maybe<ScalarsEnums["Float"]>;
   searchKeywords?: Maybe<ScalarsEnums["String"]>;
   sku?: Maybe<ScalarsEnums["String"]>;
@@ -16716,6 +16879,7 @@ export interface ProductCategory {
   categoryID?: Maybe<ScalarsEnums["Float"]>;
   categoryPageTitle?: Maybe<ScalarsEnums["String"]>;
   categoryParentID?: Maybe<ScalarsEnums["Float"]>;
+  categorySlug?: Maybe<ScalarsEnums["String"]>;
   /**
    * @deprecated Deprecated in favor of using Next.js pages
    */
@@ -16740,6 +16904,7 @@ export interface ProductCategory {
    * The publishing date set in GMT.
    */
   dateGmt?: Maybe<ScalarsEnums["String"]>;
+  description?: Maybe<ScalarsEnums["String"]>;
   /**
    * The desired slug of the post
    */
@@ -16857,6 +17022,27 @@ export interface ProductCategory {
    */
   productCategoryId: ScalarsEnums["Int"];
   productSort?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * Connection between the productCategory type and the product type
+   */
+  products: (args?: {
+    /**
+     * Cursor used along with the "first" argument to reference where in the dataset to get data
+     */
+    after?: Maybe<Scalars["String"]>;
+    /**
+     * Cursor used along with the "last" argument to reference where in the dataset to get data
+     */
+    before?: Maybe<Scalars["String"]>;
+    /**
+     * The number of items to return after the referenced "after" cursor
+     */
+    first?: Maybe<Scalars["Int"]>;
+    /**
+     * The number of items to return before the referenced "before" cursor
+     */
+    last?: Maybe<Scalars["Int"]>;
+  }) => Maybe<ProductCategoryToProductConnection>;
   searchKeywords?: Maybe<ScalarsEnums["String"]>;
   /**
    * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
@@ -16897,6 +17083,40 @@ export interface ProductCategoryToPreviewConnectionEdge {
    * The node of the connection, without the edges
    */
   node?: Maybe<ProductCategory>;
+}
+
+/**
+ * Connection between the productCategory type and the product type
+ */
+export interface ProductCategoryToProductConnection {
+  __typename?: "ProductCategoryToProductConnection";
+  /**
+   * Edges for the ProductCategoryToProductConnection connection
+   */
+  edges?: Maybe<Array<Maybe<ProductCategoryToProductConnectionEdge>>>;
+  /**
+   * The nodes of the connection, without the edges
+   */
+  nodes?: Maybe<Array<Maybe<Product>>>;
+  /**
+   * Information about pagination in a connection.
+   */
+  pageInfo?: Maybe<WPPageInfo>;
+}
+
+/**
+ * An edge in a connection
+ */
+export interface ProductCategoryToProductConnectionEdge {
+  __typename?: "ProductCategoryToProductConnectionEdge";
+  /**
+   * A cursor for use in pagination
+   */
+  cursor?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * The item at the end of the edge
+   */
+  node?: Maybe<Product>;
 }
 
 /**
@@ -18140,6 +18360,18 @@ export interface Settings {
    */
   generalSettingsUrl?: Maybe<ScalarsEnums["String"]>;
   /**
+   * Settings of the the string Settings Group
+   */
+  genesisBlocksGlobalSettingsSettingsGenesisBlocksMailchimpApiKey?: Maybe<
+    ScalarsEnums["String"]
+  >;
+  /**
+   * Settings of the the string Settings Group
+   */
+  genesisBlocksGlobalSettingsSettingsGenesisProSubscriptionKey?: Maybe<
+    ScalarsEnums["String"]
+  >;
+  /**
    * Settings of the the integer Settings Group
    */
   readingSettingsPostsPerPage?: Maybe<ScalarsEnums["Int"]>;
@@ -18747,41 +18979,8 @@ export interface TaxonomyToContentTypeConnectionEdge {
 /**
  * The template assigned to the node
  */
-export interface Template_Blank {
-  __typename?: "Template_Blank";
-  /**
-   * The name of the template
-   */
-  templateName?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * The template assigned to the node
- */
-export interface Template_PageLargeHeader {
-  __typename?: "Template_PageLargeHeader";
-  /**
-   * The name of the template
-   */
-  templateName?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * The template assigned to the node
- */
-export interface Template_PageNoSeparators {
-  __typename?: "Template_PageNoSeparators";
-  /**
-   * The name of the template
-   */
-  templateName?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * The template assigned to the node
- */
-export interface Template_SinglePostNoSeparators {
-  __typename?: "Template_SinglePostNoSeparators";
+export interface Template_FullWidth {
+  __typename?: "Template_FullWidth";
   /**
    * The name of the template
    */
@@ -19272,6 +19471,10 @@ export interface UpdateSettingsPayload {
    * Update the GeneralSettings setting.
    */
   generalSettings?: Maybe<GeneralSettings>;
+  /**
+   * Update the GenesisBlocksGlobalSettingsSettings setting.
+   */
+  genesisBlocksGlobalSettingsSettings?: Maybe<GenesisBlocksGlobalSettingsSettings>;
   /**
    * Update the ReadingSettings setting.
    */
@@ -20878,6 +21081,7 @@ export interface Query {
   }) => Maybe<RootQueryToContentTypeConnection>;
   discussionSettings?: Maybe<DiscussionSettings>;
   generalSettings?: Maybe<GeneralSettings>;
+  genesisBlocksGlobalSettingsSettings?: Maybe<GenesisBlocksGlobalSettingsSettings>;
   image: (args: {
     asPreview?: Maybe<Scalars["Boolean"]>;
     id: Scalars["ID"];
@@ -21174,6 +21378,8 @@ export interface SchemaObjectTypes {
   BannerToPreviewConnectionEdge: BannerToPreviewConnectionEdge;
   Brand: Brand;
   BrandToPreviewConnectionEdge: BrandToPreviewConnectionEdge;
+  BrandToProductConnection: BrandToProductConnection;
+  BrandToProductConnectionEdge: BrandToProductConnectionEdge;
   Category: Category;
   CategoryToAncestorsCategoryConnection: CategoryToAncestorsCategoryConnection;
   CategoryToAncestorsCategoryConnectionEdge: CategoryToAncestorsCategoryConnectionEdge;
@@ -21243,6 +21449,7 @@ export interface SchemaObjectTypes {
   EnqueuedStylesheet: EnqueuedStylesheet;
   GeneralSettings: GeneralSettings;
   GenerateAuthorizationCodePayload: GenerateAuthorizationCodePayload;
+  GenesisBlocksGlobalSettingsSettings: GenesisBlocksGlobalSettingsSettings;
   HierarchicalContentNodeToContentNodeAncestorsConnection: HierarchicalContentNodeToContentNodeAncestorsConnection;
   HierarchicalContentNodeToContentNodeAncestorsConnectionEdge: HierarchicalContentNodeToContentNodeAncestorsConnectionEdge;
   HierarchicalContentNodeToContentNodeChildrenConnection: HierarchicalContentNodeToContentNodeChildrenConnection;
@@ -21301,6 +21508,8 @@ export interface SchemaObjectTypes {
   Product: Product;
   ProductCategory: ProductCategory;
   ProductCategoryToPreviewConnectionEdge: ProductCategoryToPreviewConnectionEdge;
+  ProductCategoryToProductConnection: ProductCategoryToProductConnection;
+  ProductCategoryToProductConnectionEdge: ProductCategoryToProductConnectionEdge;
   ProductToBrandConnectionEdge: ProductToBrandConnectionEdge;
   ProductToImageConnection: ProductToImageConnection;
   ProductToImageConnectionEdge: ProductToImageConnectionEdge;
@@ -21386,10 +21595,7 @@ export interface SchemaObjectTypes {
   Taxonomy: Taxonomy;
   TaxonomyToContentTypeConnection: TaxonomyToContentTypeConnection;
   TaxonomyToContentTypeConnectionEdge: TaxonomyToContentTypeConnectionEdge;
-  Template_Blank: Template_Blank;
-  Template_PageLargeHeader: Template_PageLargeHeader;
-  Template_PageNoSeparators: Template_PageNoSeparators;
-  Template_SinglePostNoSeparators: Template_SinglePostNoSeparators;
+  Template_FullWidth: Template_FullWidth;
   TermNodeToEnqueuedScriptConnection: TermNodeToEnqueuedScriptConnection;
   TermNodeToEnqueuedScriptConnectionEdge: TermNodeToEnqueuedScriptConnectionEdge;
   TermNodeToEnqueuedStylesheetConnection: TermNodeToEnqueuedStylesheetConnection;
@@ -21458,6 +21664,8 @@ export type SchemaObjectTypesNames =
   | "BannerToPreviewConnectionEdge"
   | "Brand"
   | "BrandToPreviewConnectionEdge"
+  | "BrandToProductConnection"
+  | "BrandToProductConnectionEdge"
   | "Category"
   | "CategoryToAncestorsCategoryConnection"
   | "CategoryToAncestorsCategoryConnectionEdge"
@@ -21527,6 +21735,7 @@ export type SchemaObjectTypesNames =
   | "EnqueuedStylesheet"
   | "GeneralSettings"
   | "GenerateAuthorizationCodePayload"
+  | "GenesisBlocksGlobalSettingsSettings"
   | "HierarchicalContentNodeToContentNodeAncestorsConnection"
   | "HierarchicalContentNodeToContentNodeAncestorsConnectionEdge"
   | "HierarchicalContentNodeToContentNodeChildrenConnection"
@@ -21585,6 +21794,8 @@ export type SchemaObjectTypesNames =
   | "Product"
   | "ProductCategory"
   | "ProductCategoryToPreviewConnectionEdge"
+  | "ProductCategoryToProductConnection"
+  | "ProductCategoryToProductConnectionEdge"
   | "ProductToBrandConnectionEdge"
   | "ProductToImageConnection"
   | "ProductToImageConnectionEdge"
@@ -21670,10 +21881,7 @@ export type SchemaObjectTypesNames =
   | "Taxonomy"
   | "TaxonomyToContentTypeConnection"
   | "TaxonomyToContentTypeConnectionEdge"
-  | "Template_Blank"
-  | "Template_PageLargeHeader"
-  | "Template_PageNoSeparators"
-  | "Template_SinglePostNoSeparators"
+  | "Template_FullWidth"
   | "TermNodeToEnqueuedScriptConnection"
   | "TermNodeToEnqueuedScriptConnectionEdge"
   | "TermNodeToEnqueuedStylesheetConnection"
@@ -21761,10 +21969,7 @@ export interface $ContentRevisionUnion {
 
 export interface $ContentTemplate {
   DefaultTemplate?: DefaultTemplate;
-  Template_Blank?: Template_Blank;
-  Template_PageLargeHeader?: Template_PageLargeHeader;
-  Template_PageNoSeparators?: Template_PageNoSeparators;
-  Template_SinglePostNoSeparators?: Template_SinglePostNoSeparators;
+  Template_FullWidth?: Template_FullWidth;
 }
 
 export interface $DatabaseIdentifier {
@@ -21871,6 +22076,7 @@ export interface $NodeWithContentEditor {
 }
 
 export interface $NodeWithExcerpt {
+  Page?: Page;
   Post?: Post;
 }
 
