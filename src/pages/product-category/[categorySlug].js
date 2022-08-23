@@ -77,9 +77,6 @@ export function ShopComponent({ productCategory }) {
               }
             </div>
           </section>
-          <div className={styles.shopTitle}>
-            <h1>Product Category</h1>
-          </div>
 
           <div className={classNames(['row', 'row-wrap', styles.shop])}>
             <ProductSort products={productCategory?.products({ first: 1000 })?.nodes} />
