@@ -8,16 +8,28 @@ export default function ProductSort({ products }) {
     product,
     index,
     price: (product.salePrice === 0 ? product.price : product.salePrice),
+    rating: product.reviewsRating,
+    popularity: product.totalSold,
+    latest: product.bigCommerceID,
   }));
   
-  const [sorted, setSorted] = useState({ order: 'index-asc', products: productsMap });
+  const [sorted, setSorted] = useState({ order: 'index', products: productsMap });
   
   function sortBy(order) {
     setSorted({
       order,
       products: productsMap.slice().sort((a, b) => {
-        if (order === 'index-asc') {
+        if (order === 'index') {
           return a.index - b.index;
+        }
+        if (order === 'popularity') {
+          return b.popularity - a.popularity;
+        }
+        if (order === 'rating') {
+          return b.rating - a.rating;
+        }
+        if (order === 'latest') {
+          return b.latest - a.latest;
         }
         if (order === 'price-asc') {
           return a.price - b.price;
@@ -34,7 +46,10 @@ export default function ProductSort({ products }) {
     return (
       <div className="column">
         <select onChange={(event) => sortBy(event.target.value)} value={sorted.order}>
-          <option value="index-asc">Default sorting</option>
+          <option value="index">Default sorting</option>
+          <option value="popularity">Sort by popularity</option>
+          <option value="rating">Sort by average rating</option>
+          <option value="latest">Sort by latest</option>
           <option value="price-asc">Sort by price: low to high</option>
           <option value="price-desc">Sort by price: high to low</option>
         </select>
