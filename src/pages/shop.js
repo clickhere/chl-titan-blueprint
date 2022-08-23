@@ -10,6 +10,7 @@ import {
   SEO,
   TaxonomyTerms,
   ProductSummary,
+  ProductSort,
 } from 'components';
 import styles from 'styles/pages/_Shop.module.scss';
 import { pageTitle } from 'utils';
@@ -48,9 +49,7 @@ export function ShopComponent({ products }) {
           </div>
 
           <div className={classNames(['row', 'row-wrap', styles.shop])}>
-            {products.map((product) => (
-              <ProductSummary product={product} key={product.slug} />
-            ))}
+            <ProductSort products={products} />
           </div>
         </div>
       </Main>

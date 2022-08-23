@@ -86,8 +86,8 @@ export function ProductComponent({ product, relatedProducts }) {
               }}>
                 {
                   product?.salePrice === 0
-                  ? '$' + product?.price
-                  : <><del>${product?.price}</del> ${product?.salePrice}</>
+                  ? '$' + product?.price?.toFixed(2)
+                  : <><del>${product?.price?.toFixed(2)}</del> ${product?.salePrice?.toFixed(2)}</>
                 }
               </p>
 
