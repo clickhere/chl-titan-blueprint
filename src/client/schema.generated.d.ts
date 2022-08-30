@@ -781,6 +781,7 @@ export interface CreateProductInput {
   authorId?: InputMaybe<Scalars["ID"]>;
   availability?: InputMaybe<Scalars["String"]>;
   bigCommerceID: Scalars["Float"];
+  calculatedPrice?: InputMaybe<Scalars["Float"]>;
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: InputMaybe<Scalars["String"]>;
   costPrice?: InputMaybe<Scalars["Float"]>;
@@ -918,6 +919,7 @@ export interface CreateUserInput {
 export interface CreateVariantInput {
   /** The userId to assign as the author of the object */
   authorId?: InputMaybe<Scalars["ID"]>;
+  bigCommerceVariantID: Scalars["Float"];
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: InputMaybe<Scalars["String"]>;
   costPrice?: InputMaybe<Scalars["Float"]>;
@@ -940,7 +942,6 @@ export interface CreateVariantInput {
   /** The title of the object */
   title?: InputMaybe<Scalars["String"]>;
   variantDisplayName?: InputMaybe<Scalars["String"]>;
-  variantID: Scalars["Float"];
 }
 
 /** Date values */
@@ -3820,6 +3821,7 @@ export interface UpdateProductInput {
   authorId?: InputMaybe<Scalars["ID"]>;
   availability?: InputMaybe<Scalars["String"]>;
   bigCommerceID?: InputMaybe<Scalars["Float"]>;
+  calculatedPrice?: InputMaybe<Scalars["Float"]>;
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: InputMaybe<Scalars["String"]>;
   costPrice?: InputMaybe<Scalars["Float"]>;
@@ -4009,6 +4011,7 @@ export interface UpdateUserInput {
 export interface UpdateVariantInput {
   /** The userId to assign as the author of the object */
   authorId?: InputMaybe<Scalars["ID"]>;
+  bigCommerceVariantID?: InputMaybe<Scalars["Float"]>;
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: InputMaybe<Scalars["String"]>;
   costPrice?: InputMaybe<Scalars["Float"]>;
@@ -4033,7 +4036,6 @@ export interface UpdateVariantInput {
   /** The title of the object */
   title?: InputMaybe<Scalars["String"]>;
   variantDisplayName?: InputMaybe<Scalars["String"]>;
-  variantID?: InputMaybe<Scalars["Float"]>;
 }
 
 /** The Type of Identifier used to fetch a single User node. To be used along with the "id" field. Default is "ID". */
@@ -5659,6 +5661,7 @@ export declare const generatedSchema: {
     authorId: { __type: "ID" };
     availability: { __type: "String" };
     bigCommerceID: { __type: "Float!" };
+    calculatedPrice: { __type: "Float" };
     clientMutationId: { __type: "String" };
     costPrice: { __type: "Float" };
     date: { __type: "String" };
@@ -5766,6 +5769,7 @@ export declare const generatedSchema: {
   };
   CreateVariantInput: {
     authorId: { __type: "ID" };
+    bigCommerceVariantID: { __type: "Float!" };
     clientMutationId: { __type: "String" };
     costPrice: { __type: "Float" };
     date: { __type: "String" };
@@ -5781,7 +5785,6 @@ export declare const generatedSchema: {
     status: { __type: "PostStatusEnum" };
     title: { __type: "String" };
     variantDisplayName: { __type: "String" };
-    variantID: { __type: "Float!" };
   };
   CreateVariantPayload: {
     __typename: { __type: "String!" };
@@ -7422,6 +7425,7 @@ export declare const generatedSchema: {
     availability: { __type: "String" };
     bigCommerceID: { __type: "Float" };
     brand: { __type: "ProductToBrandConnectionEdge" };
+    calculatedPrice: { __type: "Float" };
     conditionalTags: { __type: "ConditionalTags" };
     contentType: { __type: "ContentNodeToContentTypeConnectionEdge" };
     contentTypeName: { __type: "String!" };
@@ -9035,6 +9039,7 @@ export declare const generatedSchema: {
     authorId: { __type: "ID" };
     availability: { __type: "String" };
     bigCommerceID: { __type: "Float" };
+    calculatedPrice: { __type: "Float" };
     clientMutationId: { __type: "String" };
     costPrice: { __type: "Float" };
     date: { __type: "String" };
@@ -9187,6 +9192,7 @@ export declare const generatedSchema: {
   };
   UpdateVariantInput: {
     authorId: { __type: "ID" };
+    bigCommerceVariantID: { __type: "Float" };
     clientMutationId: { __type: "String" };
     costPrice: { __type: "Float" };
     date: { __type: "String" };
@@ -9203,7 +9209,6 @@ export declare const generatedSchema: {
     status: { __type: "PostStatusEnum" };
     title: { __type: "String" };
     variantDisplayName: { __type: "String" };
-    variantID: { __type: "Float" };
   };
   UpdateVariantPayload: {
     __typename: { __type: "String!" };
@@ -9894,6 +9899,7 @@ export declare const generatedSchema: {
     author: { __type: "NodeWithAuthorToUserConnectionEdge" };
     authorDatabaseId: { __type: "Int" };
     authorId: { __type: "ID" };
+    bigCommerceVariantID: { __type: "Float" };
     conditionalTags: { __type: "ConditionalTags" };
     contentType: { __type: "ContentNodeToContentTypeConnectionEdge" };
     contentTypeName: { __type: "String!" };
@@ -16573,6 +16579,7 @@ export interface Product {
    * Connection between the product type and the brand type
    */
   brand?: Maybe<ProductToBrandConnectionEdge>;
+  calculatedPrice?: Maybe<ScalarsEnums["Float"]>;
   /**
    * @deprecated Deprecated in favor of using Next.js pages
    */
@@ -20640,6 +20647,7 @@ export interface Variant {
    * The globally unique identifier of the author of the node
    */
   authorId?: Maybe<ScalarsEnums["ID"]>;
+  bigCommerceVariantID?: Maybe<ScalarsEnums["Float"]>;
   /**
    * @deprecated Deprecated in favor of using Next.js pages
    */

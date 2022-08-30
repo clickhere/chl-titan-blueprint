@@ -1,21 +1,26 @@
+import { useState } from 'react';
 import styles from './ProductFormField.module.scss';
 
 function camelize(text) {
   return text?.replace(/(?:^|_)([a-z])/g, ($0, $1) => $1.toUpperCase());
 }
 
-export default function ProductFormField({ field }) {
+export default function ProductFormField({ field, value, onChange }) {
   const FieldType = fieldTypes[camelize(field.type)];
-  console.log({ label: field.display_name, field });
+  // console.log({ label: field.display_name, field });
   
   const id = `attribute_${field.type}_${field.id}`;
   const name = `attributes[${field.id}]`;
   const required = field.required === true || field.prodOptionType === 'variant';
   
+  function handleChange(value) {
+    onChange(`${field.prodOptionType}[${field.id}]`, value);
+  }
+  
   return (
     FieldType
-    ? <FieldType field={field} id={id} name={name} required={required} />
-    : null /*<div>[{field.type}]</div>*/
+    ? <FieldType field={field} id={id} name={name} required={required} value={value} onChange={handleChange} />
+    : null
   );
 }
 
@@ -47,29 +52,30 @@ function Field({ field, id, required, grouped, children, ...props }) {
 }
 
 const fieldTypes = {
-  Swatch({ field, id, required, name }) {
+  Swatch({ field, id, name, required, value, onChange }) {
     return (
       <Field field={field} id={id} required={required} grouped>
-        {field.option_values.map((value, index) => {
-          const id = `attribute_swatch_${field.id}_${value.id}`;
+        {field.option_values.map((option, index) => {
+          const id = `attribute_swatch_${field.id}_${option.id}`;
           
           return (
-            <div className={styles.formOptionWrapper} key={value.id}>
+            <div className={styles.formOptionWrapper} key={option.id}>
               <input
                 type="radio"
                 name={name}
-                value={value.id}
+                value={option.id}
                 id={id}
-                aria-label={value.label}
-                defaultChecked={value.is_default}
+                aria-label={option.label}
+                checked={option.id === value}
+                onChange={e => onChange(option.id)}
               />
               <label htmlFor={id} className={styles.formOption}>
-                {value.value_data?.colors?.map((color, index) => (
-                  <span title={value.label} className={styles.formOptionVariant + ' ' + styles.formOptionVariantColor} style={{ backgroundColor: color }} key={index} />
+                {option.value_data?.colors?.map((color, index) => (
+                  <span title={option.label} className={styles.formOptionVariant + ' ' + styles.formOptionVariantColor} style={{ backgroundColor: color }} key={index} />
                 ))}
                 {
-                  value.value_data?.image_url
-                  ? <span title={value.label} className={styles.formOptionVariant + ' ' + styles.formOptionVariantPattern} style={{ backgroundImage: `url('${value.value_data.image_url}')` }} />
+                  option.value_data?.image_url
+                  ? <span title={option.label} className={styles.formOptionVariant + ' ' + styles.formOptionVariantPattern} style={{ backgroundImage: `url('${option.value_data.image_url}')` }} />
                   : null
                 }
               </label>
@@ -79,42 +85,44 @@ const fieldTypes = {
       </Field>
     );
   },
-  RadioButtons({ field, id, name, required }) {
+  RadioButtons({ field, id, name, required, value, onChange }) {
     return (
       <Field field={field} id={id} required={required} grouped>
-        {field.option_values.map((value, index) => (
-          <label htmlFor={`attribute_radio_${field.id}_${value.id}`} className={styles.radioLabel} key={index}>
+        {field.option_values.map((option, index) => (
+          <label htmlFor={`attribute_radio_${field.id}_${option.id}`} className={styles.radioLabel} key={index}>
             <input
               type="radio"
               name={name}
-              id={`attribute_radio_${field.id}_${value.id}`}
-              value={value.id}
-              defaultChecked={value.is_default}
+              id={`attribute_radio_${field.id}_${option.id}`}
+              value={option.id}
+              checked={option.id === value}
+              onChange={e => onChange(option.id)}
             />
-            {value.label}
+            {option.label}
           </label>
         ))}
       </Field>
     );
   },
-  Rectangles({ field, id, name, required }) {
+  Rectangles({ field, id, name, required, value, onChange }) {
     return (
       <Field field={field} id={id} required={required} grouped>
-        {field.option_values.map((value, index) => {
-          const id = `attribute_rectangle_${field.id}_${value.id}`;
+        {field.option_values.map((option, index) => {
+          const id = `attribute_rectangle_${field.id}_${option.id}`;
         
           return (
-            <div className={styles.formOptionWrapper} key={value.id}>
+            <div className={styles.formOptionWrapper} key={option.id}>
               <input
                 type="radio"
                 name={name}
-                value={value.id}
+                value={option.id}
                 id={id}
-                aria-label={value.label}
-                defaultChecked={value.is_default}
+                aria-label={option.label}
+                checked={option.id === value}
+                onChange={e => onChange(option.id)}
               />
               <label htmlFor={id} className={styles.formOption + ' ' + styles.formOptionRectangle}>
-                <span title={value.label} className={styles.formOptionVariant}>{value.label}</span>
+                <span title={option.label} className={styles.formOptionVariant}>{option.label}</span>
               </label>
             </div>
           );
@@ -122,66 +130,74 @@ const fieldTypes = {
       </Field>
     );
   },
-  Text({ field, id, required }) {
+  Text({ field, id, name, required, value, onChange }) {
     return (
       <Field field={field} id={id} required={required}>
         <input
           type="text"
-          name={`attributes[${field.id}]`}
+          name={name}
           id={id}
           required={required}
           minLength={field.config?.text_min_length}
           maxLength={field.config?.text_max_length}
-          defaultValue={field.config?.default_value}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
         />
       </Field>
     );
   },
-  Dropdown({ field, id, name, required }) {
+  Dropdown({ field, id, name, required, value, onChange }) {
     return (
       <Field field={field} id={id} required={required}>
-        <select name={name} id={id} required={required} defaultValue={defaultValue(field)}>
+        <select
+          name={name}
+          id={id}
+          required={required}
+          value={value}
+          onChange={e => onChange(Number(e.target.value))}
+        >
           <option value="">Choose Options</option>
-          {field.option_values.map((value, index) => (
-            <option value={value.id} key={index}>{value.label}</option>
+          {field.option_values.map((option, index) => (
+            <option value={option.id} key={index}>{option.label}</option>
           ))}
         </select>
       </Field>
     );
   },
-  MultiLineText({ field, id, required }) {
+  MultiLineText({ field, id, name, required, value, onChange }) {
     return (
       <Field field={field} id={id} required={required}>
         <textarea
           type="text"
-          name={`attributes[${field.id}]`}
+          name={name}
           id={id}
           required={required}
           minLength={field.config?.text_min_length}
           maxLength={field.config?.text_max_length}
-          defaultValue={field.config?.default_value}
+          value={value}
+          onChange={e => onChange(e.target.value)}
         />
       </Field>
     );
   },
-  Checkbox({ field, id, name, required }) {
+  Checkbox({ field, id, name, required, value, onChange }) {
     return (
       <Field field={field} required={required}>
-        <input type="hidden" name={name} value={field.option_values[1].id} />
         <label htmlFor={`attribute_check_${field.id}`} className={styles.radioLabel}>
           <input
             type="checkbox"
             name={name}
             id={`attribute_check_${field.id}`}
             value={field.option_values[0].id}
-            defaultChecked={field.config?.checked_by_default}
+            checked={value === field.option_values[0].id}
+            onChange={e => onChange(field.option_values[e.target.checked ? 0 : 1].id)}
           />
           {field.config?.checkbox_label}
         </label>
       </Field>
     );
   },
-  NumbersOnlyText({ field, id, name, required }) {
+  NumbersOnlyText({ field, id, name, required, value, onChange }) {
     return (
       <Field field={field} id={id} required={required}>
         <input
@@ -191,12 +207,13 @@ const fieldTypes = {
           required={required}
           min={field.config?.number_lowest_value}
           max={field.config?.number_highest_value}
-          defaultValue={field.config?.default_value}
+          value={value}
+          onChange={e => onChange(e.target.value)}
         />
       </Field>
     );
   },
-  Date({ field, id, name, required }) {
+  Date({ field, id, name, required, value, onChange }) {
     const currentYear = new Date().getFullYear();
     const latestDate = field.config?.date_latest_value;
     const latestYear = (
@@ -209,28 +226,45 @@ const fieldTypes = {
       yearOptions.push(i);
     }
     
-    const defaultValue = field.config?.default_value;
-    const defaultDate = (
-      defaultValue
-      ? new Date(defaultValue)
-      : null
-    );
+    const date = new Date(value || '');
+    
+    const [inputDate, setInputDate] = useState({
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+      year: date.getFullYear()
+    });
+    
+    function handleChange(event) {
+      const { target } = event;
+      
+      setInputDate((prevDate) => {
+        const date = {
+          month: /\[month\]$/.test(target.name) ? Number(target.value) : prevDate.month,
+          day: /\[day\]$/.test(target.name) ? Number(target.value) : prevDate.day,
+          year: /\[year\]$/.test(target.name) ? Number(target.value) : prevDate.year,
+        };
+        
+        return date;
+      });
+    }
+    
+    console.log({ value, date });
     
     return (
       <Field field={field} id={id} required={required}>
-        <select name={`${name}[month]`} defaultValue={defaultDate?.getMonth() + 1}>
+        <select name={`${name}[month]`} value={date?.getMonth() + 1} onChange={handleChange}>
           <option value="">Month</option>
           {months.map((option, index) => (
             <option value={option.value} key={option.value}>{option.label}</option>
           ))}
         </select>
-        <select name={`${name}[day]`} defaultValue={defaultDate?.getDate()}>
+        <select name={`${name}[day]`} value={date?.getDate()} onChange={handleChange}>
           <option value="">Day</option>
           {Array.apply(null, Array(31)).map((_, index) => index + 1).map((day, index) => (
             <option value={day} key={day}>{day}</option>
           ))}
         </select>
-        <select name={`${name}[year]`} defaultValue={defaultDate?.getFullYear()}>
+        <select name={`${name}[year]`} value={date?.getFullYear()} onChange={handleChange}>
           <option value="">Year</option>
           {yearOptions.map((year) => (
             <option value={year} key={year}>{year}</option>
@@ -247,10 +281,6 @@ const fieldTypes = {
     );
   },
 };
-
-function defaultValue(field) {
-  return field.option_values.filter((value) => value.is_default )?.[0]?.id;
-}
 
 const months = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ').map((month, index) => ({
   value: index + 1,

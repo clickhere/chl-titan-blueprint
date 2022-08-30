@@ -972,6 +972,7 @@ export const generatedSchema = {
     authorId: { __type: "ID" },
     availability: { __type: "String" },
     bigCommerceID: { __type: "Float!" },
+    calculatedPrice: { __type: "Float" },
     clientMutationId: { __type: "String" },
     costPrice: { __type: "Float" },
     date: { __type: "String" },
@@ -1079,6 +1080,7 @@ export const generatedSchema = {
   },
   CreateVariantInput: {
     authorId: { __type: "ID" },
+    bigCommerceVariantID: { __type: "Float!" },
     clientMutationId: { __type: "String" },
     costPrice: { __type: "Float" },
     date: { __type: "String" },
@@ -1094,7 +1096,6 @@ export const generatedSchema = {
     status: { __type: "PostStatusEnum" },
     title: { __type: "String" },
     variantDisplayName: { __type: "String" },
-    variantID: { __type: "Float!" },
   },
   CreateVariantPayload: {
     __typename: { __type: "String!" },
@@ -2741,6 +2742,7 @@ export const generatedSchema = {
     availability: { __type: "String" },
     bigCommerceID: { __type: "Float" },
     brand: { __type: "ProductToBrandConnectionEdge" },
+    calculatedPrice: { __type: "Float" },
     conditionalTags: { __type: "ConditionalTags" },
     contentType: { __type: "ContentNodeToContentTypeConnectionEdge" },
     contentTypeName: { __type: "String!" },
@@ -4354,6 +4356,7 @@ export const generatedSchema = {
     authorId: { __type: "ID" },
     availability: { __type: "String" },
     bigCommerceID: { __type: "Float" },
+    calculatedPrice: { __type: "Float" },
     clientMutationId: { __type: "String" },
     costPrice: { __type: "Float" },
     date: { __type: "String" },
@@ -4506,6 +4509,7 @@ export const generatedSchema = {
   },
   UpdateVariantInput: {
     authorId: { __type: "ID" },
+    bigCommerceVariantID: { __type: "Float" },
     clientMutationId: { __type: "String" },
     costPrice: { __type: "Float" },
     date: { __type: "String" },
@@ -4522,7 +4526,6 @@ export const generatedSchema = {
     status: { __type: "PostStatusEnum" },
     title: { __type: "String" },
     variantDisplayName: { __type: "String" },
-    variantID: { __type: "Float" },
   },
   UpdateVariantPayload: {
     __typename: { __type: "String!" },
@@ -5213,6 +5216,7 @@ export const generatedSchema = {
     author: { __type: "NodeWithAuthorToUserConnectionEdge" },
     authorDatabaseId: { __type: "Int" },
     authorId: { __type: "ID" },
+    bigCommerceVariantID: { __type: "Float" },
     conditionalTags: { __type: "ConditionalTags" },
     contentType: { __type: "ContentNodeToContentTypeConnectionEdge" },
     contentTypeName: { __type: "String!" },

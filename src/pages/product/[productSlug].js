@@ -25,11 +25,13 @@ import { pageTitle } from 'utils';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Slider from 'react-slick';
 import { classNames } from 'utils';
 
 import ReactImageMagnify from 'react-image-magnify';
+
+import useTEcom from 'hooks/useTEcom';
 
 export function ProductComponent({ product, relatedProducts }) {
   const { useQuery } = client;
@@ -44,6 +46,114 @@ export function ProductComponent({ product, relatedProducts }) {
   const modifierLookup = JSON.parse(product.modifierLookupJson ?? '{}');
 
   console.log({ productFormFields, variantLookup, modifierLookup });
+  
+  const productName = product.name;
+  const bigCommerceId = product.bigCommerceID;
+  const baseVariantId = product.variants({ last: 1 }).nodes[0]?.bigCommerceVariantID;
+  
+  const sortedFormFields = useMemo(() => (
+    productFormFields.slice().sort((a, b) => a.sort_order - b.sort_order)
+  ), [productFormFields]);
+  
+  const formFieldsById = useMemo(() => {
+    return productFormFields.reduce((acc, field) => {
+      acc[`${field.prodOptionType}[${field.id}]`] = field;
+      return acc;
+    }, {});
+  }, [productFormFields]);
+  
+  const { cartData, addToCart } = useTEcom();
+  
+  const [notificationMessage, setNotificationMessage] = useState();
+  
+  const [values, setValues] = useState(() => {
+    const fields = productFormFields.reduce((acc, field) => {
+      acc[`${field.prodOptionType}[${field.id}]`] = (
+        field.option_values?.reduce((defaultValue, option) => {
+          if (option.is_default) {
+            return option.id;
+          }
+          return defaultValue;
+        }, null)
+        ?? field.config?.default_value
+      );
+      return acc;
+    }, {});
+    
+    return {
+      ...fields,
+      quantity: 1,
+    };
+  });
+  
+  const variantProductId = Object.keys(values).reduce((acc, key) => {
+    let match;
+    if (match = key.match(/^variant\[(.*)\]$/)) {
+      acc.push(match[1] + '.' + values[key])
+    }
+    return acc;
+  }, []).sort().join(';');
+  
+  const variantProduct = variantLookup[variantProductId];
+  
+  console.log({ values, variantProduct });
+  
+  function handleChange(event) {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [event.target.name]: event.target.value,
+    }));
+  }
+  
+  function handleFieldChange(key, value) {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [key]: value,
+    }));
+  }
+  
+  function handleSubmit(event) {
+    event.preventDefault();
+    
+    const variantOptionValues = [];
+    const modifierOptionValues = [];
+    
+    Object.keys(values).forEach((key) => {
+      const match = key.match(/^(variant|modifier)\[(.*)\]$/);
+      const value = values[key];
+      if (match) {
+        if (match[1] === 'variant') {
+          variantOptionValues.push({
+            parentOptionID: Number(match[2]),
+            optionValueID: value,
+          });
+        } else if (match[1] === 'modifier') {
+          modifierOptionValues.push({
+            modifierOptionID: Number(match[2]),
+            optionValue: typeof value !== 'number' ? value : '',
+            optionValueID: typeof value === 'number' ? value : '',
+          });
+        }
+      }
+    });
+    
+    addToCart([
+      {
+        quantity: Number(values.quantity),
+        product_id: bigCommerceId,
+        variant_id: variantProduct?.variant_id ?? baseVariantId,
+        variant_option_values: variantOptionValues,
+        modifiers: modifierOptionValues,
+      },
+    ]).then((data) => {
+      console.log({ 'addToCart()': data });
+      
+      if (data.status === 200) {
+        setNotificationMessage(`"${productName}" has been added to your cart.`);
+        window.scrollTo(0, 0);
+      }
+    });
+  }
   
   return (
     <>
@@ -66,6 +176,17 @@ export function ProductComponent({ product, relatedProducts }) {
 
       <Main>
         <div className={classNames(['container', styles.product])}>
+          {
+            notificationMessage
+            ? (
+              <div className={styles.notification}>
+                <div className={styles.message}>{notificationMessage}</div>
+                <a href={cartData?.redirect_urls?.cart_url}>View cart</a>
+              </div>
+            )
+            : null
+          }
+          
           <div className="row">
             <div className="column column-40">
               <ProductGallery images={product.images().nodes} />
@@ -116,21 +237,27 @@ export function ProductComponent({ product, relatedProducts }) {
                   : null
                 }
                 
-                <form>
-                  {productFormFields.sort((a, b) => a.sort_order - b.sort_order).map((field) => (
-                    <ProductFormField field={field} key={field.id} />
+                <form onSubmit={handleSubmit}>
+                  {sortedFormFields.map((field) => (
+                    <ProductFormField field={field} value={values[`${field.prodOptionType}[${field.id}]`]} onChange={handleFieldChange} key={field.id} />
                   ))}
-                
-                  {/*<pre>{JSON.stringify(productFormFields, null, 2)}</pre>*/}
                 
                   <div>
                     <label style={{ display: 'block' }}>Quantity:</label>
-                    <input type="number" min="1" step="1" defaultValue="1" style={{
-                      width: '5em',
-                      padding: '.25em',
-                      borderRadius: '4px',
-                      borderWidth: '1px',
-                    }} />
+                    <input
+                      type="number"
+                      min="1"
+                      step="1"
+                      name="quantity"
+                      value={values.quantity}
+                      onChange={handleChange}
+                      style={{
+                        width: '5em',
+                        padding: '.25em',
+                        borderRadius: '4px',
+                        borderWidth: '1px',
+                      }}
+                    />
                   </div>
                 
                   <Button styleType="secondary">Add to cart</Button>

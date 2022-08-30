@@ -22,7 +22,7 @@ export default function LoginForm() {
   useEffect(() => {
     console.log("loaded");
     // Get token
-    const authToken = cookieCutter.get('token');
+    const authToken = cookieCutter.get('tecom-token-user');
     console.log(authToken);
 
     if (typeof authToken !== 'undefined') {
@@ -34,21 +34,29 @@ export default function LoginForm() {
 
   // Returns Auth Token
   async function getRefreshToken(e) {
+    const cartToken = cookieCutter.get('tecom-token-cart');
+    
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    
+    if (cartToken) {
+      headers['Authorization'] = 'Bearer ' + cartToken;
+    }
+    
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/tecom/v1/login`, {
             method: 'POST',
-            headers:{
-                'Content-Type': 'application/json'
-            },
+            headers,
             body:  JSON.stringify({username:document.getElementById('username').value,password:document.getElementById('password').value}) 
         })
 
         const data = await response.json();
-        console.log(data);
         
         if (data.status == 200){
           console.log("Success: Requesting Redirect URL")
-          cookieCutter.set('token', data.token);
+          cookieCutter.set('tecom-token-user', data.token, { path: '/' });
+          cookieCutter.set('tecom-token-cart', '', { path: '/', expires: new Date(0) });
           const date = Date();
           getRedirectUrl();
         } else {
@@ -64,7 +72,7 @@ export default function LoginForm() {
   // Returns BigCommerce redirect URL
   async function getRedirectUrl() {
 
-    var bearerToken = "Bearer " + cookieCutter.get('token');
+    var bearerToken = "Bearer " + cookieCutter.get('tecom-token-user');
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/tecom/v1/bc-link`, {
@@ -84,7 +92,7 @@ export default function LoginForm() {
       // The token is good, redirect to BigCommerce 
       if (data.status == 200) {
         window.open(data.redirect_to, '_blank');
-        router.push('/test-page');
+        router.push('/');
         //cookieCutter.set('token', "qqqqqqqq");
       
       // The token is bad
@@ -98,7 +106,7 @@ export default function LoginForm() {
         // Expired Token: Clear old token, resubmit, and store the new one
         if (data.message == "invalid_token") {
           console.log("expired token: resubmitting");
-          cookieCutter.set('token', '', { expires: new Date(0) });
+          cookieCutter.set('tecom-token-user', '', { path: '/', expires: new Date(0) });
           setErrorMessage("Session expired, please log in again.");
           //getRefreshToken();
         } 
@@ -125,7 +133,7 @@ export default function LoginForm() {
 
   function clearCookie() {
     console.log("clear");
-    cookieCutter.set('token', '', { expires: new Date(0) });
+    cookieCutter.set('tecom-token-user', '', { path: '/', expires: new Date(0) });
   }
   
   return (
