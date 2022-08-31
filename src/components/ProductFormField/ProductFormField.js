@@ -248,23 +248,21 @@ const fieldTypes = {
       });
     }
     
-    console.log({ value, date });
-    
     return (
       <Field field={field} id={id} required={required}>
-        <select name={`${name}[month]`} value={date?.getMonth() + 1} onChange={handleChange}>
+        <select name={`${name}[month]`} defaultValue={date?.getMonth() + 1}>
           <option value="">Month</option>
           {months.map((option, index) => (
             <option value={option.value} key={option.value}>{option.label}</option>
           ))}
         </select>
-        <select name={`${name}[day]`} value={date?.getDate()} onChange={handleChange}>
+        <select name={`${name}[day]`} defaultValue={date?.getDate()}>
           <option value="">Day</option>
           {Array.apply(null, Array(31)).map((_, index) => index + 1).map((day, index) => (
             <option value={day} key={day}>{day}</option>
           ))}
         </select>
-        <select name={`${name}[year]`} value={date?.getFullYear()} onChange={handleChange}>
+        <select name={`${name}[year]`} defaultValue={date?.getFullYear()}>
           <option value="">Year</option>
           {yearOptions.map((year) => (
             <option value={year} key={year}>{year}</option>

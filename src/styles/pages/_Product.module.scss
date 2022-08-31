@@ -61,4 +61,30 @@
       text-decoration: underline;
     }
   }
+  
+  .notificationError {
+    background-color: #c00;
+  }
+  
+  .addToCart:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  input.quantity {
+    width: 5em;
+    padding: .25em;
+    border-radius: 4px;
+    border-width: 1px;
+    
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+  
+  .purchaseDisabled {
+    margin: 1em 0;
+    padding: .5em 1em;
+    background: #ddd;
+  }
 }

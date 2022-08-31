@@ -792,6 +792,7 @@ export interface CreateProductInput {
   featured?: InputMaybe<Scalars["Boolean"]>;
   imageUrl?: InputMaybe<Scalars["String"]>;
   inventoryLevel?: InputMaybe<Scalars["Float"]>;
+  inventoryTracking?: InputMaybe<Scalars["String"]>;
   inventoryWarningLevel?: InputMaybe<Scalars["Float"]>;
   json?: InputMaybe<Scalars["String"]>;
   mAPPrice?: InputMaybe<Scalars["Float"]>;
@@ -920,6 +921,7 @@ export interface CreateVariantInput {
   /** The userId to assign as the author of the object */
   authorId?: InputMaybe<Scalars["ID"]>;
   bigCommerceVariantID: Scalars["Float"];
+  calculatedPrice?: InputMaybe<Scalars["Float"]>;
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: InputMaybe<Scalars["String"]>;
   costPrice?: InputMaybe<Scalars["Float"]>;
@@ -934,6 +936,7 @@ export interface CreateVariantInput {
   password?: InputMaybe<Scalars["String"]>;
   price?: InputMaybe<Scalars["Float"]>;
   purchasingDisabled?: InputMaybe<Scalars["Boolean"]>;
+  salePrice?: InputMaybe<Scalars["Float"]>;
   sku?: InputMaybe<Scalars["String"]>;
   /** The slug of the object */
   slug?: InputMaybe<Scalars["String"]>;
@@ -3834,6 +3837,7 @@ export interface UpdateProductInput {
   id: Scalars["ID"];
   imageUrl?: InputMaybe<Scalars["String"]>;
   inventoryLevel?: InputMaybe<Scalars["Float"]>;
+  inventoryTracking?: InputMaybe<Scalars["String"]>;
   inventoryWarningLevel?: InputMaybe<Scalars["Float"]>;
   json?: InputMaybe<Scalars["String"]>;
   mAPPrice?: InputMaybe<Scalars["Float"]>;
@@ -4012,6 +4016,7 @@ export interface UpdateVariantInput {
   /** The userId to assign as the author of the object */
   authorId?: InputMaybe<Scalars["ID"]>;
   bigCommerceVariantID?: InputMaybe<Scalars["Float"]>;
+  calculatedPrice?: InputMaybe<Scalars["Float"]>;
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: InputMaybe<Scalars["String"]>;
   costPrice?: InputMaybe<Scalars["Float"]>;
@@ -4028,6 +4033,7 @@ export interface UpdateVariantInput {
   password?: InputMaybe<Scalars["String"]>;
   price?: InputMaybe<Scalars["Float"]>;
   purchasingDisabled?: InputMaybe<Scalars["Boolean"]>;
+  salePrice?: InputMaybe<Scalars["Float"]>;
   sku?: InputMaybe<Scalars["String"]>;
   /** The slug of the object */
   slug?: InputMaybe<Scalars["String"]>;
@@ -5670,6 +5676,7 @@ export declare const generatedSchema: {
     featured: { __type: "Boolean" };
     imageUrl: { __type: "String" };
     inventoryLevel: { __type: "Float" };
+    inventoryTracking: { __type: "String" };
     inventoryWarningLevel: { __type: "Float" };
     json: { __type: "String" };
     mAPPrice: { __type: "Float" };
@@ -5770,6 +5777,7 @@ export declare const generatedSchema: {
   CreateVariantInput: {
     authorId: { __type: "ID" };
     bigCommerceVariantID: { __type: "Float!" };
+    calculatedPrice: { __type: "Float" };
     clientMutationId: { __type: "String" };
     costPrice: { __type: "Float" };
     date: { __type: "String" };
@@ -5780,6 +5788,7 @@ export declare const generatedSchema: {
     password: { __type: "String" };
     price: { __type: "Float" };
     purchasingDisabled: { __type: "Boolean" };
+    salePrice: { __type: "Float" };
     sku: { __type: "String" };
     slug: { __type: "String" };
     status: { __type: "PostStatusEnum" };
@@ -7455,6 +7464,7 @@ export declare const generatedSchema: {
       __args: { after: "String"; before: "String"; first: "Int"; last: "Int" };
     };
     inventoryLevel: { __type: "Float" };
+    inventoryTracking: { __type: "String" };
     inventoryWarningLevel: { __type: "Float" };
     isContentNode: { __type: "Boolean!" };
     isPreview: { __type: "Boolean" };
@@ -9049,6 +9059,7 @@ export declare const generatedSchema: {
     id: { __type: "ID!" };
     imageUrl: { __type: "String" };
     inventoryLevel: { __type: "Float" };
+    inventoryTracking: { __type: "String" };
     inventoryWarningLevel: { __type: "Float" };
     json: { __type: "String" };
     mAPPrice: { __type: "Float" };
@@ -9193,6 +9204,7 @@ export declare const generatedSchema: {
   UpdateVariantInput: {
     authorId: { __type: "ID" };
     bigCommerceVariantID: { __type: "Float" };
+    calculatedPrice: { __type: "Float" };
     clientMutationId: { __type: "String" };
     costPrice: { __type: "Float" };
     date: { __type: "String" };
@@ -9204,6 +9216,7 @@ export declare const generatedSchema: {
     password: { __type: "String" };
     price: { __type: "Float" };
     purchasingDisabled: { __type: "Boolean" };
+    salePrice: { __type: "Float" };
     sku: { __type: "String" };
     slug: { __type: "String" };
     status: { __type: "PostStatusEnum" };
@@ -9900,6 +9913,7 @@ export declare const generatedSchema: {
     authorDatabaseId: { __type: "Int" };
     authorId: { __type: "ID" };
     bigCommerceVariantID: { __type: "Float" };
+    calculatedPrice: { __type: "Float" };
     conditionalTags: { __type: "ConditionalTags" };
     contentType: { __type: "ContentNodeToContentTypeConnectionEdge" };
     contentTypeName: { __type: "String!" };
@@ -9936,6 +9950,7 @@ export declare const generatedSchema: {
     previewRevisionId: { __type: "ID" };
     price: { __type: "Float" };
     purchasingDisabled: { __type: "Boolean" };
+    salePrice: { __type: "Float" };
     sku: { __type: "String" };
     slug: { __type: "String" };
     status: { __type: "String" };
@@ -16693,6 +16708,7 @@ export interface Product {
     last?: Maybe<Scalars["Int"]>;
   }) => Maybe<ProductToImageConnection>;
   inventoryLevel?: Maybe<ScalarsEnums["Float"]>;
+  inventoryTracking?: Maybe<ScalarsEnums["String"]>;
   inventoryWarningLevel?: Maybe<ScalarsEnums["Float"]>;
   /**
    * Whether the node is a Content Node
@@ -20648,6 +20664,7 @@ export interface Variant {
    */
   authorId?: Maybe<ScalarsEnums["ID"]>;
   bigCommerceVariantID?: Maybe<ScalarsEnums["Float"]>;
+  calculatedPrice?: Maybe<ScalarsEnums["Float"]>;
   /**
    * @deprecated Deprecated in favor of using Next.js pages
    */
@@ -20784,6 +20801,7 @@ export interface Variant {
   previewRevisionId?: Maybe<ScalarsEnums["ID"]>;
   price?: Maybe<ScalarsEnums["Float"]>;
   purchasingDisabled?: Maybe<ScalarsEnums["Boolean"]>;
+  salePrice?: Maybe<ScalarsEnums["Float"]>;
   sku?: Maybe<ScalarsEnums["String"]>;
   /**
    * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
