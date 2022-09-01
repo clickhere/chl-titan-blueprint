@@ -52,7 +52,7 @@ export function ProductComponent({ product }) {
   
   const productName = product.name;
   const bigCommerceId = product.bigCommerceID;
-  const baseVariantId = product.variants({ last: 1 }).nodes[0]?.bigCommerceVariantID;
+  const baseVariantId = product.variants({ last: 1 })?.nodes[0]?.bigCommerceVariantID;
   let productImages = product.images().nodes;
   
   const sortedFormFields = useMemo(() => (
