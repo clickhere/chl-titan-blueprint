@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { classNames } from 'utils';
 import styles from './ProductFormField.module.scss';
 
 function camelize(text) {
   return text?.replace(/(?:^|_)([a-z])/g, ($0, $1) => $1.toUpperCase());
 }
 
-export default function ProductFormField({ field, value, onChange }) {
+export default function ProductFormField({ field, value, onChange, error }) {
   const FieldType = fieldTypes[camelize(field.type)];
   // console.log({ label: field.display_name, field });
   
@@ -19,12 +20,22 @@ export default function ProductFormField({ field, value, onChange }) {
   
   return (
     FieldType
-    ? <FieldType field={field} id={id} name={name} required={required} value={value} onChange={handleChange} />
+    ? (
+      <FieldType
+        field={field}
+        id={id}
+        name={name}
+        required={required}
+        value={value}
+        onChange={handleChange}
+        error={error}
+      />
+    )
     : null
   );
 }
 
-function Field({ field, id, required, grouped, children, ...props }) {
+function Field({ field, id, required, error, grouped, children, ...props }) {
   const groupId = `${field.type}_group_${field.id}`;
 
   const labelProps = {};
@@ -41,20 +52,25 @@ function Field({ field, id, required, grouped, children, ...props }) {
       {...props}
     >
       <label
-        className={styles.formLabel}
+        className={classNames([styles.formLabel, error ? styles.formLabelError : ''])}
         {...labelProps}
       >
         {field.display_name}: <small>{required ? '(Required)' : 'Optional'}</small>
       </label>
       {children}
+      {
+        error
+        ? <div style={{color: 'red'}}>{error}</div>
+        : null
+      }
     </div>
   );
 }
 
 const fieldTypes = {
-  Swatch({ field, id, name, required, value, onChange }) {
+  Swatch({ field, id, name, required, value, onChange, error }) {
     return (
-      <Field field={field} id={id} required={required} grouped>
+      <Field field={field} id={id} required={required} error={error} grouped>
         {field.option_values.map((option, index) => {
           const id = `attribute_swatch_${field.id}_${option.id}`;
           
@@ -85,9 +101,9 @@ const fieldTypes = {
       </Field>
     );
   },
-  RadioButtons({ field, id, name, required, value, onChange }) {
+  RadioButtons({ field, id, name, required, value, onChange, error }) {
     return (
-      <Field field={field} id={id} required={required} grouped>
+      <Field field={field} id={id} required={required} error={error} grouped>
         {field.option_values.map((option, index) => (
           <label htmlFor={`attribute_radio_${field.id}_${option.id}`} className={styles.radioLabel} key={index}>
             <input
@@ -104,9 +120,9 @@ const fieldTypes = {
       </Field>
     );
   },
-  Rectangles({ field, id, name, required, value, onChange }) {
+  Rectangles({ field, id, name, required, value, onChange, error }) {
     return (
-      <Field field={field} id={id} required={required} grouped>
+      <Field field={field} id={id} required={required} error={error} grouped>
         {field.option_values.map((option, index) => {
           const id = `attribute_rectangle_${field.id}_${option.id}`;
         
@@ -130,14 +146,13 @@ const fieldTypes = {
       </Field>
     );
   },
-  Text({ field, id, name, required, value, onChange }) {
+  Text({ field, id, name, required, value, onChange, error }) {
     return (
-      <Field field={field} id={id} required={required}>
+      <Field field={field} id={id} required={required} error={error}>
         <input
           type="text"
           name={name}
           id={id}
-          required={required}
           minLength={field.config?.text_min_length}
           maxLength={field.config?.text_max_length}
           value={value}
@@ -146,13 +161,12 @@ const fieldTypes = {
       </Field>
     );
   },
-  Dropdown({ field, id, name, required, value, onChange }) {
+  Dropdown({ field, id, name, required, value, onChange, error }) {
     return (
-      <Field field={field} id={id} required={required}>
+      <Field field={field} id={id} required={required} error={error}>
         <select
           name={name}
           id={id}
-          required={required}
           value={value}
           onChange={e => onChange(Number(e.target.value))}
         >
@@ -164,14 +178,13 @@ const fieldTypes = {
       </Field>
     );
   },
-  MultiLineText({ field, id, name, required, value, onChange }) {
+  MultiLineText({ field, id, name, required, value, onChange, error }) {
     return (
-      <Field field={field} id={id} required={required}>
+      <Field field={field} id={id} required={required} error={error}>
         <textarea
           type="text"
           name={name}
           id={id}
-          required={required}
           minLength={field.config?.text_min_length}
           maxLength={field.config?.text_max_length}
           value={value}
@@ -180,9 +193,9 @@ const fieldTypes = {
       </Field>
     );
   },
-  Checkbox({ field, id, name, required, value, onChange }) {
+  Checkbox({ field, id, name, required, value, onChange, error }) {
     return (
-      <Field field={field} required={required}>
+      <Field field={field} required={required} error={error}>
         <label htmlFor={`attribute_check_${field.id}`} className={styles.radioLabel}>
           <input
             type="checkbox"
@@ -197,14 +210,13 @@ const fieldTypes = {
       </Field>
     );
   },
-  NumbersOnlyText({ field, id, name, required, value, onChange }) {
+  NumbersOnlyText({ field, id, name, required, value, onChange, error }) {
     return (
-      <Field field={field} id={id} required={required}>
+      <Field field={field} id={id} required={required} error={error}>
         <input
           type="number"
           name={name}
           id={id}
-          required={required}
           min={field.config?.number_lowest_value}
           max={field.config?.number_highest_value}
           value={value}
@@ -213,7 +225,7 @@ const fieldTypes = {
       </Field>
     );
   },
-  Date({ field, id, name, required, value, onChange }) {
+  Date({ field, id, name, required, value, onChange, error }) {
     const currentYear = new Date().getFullYear();
     const latestDate = field.config?.date_latest_value;
     const latestYear = (
@@ -249,7 +261,7 @@ const fieldTypes = {
     }
     
     return (
-      <Field field={field} id={id} required={required}>
+      <Field field={field} id={id} required={required} error={error}>
         <select name={`${name}[month]`} defaultValue={date?.getMonth() + 1}>
           <option value="">Month</option>
           {months.map((option, index) => (
@@ -271,9 +283,9 @@ const fieldTypes = {
       </Field>
     );
   },
-  File({ field, id, name, required }) {
+  File({ field, id, name, required, error }) {
     return (
-      <Field field={field} id={id} required={required}>
+      <Field field={field} id={id} required={required} error={error}>
         <input type="file" name={name} id={id} />
       </Field>
     );

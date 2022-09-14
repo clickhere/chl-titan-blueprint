@@ -57,7 +57,14 @@ export function ProductComponent({ product }) {
   
   const sortedFormFields = useMemo(() => (
     productFormFields.slice().sort((a, b) => a.sort_order - b.sort_order)
-  ), [productFormFields]);
+  ), [product.productFormFieldsJson]);
+  
+  const formFieldsById = useMemo(() => {
+    return productFormFields.reduce((acc, field) => {
+      acc[`${field.prodOptionType}[${field.id}]`] = field;
+      return acc;
+    }, {});
+  }, [product.productFormFieldsJson]);
   
   const { cartData, addToCart } = useTEcom();
   
@@ -79,9 +86,11 @@ export function ProductComponent({ product }) {
     
     return {
       ...fields,
-      quantity: 1,
+      quantity: '1',
     };
   });
+  
+  const [errors, setErrors] = useState({});
   
   const valuesKeys = Object.keys(values);
   
@@ -155,8 +164,36 @@ export function ProductComponent({ product }) {
     }));
   }
   
+  function validate(values) {
+    const errors = {};
+
+    if (!/^\d+$/.test(values.quantity)) {
+      errors.quantity = 'Quantity must be a number';
+    }
+    
+    Object.keys(values).forEach((key) => {
+      const field = formFieldsById[key];
+      if (field) {
+        if (field.required || field.prodOptionType === 'variant') {
+          if (!values[key]) {
+            errors[key] = 'Required';
+          }
+        }
+      }
+    });
+    
+    return errors;
+  }
+  
   function handleSubmit(event) {
     event.preventDefault();
+    
+    const errors = validate(values);
+    setErrors(errors);
+    
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
     
     const variantOptionValues = [];
     const modifierOptionValues = [];
@@ -284,9 +321,19 @@ export function ProductComponent({ product }) {
                 }
                 
                 <form onSubmit={handleSubmit}>
-                  {sortedFormFields.map((field) => (
-                    <ProductFormField field={field} value={values[`${field.prodOptionType}[${field.id}]`]} onChange={handleFieldChange} key={field.id} />
-                  ))}
+                  {sortedFormFields.map((field) => {
+                    const key = `${field.prodOptionType}[${field.id}]`;
+                    
+                    return (
+                      <ProductFormField
+                        field={field}
+                        value={values[key]}
+                        onChange={handleFieldChange}
+                        error={errors[key]}
+                        key={field.id}
+                      />
+                    );
+                  })}
                 
                   <div>
                     <label style={{ display: 'block' }}>Quantity:</label>
