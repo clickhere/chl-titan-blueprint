@@ -57,4 +57,23 @@
       border-width: 1px;
     }
   }
+  .formFieldError {
+    input, select, textarea {
+      border-color: #f00;
+    }
+  }
+  .formErrorMessage {
+    color: #f00;
+  }
+  
+  .successMessage, .errorMessage {
+    margin-bottom: 1em;
+    padding: .5em .75em;
+    border: 1px solid red;
+    background: #ffe3e3;
+  }
+  .successMessage {
+    border-color: green;
+    background: #e3ffe3;
+  }
 }

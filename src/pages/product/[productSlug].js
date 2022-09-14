@@ -1,3 +1,4 @@
+import faustConfig from 'faust.config.js';
 import { getNextStaticProps, is404 } from '@faustjs/next';
 import { client } from 'client';
 import {
@@ -33,7 +34,7 @@ import ReactImageMagnify from 'react-image-magnify';
 
 import useTEcom from 'hooks/useTEcom';
 
-export function ProductComponent({ product }) {
+export function ProductComponent({ product, reviews }) {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
   const storeSettings  = useQuery().storeSettings({ first: 1 })?.nodes?.[0];
@@ -371,10 +372,10 @@ export function ProductComponent({ product }) {
         <div className={classNames(['container', 'related-products'])}>
           <div className="row row-wrap">
             <div className="column">
-              <h1>[count] reviews for {product?.name}</h1>
-              <Review
-
-              />
+              <h1>{reviews?.length ?? 0} review{reviews?.length === 1 ? '' : 's'} for {product?.name}</h1>
+              {reviews?.map((review) => (
+                <Review review={review} />
+              ))}
             </div>
 
           </div>
@@ -382,7 +383,7 @@ export function ProductComponent({ product }) {
         <div className={classNames(['container', 'review-product'])}>
           <div className="row row-wrap">
             <div className="column">
-              <ReviewForm />
+              <ReviewForm product={product} />
             </div>
           </div>
         </div>
@@ -449,21 +450,38 @@ function ProductGallery({ images }) {
   );
 }
 
-export default function Page() {
+export default function Page({ reviews }) {
   const router = useRouter();
   const { query } = router;
   const { useQuery } = client;
   const product = useQuery().product({ id: query.productSlug, idType: 'SLUG' });
   
-  return <ProductComponent product={product} />;
+  return <ProductComponent product={product} reviews={reviews} />;
 }
 
 export async function getStaticProps(context) {
   const product = await client.client.inlineResolved(() => {
-    return client.client.query.product({ id: context.params.productSlug, idType: 'SLUG' });
+    const product = client.client.query.product({ id: context.params.productSlug, idType: 'SLUG' });
+    const bigCommerceID = product?.bigCommerceID;
+    return product;
   });
+  
+  const bigCommerceID = product?.bigCommerceID;
+  
+  const reviewsResult = await fetch(`${faustConfig.wpUrl}/wp-json/tecom/v1/get-reviews?product_id=${bigCommerceID}`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: '',
+  });
+  const reviewsData = await reviewsResult.json();
 
   return getNextStaticProps(context, {
+    props: {
+      reviews: reviewsData.reviews,
+    },
     Page,
     client,
     notFound: !product,
